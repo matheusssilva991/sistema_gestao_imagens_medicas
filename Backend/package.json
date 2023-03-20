@@ -1,0 +1,29 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend do sistema de gestão de imagens médicas",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matheusssilva991/sistema_gestao_imagens_medicas.git"
+  },
+  "keywords": [
+    "Imagens",
+    "médicas",
+    "NodeJs",
+    "Dicom",
+    "Mamografia",
+    "Ultrassom",
+    "Termografia"
+  ],
+  "author": "Matheus Santos Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matheusssilva991/sistema_gestao_imagens_medicas/issues"
+  },
+  "homepage": "https://github.com/matheusssilva991/sistema_gestao_imagens_medicas#readme"
+}
