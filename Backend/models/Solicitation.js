@@ -35,7 +35,7 @@ class Solicitation {
             return { sucess: true }
 
         } catch (err) {
-            return { sucess: false, err: err.errors }
+            return { sucess: false, err: err }
         }
     }
 
@@ -49,10 +49,10 @@ class Solicitation {
                 runValidators: true              // valida antes de atualizar
             });
         
-            return solicitation
+            return { sucess: true };
 
         } catch (err) {
-            return { err };
+            return { sucess: false, err: err };
         }   
     }
 
@@ -60,9 +60,10 @@ class Solicitation {
         try {
             const solicitations = await SolicitationModel.find(queryParams);
         
-            return solicitations
+            return solicitations;
+
         } catch (err) {
-            return { err };
+            return { sucess: false, err: err };
         }
     }
 
@@ -70,15 +71,18 @@ class Solicitation {
         try {
             const solicitation = await SolicitationModel.findByIdAndRemove(id);
 
-            return solicitation
+            return { sucess: true };
+
         } catch (err) {
-            return { err };
+            return { sucess: false, err: err };
         }
     }
 
     async solicitationDatabaseExists (name) {
         try {
-            const solicitation = await SolicitationModel.find({ "data.name": name });
+            const solicitation = await SolicitationModel.find(
+                { "data.name": name, status: {$in: ["pending", "progress"]} 
+            });
 
             if (solicitation.length === 0){
                 return false
@@ -87,13 +91,15 @@ class Solicitation {
             return true
 
         } catch (err) {
-            console.log(err);
+            return { sucess: false, err: err };
         }
     }
 
     async solicitationEmailExists (email) {
         try {
-            const solicitation = await SolicitationModel.find({ "data.email": email });
+            const solicitation = await SolicitationModel.find({ 
+                "data.email": email, status: {$in: ["pending", "progress"]} 
+            });
 
             if (solicitation.length === 0){
                 return false
@@ -102,7 +108,7 @@ class Solicitation {
             return true
 
         } catch (err) {
-            console.log(err);
+            return { sucess: false, err: err };
         }
     }
 }

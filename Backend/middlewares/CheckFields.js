@@ -1,10 +1,48 @@
 const validator = require("validator");
 const Solicitation = require("../models/Solicitation");
+const Database = require("../models/Database");
 const User = require("../models/User");
 
-class SolicitationMiddleware {
+module.exports =  {
+    async checkEmptyFields(req, res, next) {
+        const tmp = req.body;
 
-    async checkValidFields(req, res, next){
+        for (const key in tmp) {
+            if (validator.isEmpty(tmp[key])){
+                res.status(401).json({ err: `O campo ${key} não pode ser vazio!` });
+                return;
+            }
+        }
+      
+        next();
+    }, 
+
+    async checkUserFields(req, res, next){
+        const { name, email, password, institution, country, city, lattes } = req.body;
+
+        if (!validator.isEmail(email)){
+            res.status(400).json({ err: "O e-mail é invalido!" });
+            return;
+        }
+
+        if (!validator.isStrongPassword(password, { returnScore: false })){
+            res.status(400).json({ err: "A senha é invalida!" });
+            return;
+        }
+
+        const tmp = { name, institution, country, city}
+
+        for (const key in tmp) {
+            if (validator.isEmpty(tmp[key])){
+                res.status(401).json({ err: `O campo ${key} não pode ser vazio!` });
+                return
+            }
+        };
+
+        next()
+    },
+
+    async checkSolicitationFields(req, res, next){
         const { type, status, data } = req.body;
         let tmp = { type, status };
 
@@ -41,10 +79,10 @@ class SolicitationMiddleware {
                 return;
             }
 
-            /* if (await Database.solicitationDatabaseExists(name)) {
+            if (await Database.solicitationDatabaseExists(name)) {
                 res.status(403).json({ err: "Já existe um banco de dados cadastrado com esse nome!" });
                 return;
-            } */
+            }
 
             Object.assign(tmp, tmp, { name, examType, description, imageQuality, imageType, sourceLink })
         }
@@ -59,5 +97,3 @@ class SolicitationMiddleware {
         next()
     }
 }
-
-module.exports = new SolicitationMiddleware ();

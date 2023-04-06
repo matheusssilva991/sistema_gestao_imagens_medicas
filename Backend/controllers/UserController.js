@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+const dotenv = require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 class UserController {
     async getUsers (req, res) {
@@ -57,23 +59,24 @@ class UserController {
             const salt = await bcrypt.genSalt(10);
             const passwordCripted = await bcrypt.hash(password, salt)
         }
-        const user = User.update(id, name, email, passwordCripted, institution, country, city, lattes, role)
+        const result = User.update(id, name, email, passwordCripted, institution, country, city, lattes, role)
 
-        if (user) {
+        if (result.sucess) {
             res.status(200).json({ msg: "Usuário atualizado com sucesso!" });
             return
-        } 
-        
-        res.status(403).json({ err: "Erro ao atualizar!" });
+        } else {
+            res.status(404).json({ err: "Usuário Não encontrado" });
+            return
+        }
     }
 
     async deleteUser(req, res) {
         const { id } = req.params;
 
         try {
-            const user = await User.delete(id);
+            const result = await User.delete(id);
 
-            if (user) {
+            if (result.sucess) {
                 res.status(200).json({ msg: "Usuário deletado com sucesso!" });
             } else {
                 res.status(404).json({ msg: "Usuário não encontrado!" });
@@ -81,6 +84,33 @@ class UserController {
         } catch (error) {
             res.status(400).json({ msg: "Erro ao deletar!." });
         }
+    }
+
+    async login (req, res) {
+        const { email, password } = req.body;
+        const secret = process.env.SECRET;
+
+        let user = await User.find({ email });
+        user = user[0]
+
+        if (user){
+            const result = await bcrypt.compare(password, user.password);             
+            
+            if (result){
+                const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, secret);
+
+                res.status(200);
+                res.json({ token: token });
+
+            } else {
+                res.status(406);
+                res.json({ err: "Senha incorreta" });
+            }
+
+        } else {
+            res.status(406);
+            res.json({ status: false, err: "O usuário não existe!" });
+        } 
     }
 }
 

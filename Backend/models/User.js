@@ -52,10 +52,10 @@ class User {
             
             await user.save();
 
-            return { sucess: true }
+            return { sucess: true };
 
         } catch (err) {
-            return { sucess: false, err: err.errors }
+            return { sucess: false, err };
         }
     }
 
@@ -72,10 +72,10 @@ class User {
                 runValidators: true              // valida antes de atualizar
             });
         
-            return user
+            return { sucess: true };
 
         } catch (err) {
-            return { err };
+            return { sucess: false, err };
         }   
     }
 
@@ -85,7 +85,7 @@ class User {
         
             return users
         } catch (err) {
-            return { err };
+            return { sucess: false, err };
         }
     }
 
@@ -93,9 +93,9 @@ class User {
         try {
             const user = await UserModel.findByIdAndRemove(id);
 
-            return user
+            return { sucess: true };
         } catch (err) {
-            return { err };
+            return { sucess: false, err };
         }
     }
 
@@ -109,7 +109,7 @@ class User {
             return true
 
         } catch (err) {
-            console.log(err)
+            return { sucess: false, err };
         }
     }
 }

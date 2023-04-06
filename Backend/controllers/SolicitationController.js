@@ -43,9 +43,9 @@ class SolicitationController{
         const status = req.body.status;
 
         if (status === "pending" || status === "accept" || status === "reject" || status === "progress" ){
-            const solicitation = await Solicitation.update(id, status);
+            const result = await Solicitation.update(id, status);
 
-            if (solicitation){
+            if (result.sucess){
                 res.status(200).json({ msg: "Solicitação Atualizada com sucesso" });
                 return;
             } else {
@@ -61,9 +61,9 @@ class SolicitationController{
         const { id } = req.params;
 
         try {
-            const solicitation = await Solicitation.delete(id);
+            const result = await Solicitation.delete(id);
 
-            if (solicitation) {
+            if (result.sucess) {
                 res.status(200).json({ msg: "Solicitação deletada com sucesso!" });
             } else {
                 res.status(404).json({ msg: "Solicitação não encontrado!" });
