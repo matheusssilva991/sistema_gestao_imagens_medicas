@@ -1,9 +1,8 @@
 const bcrypt = require("bcrypt");
-const validator = require("validator");
 const Solicitation = require("../models/Solicitation");
-const User = require("../models/User");
 
 class SolicitationController{
+
     async getSolicitations (req, res) {
         const solicitations = await Solicitation.find();
 
@@ -15,12 +14,18 @@ class SolicitationController{
         const id = req.params.id;
         const solicitations = await Solicitation.find({ _id: id });
 
-        res.status(200).json(solicitations[0]);
-        return
+        if (solicitations[0]){
+            res.status(200).json(solicitations[0]);
+            return
+
+        } else {
+            res.status(404).json({ err: "Solicitação não encontrado" });
+            return;
+        }
     }
 
     async newSolicitation (req, res) {
-        let { type, status, data } = req.body
+        let { type, data } = req.body
 
         if (type === 'newUser') {
             const { password } = data;
@@ -30,47 +35,60 @@ class SolicitationController{
             data['password'] = passwordCripted;
         } 
 
-        const result = await Solicitation.create(type, status, data);
+        const result = await Solicitation.create(type, "pending" , data);
         
         if (result.sucess) {
-            res.status(201).json({ msg: "Solicitação criado com sucesso!.", result });
+            res.status(201).json({ msg: "Solicitação criado com sucesso!." });
             return
+
+        } else {
+            res.status(400).json({ err: "Erro ao cadastrar." });
+            return;
         }
     }
 
     async updateSolicitation (req, res) {
         const id = req.params.id;
         const status = req.body.status;
+        const solicitation = await Solicitation.find({ _id: id });
 
-        if (status === "pending" || status === "accept" || status === "reject" || status === "progress" ){
-            const result = await Solicitation.update(id, status);
-
-            if (result.sucess){
+        if (solicitation[0]) {
+            if (status === "pending" || status === "accept" || status === "reject" ){
+                await Solicitation.update(id, status);
+    
                 res.status(200).json({ msg: "Solicitação Atualizada com sucesso" });
                 return;
+                
             } else {
-                res.status(404).json({ err: "Solicitação Não encontrada" });
-                return
+                res.status(400).json({ err: "Tipo de status invalido!." });
+                return;
             }
+
         } else {
-            res.status(400).json({ err: "Tipo de status invalido!." });
-        }
+            res.status(404).json({ err: "Solicitação Não encontrada" });
+            return
+        }   
     }
 
     async deleteSolicitation (req, res) {
         const { id } = req.params;
+        const solicitation = await Solicitation.find({ _id: id });
 
-        try {
-            const result = await Solicitation.delete(id);
-
-            if (result.sucess) {
+        if (solicitation[0]) {
+            try {
+                await Solicitation.delete(id);
+    
                 res.status(200).json({ msg: "Solicitação deletada com sucesso!" });
-            } else {
-                res.status(404).json({ msg: "Solicitação não encontrado!" });
+                return;
+
+            } catch (err) {
+                res.status(400).json({ msg: "Erro ao deletar!." });
             }
-        } catch (error) {
-            res.status(400).json({ msg: "Erro ao deletar!." });
-        }
+
+        } else {
+            res.status(404).json({ err: "Solicitação Não encontrada" });
+            return
+        }   
     }
 }
 

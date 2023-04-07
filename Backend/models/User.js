@@ -41,17 +41,16 @@ const UserModel = mongoose.model('User', userSchema)
 
 class User {
     
-    async create (name, email, password, institution, country, city, lattes, role){
+    async create (name, email, password, institution, country, city, lattes, role) {
         let user;
 
-        try {
-            if (lattes) 
-                user = new UserModel({name, email, password, institution, country, city, lattes, role})
-            else 
-                user = new UserModel({name, email, password, institution, country, city, role})
+        if (lattes) 
+            user = new UserModel({name, email, password, institution, country, city, lattes, role})
+        else 
+            user = new UserModel({name, email, password, institution, country, city, role})
             
+        try {
             await user.save();
-
             return { sucess: true };
 
         } catch (err) {
@@ -59,21 +58,16 @@ class User {
         }
     }
 
-    async update(id, name, email, password, institution, country, city, lattes, role){
-        try {
-            let user;
-            let data = { name, email, password, institution, country, city, lattes, role }
+    async update(id, name, email, password, institution, country, city, lattes, role) {
 
-            if (!lattes)
-                delete data.lattes;
-
-            user = await UserModel.findByIdAndUpdate(id, data, {
-                new: true,                       // retorne o doc atualizado
-                runValidators: true              // valida antes de atualizar
-            });
+        let data = { name, email, password, institution, country, city, lattes, role }
         
-            return { sucess: true };
+        if (!lattes)
+            delete data.lattes;
 
+        try {
+            await UserModel.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+            return;
         } catch (err) {
             return { sucess: false, err };
         }   
@@ -82,8 +76,8 @@ class User {
     async find (queryParams={}){
         try {
             const users = await UserModel.find(queryParams);
-        
             return users
+
         } catch (err) {
             return { sucess: false, err };
         }
@@ -91,9 +85,9 @@ class User {
 
     async delete (id) {
         try {
-            const user = await UserModel.findByIdAndRemove(id);
-
-            return { sucess: true };
+            await UserModel.findByIdAndRemove(id);
+            return;
+            
         } catch (err) {
             return { sucess: false, err };
         }
@@ -101,7 +95,8 @@ class User {
 
     async emailExists (email) {
         try {
-            const user = await UserModel.find({ email });
+            const re = new RegExp(email, "i");
+            const user = await UserModel.find({ "email": re });
 
             if (user.length == 0)
                 return false

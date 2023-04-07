@@ -33,13 +33,10 @@ const DatabaseModel = mongoose.model('Database', databaseSchema)
 
 class Database {
     async create (name, examType, description, imageQuality, imageType, sourceLink){
-        let database;
+        const database = new DatabaseModel({ name, examType, description, imageQuality, imageType, sourceLink })
 
         try {
-            database = new DatabaseModel({ name, examType, description, imageQuality, imageType, sourceLink })
-            
             await database.save();
-
             return { sucess: true };
 
         } catch (err) {
@@ -48,16 +45,11 @@ class Database {
     }
 
     async update(id, name, examType, description, imageQuality, imageType, sourceLink){
-        try {
-            let database;
-            let data = { name, examType, description, imageQuality, imageType, sourceLink }
+        const data = { name, examType, description, imageQuality, imageType, sourceLink }
 
-            database = await DatabaseModel.findByIdAndUpdate(id, data, {
-                new: true,                       // retorne o doc atualizado
-                runValidators: true              // valida antes de atualizar
-            });
-        
-            return { sucess: true };
+        try {
+            await DatabaseModel.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+            return;
 
         } catch (err) {
             return { sucess: false, err };
@@ -76,9 +68,9 @@ class Database {
 
     async delete (id) {
         try {
-            const database = await DatabaseModel.findByIdAndRemove(id);
+            await DatabaseModel.findByIdAndRemove(id);
+            return;
 
-            return { sucess: true };
         } catch (err) {
             return { sucess: false, err };
         }
@@ -86,7 +78,8 @@ class Database {
 
     async databaseExists (name) {
         try {
-            const database = await DatabaseModel.find({ "name": name });
+            const re = new RegExp(name, "i");
+            const database = await DatabaseModel.find({ "name": re });
 
             if (database.length === 0){
                 return false

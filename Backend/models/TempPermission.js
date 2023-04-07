@@ -6,10 +6,6 @@ const tempPermissionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    solicitationId: {
-        type: String,
-        required: true
-    },
     used: {
         type: Boolean,
         required: true
@@ -19,25 +15,23 @@ const tempPermissionSchema = new mongoose.Schema({
 const TempPermissionModel = mongoose.model("TempPermission", tempPermissionSchema);
 
 class TempPermission {
-    async create (userId, solicitationId){
-        let tempPermission;
+    async create (userId){
+        const tempPermission = new TempPermissionModel({userId, used: false});
 
         try {
-            tempPermission = new TempPermissionModel({userId, solicitationId, used: false});
-
             await tempPermission.save();
-
             return { sucess: true };
+
         } catch (err) {
-            return { sucess: false, err: err };
+            return { sucess: false, err };
         }
     }
     
     async find (queryParams) {
         try {
             const tempPermission = await TempPermissionModel.find(queryParams);
-        
             return tempPermission;
+
         } catch (err) {
             return { sucess: false, err };
         }
@@ -46,25 +40,19 @@ class TempPermission {
 
     async update (id, used) {
         try {
-            let data = { used }
-
-            const _ = await TempPermissionModel.findByIdAndUpdate(id, data, {
-                new: true,                       // retorne o doc atualizado
-                runValidators: true              // valida antes de atualizar);
-            });
-
-            return { sucess: true };
+            await TempPermissionModel.findByIdAndUpdate(id, { used }, { runValidators: true });
+            return;
 
         } catch (err) {
-            return { sucess: false, err: err };
+            return { sucess: false, err };
         }
     }
 
     async delete (id) {
         try {
-            const _ = await TempPermissionModel.findByIdAndRemove(id);
+            await TempPermissionModel.findByIdAndRemove(id);
+            return;
 
-            return { sucess: true };
         } catch (err) {
             return { sucess: false, err };
         }

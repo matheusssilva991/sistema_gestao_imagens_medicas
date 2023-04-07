@@ -6,6 +6,8 @@ const UserController = require("../controllers/UserController");
 const SolicitationController = require("../controllers/SolicitationController");
 const DatabaseController = require("../controllers/DatabaseController");
 const TempPermissionController = require("../controllers/TempPermissionController");
+const ImageController = require("../controllers/ImageController");
+const ImageTypeController = require("../controllers/ImageTypeController");
 
 const Auth = require("../middlewares/Auth");
 const CheckFields = require("../middlewares/CheckFields");
@@ -38,6 +40,17 @@ router.get('/temp-permissions/:id', Auth.loginAuth, TempPermissionController.get
 router.post('/temp-permissions', Auth.adminAuth, TempPermissionController.newTempPermission);
 router.put('/temp-permissions/:id', Auth.loginAuth, TempPermissionController.updateTempPermission);
 router.delete('/temp-permissions/:id', Auth.loginAuth, TempPermissionController.deleteTempPermission);
+
+// Tipos de imagens
+router.get('/images-types', Auth.adminAuth, ImageTypeController.getImagesTypes);
+router.get('/images-types/:id', Auth.adminAuth, ImageTypeController.getImageType);
+router.post('/images-types', Auth.adminAuth, CheckFields.checkEmptyFields, ImageTypeController.newImageType);
+router.put('/images-types/:id', Auth.adminAuth, CheckFields.checkEmptyFields, ImageTypeController.updateImageType);
+router.delete('/images-types/:id', Auth.adminAuth, ImageTypeController.deleteImageType);
+
+// Imagens
+router.get('/images', Auth.loginAuth, ImageController.getImages);
+router.get('/images/:id', Auth.loginAuth, ImageController.getImage);
  */
 
 // Usuários
@@ -68,5 +81,16 @@ router.get('/temp-permissions/:id', TempPermissionController.getTempPermission);
 router.post('/temp-permissions', TempPermissionController.newTempPermission);
 router.put('/temp-permissions/:id', TempPermissionController.updateTempPermission);
 router.delete('/temp-permissions/:id', TempPermissionController.deleteTempPermission);
+
+// Tipos de imagens
+router.get('/images-types', ImageTypeController.getImagesTypes);
+router.get('/images-types/:id', ImageTypeController.getImageType);
+router.post('/images-types', CheckFields.checkEmptyFields, ImageTypeController.newImageType);
+router.put('/images-types/:id', CheckFields.checkEmptyFields, ImageTypeController.updateImageType);
+router.delete('/images-types/:id', ImageTypeController.deleteImageType);
+
+// Imagens
+router.get('/images', ImageController.getImages);
+router.get('/images/:id', ImageController.getImage);
 
 module.exports = router;
