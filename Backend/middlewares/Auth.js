@@ -1,5 +1,4 @@
 const User = require("../models/User");
-const TempPermission = require("../models/TempPermission");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config()
 
@@ -22,12 +21,12 @@ module.exports = {
                     return;  
                 }
             } catch (err) {
-                res.status(403).send("Você não está autenticado1");
+                res.status(403).send("Token inválido!..");
                 return;            
             }
             
         } else {
-            res.status(403).send("Você não está autenticado2");
+            res.status(403).send("Você não está autenticado");
             return; 
         }
     },
@@ -38,12 +37,13 @@ module.exports = {
         if (authToken != undefined){
             const bearer = authToken.split(" ");
             const token = bearer[1];
+            const secret = process.env.SECRET;
 
             try {
                 const decoded = jwt.verify(token, secret);
                 next();
             } catch (err) {
-                res.status(403).send("Você não está autenticado");
+                res.status(403).send("Token inválido!.");
                 return;            
             }
             
@@ -59,12 +59,12 @@ module.exports = {
         if (authToken != undefined){
             const bearer = authToken.split(" ");
             const token = bearer[1];
+            const secret = process.env.SECRET;
 
             try {
                 const decoded = jwt.verify(token, secret);
-                const tmpPermission = TempPermission.find({ userId: decoded.id, used: false });
 
-                if (decoded.role == 1 || tmpPermission.length > 0){
+                if (decoded.role == 1 || decoded.temporaryPermission){
                     next();
                 } else{
                     res.status(403).send("Você não tem permissão para isso!");

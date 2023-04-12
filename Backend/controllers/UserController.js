@@ -27,7 +27,9 @@ class UserController {
     }
 
     async newUser (req, res) {
-        const { name, email, password, institution, country, city, lattes } = req.body;
+        let { name, email, password, institution, country, city, lattes, role } = req.body;
+
+        role = role || 0;
 
         if (!await User.emailExists(email)) {
             
@@ -38,7 +40,7 @@ class UserController {
                 passwordCripted = await bcrypt.hash(password, salt)
             }
             
-            const result = await User.create(name, email, passwordCripted, institution, country, city, lattes, 0);
+            const result = await User.create(name, email, passwordCripted, institution, country, city, lattes, role);
         
             if (result.sucess) {
                 res.status(201).json({ msg: "Usuário criado com sucesso!." });
@@ -56,8 +58,10 @@ class UserController {
 
     async updateUser(req, res) {
         const id = req.params.id;
-        const { name, email, password, institution, country, city, lattes, role } = req.body;
+        let { name, email, password, institution, country, city, lattes, role, temporaryPermission } = req.body;
         const user = await User.find({ _id: id })
+
+        temporaryPermission = temporaryPermission || false;
 
         if (!user[0]){
             res.status(404).json({ err: "Usuário não encontrado!" });
@@ -74,7 +78,8 @@ class UserController {
                 passwordCripted = await bcrypt.hash(password, salt)
             }
 
-            await User.update(id, name, email, passwordCripted, institution, country, city, lattes, role)
+            await User.update(id, name, email, passwordCripted, institution, country, city, lattes, role,
+                              temporaryPermission)
 
             res.status(200).json({ msg: "Usuário atualizado com sucesso!" });
             return;
@@ -115,7 +120,8 @@ class UserController {
             const result = await bcrypt.compare(password, user.password);             
             
             if (result){
-                const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, secret);
+                const token = jwt.sign({ id: user._id, email: user.email, role: user.role, 
+                    temporaryPermission: user.temporaryPermission }, secret);
 
                 res.status(200).json({ token: token });
 

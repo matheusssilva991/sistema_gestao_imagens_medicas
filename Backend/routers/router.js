@@ -5,14 +5,12 @@ const router = express.Router();
 const UserController = require("../controllers/UserController");
 const SolicitationController = require("../controllers/SolicitationController");
 const DatabaseController = require("../controllers/DatabaseController");
-const TempPermissionController = require("../controllers/TempPermissionController");
-const ImageController = require("../controllers/ImageController");
 const ImageTypeController = require("../controllers/ImageTypeController");
 
 const Auth = require("../middlewares/Auth");
 const CheckFields = require("../middlewares/CheckFields");
 
-/* // Usuários
+// Usuários
 router.get('/users', Auth.adminAuth, UserController.getUsers);
 router.get('/users/:id', Auth.loginAuth, UserController.getUser);
 router.post('/users', Auth.adminAuth, CheckFields.checkUserFields, UserController.newUser);
@@ -21,8 +19,8 @@ router.delete('/users/:id', Auth.adminAuth, UserController.deleteUser);
 router.post('/login', UserController.login);
 
 // Solicitações
-router.get('/solicitations', Auth.loginAuth, SolicitationController.getSolicitations);
-router.get('/solicitations/:id', Auth.loginAuth, SolicitationController.getSolicitation);
+router.get('/solicitations', Auth.adminAuth, SolicitationController.getSolicitations);
+router.get('/solicitations/:id', Auth.adminAuth, SolicitationController.getSolicitation);
 router.post('/solicitations', CheckFields.checkSolicitationFields, SolicitationController.newSolicitation);
 router.put('/solicitations/:id', Auth.adminAuth, SolicitationController.updateSolicitation);
 router.delete('/solicitations/:id', Auth.adminAuth, SolicitationController.deleteSolicitation);
@@ -34,31 +32,19 @@ router.post('/databases', Auth.insertDbAuth, CheckFields.checkEmptyFields, Datab
 router.put('/databases/:id', Auth.adminAuth, CheckFields.checkEmptyFields, DatabaseController.updateDatabase);
 router.delete('/databases/:id',Auth.adminAuth, DatabaseController.deleteDatabase);
 
-// Permissões Temporarias
-router.get('/temp-permissions', Auth.loginAuth, TempPermissionController.getTempPermissions);
-router.get('/temp-permissions/:id', Auth.loginAuth, TempPermissionController.getTempPermission);
-router.post('/temp-permissions', Auth.adminAuth, TempPermissionController.newTempPermission);
-router.put('/temp-permissions/:id', Auth.loginAuth, TempPermissionController.updateTempPermission);
-router.delete('/temp-permissions/:id', Auth.loginAuth, TempPermissionController.deleteTempPermission);
-
 // Tipos de imagens
-router.get('/images-types', Auth.adminAuth, ImageTypeController.getImagesTypes);
-router.get('/images-types/:id', Auth.adminAuth, ImageTypeController.getImageType);
+router.get('/images-types', Auth.loginAuth, ImageTypeController.getImagesTypes);
+router.get('/images-types/:id', Auth.loginAuth, ImageTypeController.getImageType);
 router.post('/images-types', Auth.adminAuth, CheckFields.checkEmptyFields, ImageTypeController.newImageType);
 router.put('/images-types/:id', Auth.adminAuth, CheckFields.checkEmptyFields, ImageTypeController.updateImageType);
 router.delete('/images-types/:id', Auth.adminAuth, ImageTypeController.deleteImageType);
 
-// Imagens
-router.get('/images', Auth.loginAuth, ImageController.getImages);
-router.get('/images/:id', Auth.loginAuth, ImageController.getImage);
- */
-
-// Usuários
-router.get('/users', UserController.getUsers);
+/* // Usuários
+router.get('/users', UserController.getUsers); // Pegar dados
 router.get('/users/:id', UserController.getUser);
-router.post('/users', CheckFields.checkUserFields, UserController.newUser);
-router.put('/users/:id', CheckFields.checkUserFields, UserController.updateUser);
-router.delete('/users/:id', UserController.deleteUser);
+router.post('/users', CheckFields.checkUserFields, UserController.newUser); // Enviar Dados
+router.put('/users/:id', CheckFields.checkUserFields, UserController.updateUser); // Atualizar
+router.delete('/users/:id', UserController.deleteUser); // Deletar
 router.post('/login', UserController.login);
 
 // Solicitações
@@ -75,22 +61,12 @@ router.post('/databases', CheckFields.checkEmptyFields, DatabaseController.newDa
 router.put('/databases/:id', CheckFields.checkEmptyFields, DatabaseController.updateDatabase);
 router.delete('/databases/:id', DatabaseController.deleteDatabase);
 
-// Permissões Temporarias
-router.get('/temp-permissions', TempPermissionController.getTempPermissions);
-router.get('/temp-permissions/:id', TempPermissionController.getTempPermission);
-router.post('/temp-permissions', TempPermissionController.newTempPermission);
-router.put('/temp-permissions/:id', TempPermissionController.updateTempPermission);
-router.delete('/temp-permissions/:id', TempPermissionController.deleteTempPermission);
-
 // Tipos de imagens
 router.get('/images-types', ImageTypeController.getImagesTypes);
 router.get('/images-types/:id', ImageTypeController.getImageType);
 router.post('/images-types', CheckFields.checkEmptyFields, ImageTypeController.newImageType);
 router.put('/images-types/:id', CheckFields.checkEmptyFields, ImageTypeController.updateImageType);
 router.delete('/images-types/:id', ImageTypeController.deleteImageType);
-
-// Imagens
-router.get('/images', ImageController.getImages);
-router.get('/images/:id', ImageController.getImage);
+ */
 
 module.exports = router;

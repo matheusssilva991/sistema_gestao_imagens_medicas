@@ -25,15 +25,18 @@ const databaseSchema = new mongoose.Schema({
     sourceLink: {
         type: String,
         required: true
-    }
-    
+    },
+    images: {
+        type: Array,
+        default: []
+    }  
 })
 
 const DatabaseModel = mongoose.model('Database', databaseSchema)
 
 class Database {
     async create (name, examType, description, imageQuality, imageType, sourceLink){
-        const database = new DatabaseModel({ name, examType, description, imageQuality, imageType, sourceLink })
+        const database = new DatabaseModel({ "name": name.toLowerCase(), examType, description, imageQuality, imageType, sourceLink })
 
         try {
             await database.save();
@@ -78,8 +81,7 @@ class Database {
 
     async databaseExists (name) {
         try {
-            const re = new RegExp(name, "i");
-            const database = await DatabaseModel.find({ "name": re });
+            const database = await DatabaseModel.find({ "name": name.toLowerCase() });
 
             if (database.length === 0){
                 return false

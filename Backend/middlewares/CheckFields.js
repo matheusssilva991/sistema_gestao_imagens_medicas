@@ -20,7 +20,7 @@ module.exports =  {
     }, 
 
     async checkUserFields(req, res, next){
-        const { name, email, password, institution, country, city, lattes } = req.body;
+        const { name, email, password, institution, country, city } = req.body;
 
         if (!validator.isEmail(email)){
             res.status(400).json({ err: "O e-mail é invalido!" });
@@ -45,7 +45,7 @@ module.exports =  {
     },
 
     async checkSolicitationFields(req, res, next){
-        const { type, data } = req.body;
+        let { type, data } = req.body;
         let tmp = { type };
 
         if (type === 'newUser' ){

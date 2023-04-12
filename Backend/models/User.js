@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
     role: {
         type: Number,
         required: true
+    },
+    temporaryPermission: {
+        type: Boolean,
+        default: false
     }
 })
 
@@ -41,7 +45,7 @@ const UserModel = mongoose.model('User', userSchema)
 
 class User {
     
-    async create (name, email, password, institution, country, city, lattes, role) {
+    async create (name, email, password, institution, country, city, lattes, role=0) {
         let user;
 
         if (lattes) 
@@ -58,9 +62,9 @@ class User {
         }
     }
 
-    async update(id, name, email, password, institution, country, city, lattes, role) {
+    async update(id, name, email, password, institution, country, city, lattes, role, temporaryPermission=false ) {
 
-        let data = { name, email, password, institution, country, city, lattes, role }
+        let data = { name, email, password, institution, country, city, lattes, role, temporaryPermission }
         
         if (!lattes)
             delete data.lattes;
@@ -95,8 +99,7 @@ class User {
 
     async emailExists (email) {
         try {
-            const re = new RegExp(email, "i");
-            const user = await UserModel.find({ "email": re });
+            const user = await UserModel.find({ email });
 
             if (user.length == 0)
                 return false

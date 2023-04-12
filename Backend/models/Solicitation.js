@@ -25,6 +25,9 @@ const SolicitationModel = mongoose.model('Solicitation', solicitationSchema)
 class Solicitation {
     
     async create (type, status, data){
+        if (type === 'newDatabase')
+            data.name = data.name.toLowerCase()
+
         const solicitation = new SolicitationModel({type, status, data});
 
         try {
@@ -68,8 +71,7 @@ class Solicitation {
 
     async solicitationDatabaseExists (name) {
         try {
-            const re = new RegExp(name, "i");
-            const solicitation = await SolicitationModel.find({ "data.name": re, status: "pending" });
+            const solicitation = await SolicitationModel.find({ "data.name": name.toLowerCase(), status: "pending" });
 
             if (solicitation.length === 0){
                 return false
@@ -84,8 +86,7 @@ class Solicitation {
 
     async solicitationEmailExists (email) {
         try {
-            const re = new RegExp(email, "i");
-            const solicitation = await SolicitationModel.find({ "data.email": re, status: "pending" });
+            const solicitation = await SolicitationModel.find({ "data.email": email, status: "pending" });
 
             if (solicitation.length === 0){
                 return false
