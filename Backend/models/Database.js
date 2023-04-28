@@ -1,4 +1,4 @@
-const connection = require("../database/Connection");
+const connection = require("../databases/Connection");
 const mongoose = require("mongoose");
 
 const databaseSchema = new mongoose.Schema({
@@ -79,19 +79,12 @@ class Database {
         }
     }
 
-    async databaseExists (name) {
-        try {
-            const database = await DatabaseModel.find({ "name": name.toLowerCase() });
+    async databaseExists(name) {
+        const database = await this.find({ "name": name.toLowerCase() });
 
-            if (database.length === 0){
-                return false
-            }
-
-            return true
-
-        } catch (err) {
-            return { sucess: false, err };
-        }
+        if (database.length === 0)
+            return false;
+        return true;
     }
 }
 

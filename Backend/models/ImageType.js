@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const connection = require("../database/Connection");
+const connection = require("../databases/Connection");
 
 const imageTypeSchema = new mongoose.Schema({
     name: {
