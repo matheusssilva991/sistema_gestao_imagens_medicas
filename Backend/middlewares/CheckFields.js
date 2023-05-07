@@ -15,7 +15,6 @@ module.exports =  {
                 }
             }
         }
-      
         next();
     }, 
 
@@ -67,7 +66,7 @@ module.exports =  {
             }
             
             if (!validator.isStrongPassword(password, { returnScore: false })){
-                res.status(400).json({ err: "A senha é invalida!" });
+                res.status(400).json({ err: "A senha é fraca!" });
                 return;
             }
 

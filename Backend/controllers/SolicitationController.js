@@ -5,6 +5,16 @@ class SolicitationController{
 
     async getSolicitations (req, res) {
         const solicitations = await Solicitation.find();
+        let filteredSolicitations = [];
+
+        for (let solicitation of solicitations) {
+            let { data, ...resultObject } = solicitation._doc;
+
+            delete data.password;
+            resultObject.data = data
+
+            filteredSolicitations.push(resultObject);
+        }
 
         res.status(200).json(solicitations);
         return
@@ -15,6 +25,9 @@ class SolicitationController{
         const solicitations = await Solicitation.find({ _id: id });
 
         if (solicitations[0]){
+            solicitations[0] = solicitations[0]._doc;
+            delete solicitations[0].data.password;
+
             res.status(200).json(solicitations[0]);
             return
 
@@ -53,7 +66,7 @@ class SolicitationController{
         const solicitation = await Solicitation.find({ _id: id });
 
         if (solicitation[0]) {
-            if (status === "pending" || status === "accept" || status === "reject" ){
+            if (status === "pending" || status === "accepted" || status === "rejected" ){
                 await Solicitation.update(id, status);
     
                 res.status(200).json({ msg: "Solicitação Atualizada com sucesso" });

@@ -34,10 +34,6 @@ const userSchema = new mongoose.Schema({
     role: {
         type: Number,
         required: true
-    },
-    temporaryPermission: {
-        type: Boolean,
-        default: false
     }
 })
 
@@ -62,9 +58,9 @@ class User {
         }
     }
 
-    async update(id, name, email, password, institution, country, city, lattes, role, temporaryPermission=false ) {
+    async update(id, name, email, password, institution, country, city, lattes, role ) {
 
-        let data = { name, email, password, institution, country, city, lattes, role, temporaryPermission }
+        let data = { name, email, password, institution, country, city, lattes, role }
         
         if (!lattes)
             delete data.lattes;

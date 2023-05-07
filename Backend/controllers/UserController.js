@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Solicitation = require("../models/Solicitation");
+const AuthToken = require("../models/AuthToken");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const dotenv = require("dotenv").config();
@@ -7,9 +9,15 @@ const jwt = require("jsonwebtoken");
 class UserController {
     async getUsers (req, res) {
         const users = await User.find();
+        let filteredUsers = [];
 
-        res.status(200).json(users);
-        return
+        for (let user of users) {
+            let { password, ...resultObject } = user._doc;
+            filteredUsers.push(resultObject);
+        }
+        
+        res.status(200).json(filteredUsers);
+        return;
     }
 
     async getUser (req, res) {
@@ -17,7 +25,8 @@ class UserController {
         const user = await User.find({_id: id });
 
         if (user[0]){
-            res.status(200).json(user[0]);
+            let { password, ...resultObject } = user[0]._doc;
+            res.status(200).json(resultObject);
             return;
 
         } else {
@@ -27,8 +36,18 @@ class UserController {
     }
 
     async newUser (req, res) {
-        let { name, email, password, institution, country, city, lattes, role } = req.body;
+        const { idSolicitation } = req.body;
+        const solicitation = await Solicitation.find({ _id: idSolicitation });
 
+        if (solicitation[0].type != 'newUser'){
+            res.status(400).json({ err: "Tipo de solicitação incorreto." });
+            return;
+        }  else if (solicitation[0].status === 'accepted' || solicitation[0].status === 'rejected'){
+            res.status(403).json({ err: "Solicitação inválida!" });
+            return;
+        } 
+
+        let { name, email, password, institution, country, city, lattes, role } = solicitation[0].data;
         role = role || 0;
 
         if (!await User.emailExists(email)) {
@@ -44,6 +63,7 @@ class UserController {
         
             if (result.sucess) {
                 res.status(201).json({ msg: "Usuário criado com sucesso!." });
+                await Solicitation.update(idSolicitation, "accepted");
                 return;
             } else {
                 res.status(400).json({ err: "Erro ao cadastrar." });
@@ -58,10 +78,8 @@ class UserController {
 
     async updateUser(req, res) {
         const id = req.params.id;
-        let { name, email, password, institution, country, city, lattes, role, temporaryPermission } = req.body;
+        let { name, email, password, institution, country, city, lattes, role} = req.body;
         const user = await User.find({ _id: id })
-
-        temporaryPermission = temporaryPermission || false;
 
         if (!user[0]){
             res.status(404).json({ err: "Usuário não encontrado!" });
@@ -78,8 +96,7 @@ class UserController {
                 passwordCripted = await bcrypt.hash(password, salt)
             }
 
-            await User.update(id, name, email, passwordCripted, institution, country, city, lattes, role,
-                              temporaryPermission)
+            await User.update(id, name, email, passwordCripted, institution, country, city, lattes, role)
 
             res.status(200).json({ msg: "Usuário atualizado com sucesso!" });
             return;
@@ -120,16 +137,41 @@ class UserController {
             const result = await bcrypt.compare(password, user.password);             
             
             if (result){
-                const token = jwt.sign({ id: user._id, email: user.email, role: user.role, 
-                    temporaryPermission: user.temporaryPermission }, secret);
+                const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, secret, 
+                                       { expiresIn: 3600 });
 
-                res.status(200).json({ token: token });
+                const resultToken = await AuthToken.create(token);
+
+                if (resultToken.sucess)
+                    res.status(200).json({ token: token });
+                else
+                    res.status(400).json({ err: "Erro na criação do token"});
 
             } else 
                 res.status(406).json({ err: "Senha incorreta" }); 
 
         } else 
             res.status(403).json({ err: "O usuário não existe!" });
+    }
+
+    async logout (req, res) {
+        let token = req.headers['authorization'].split(" ")[1];
+        const authToken = await AuthToken.find(token);
+
+        if (authToken[0] == undefined) {
+            res.status(404).json({ err: "Token não encontrado!" });
+            return;
+        }
+
+        try {
+            await AuthToken.delete(authToken[0]._id);
+            res.status(200).json({ msg: "Logout realizado com sucesso!" });
+            return;
+
+        } catch (error) {
+            res.status(400).json({ msg: "Erro ao deslogar!." });
+            return;
+        }
     }
 }
 
