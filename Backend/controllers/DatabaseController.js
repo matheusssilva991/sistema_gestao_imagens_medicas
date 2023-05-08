@@ -23,6 +23,47 @@ class DatabaseController {
         }
     }
 
+    async getImages (req, res) {
+        const databases = await DatabaseModel.find();
+        let images = []
+
+        for (let database in databases) {
+            let imagesCC = database.images.filter(image => image.orientation == 'CC');
+            let imagesMLO = database.images.filter(image => image.orientation == 'MLO');
+
+            imagesCC = imagesCC.slice(0, 10);
+            imagesMLO = imagesMLO.slice(0, 10);
+            images = images.concat(imagesCC, imagesMLO);
+        }
+
+        // Usar sharp para miniaturizar(redemensionar) as imagens
+
+        res.status(200).json(images);
+        return
+    }
+
+    async getDatabaseImages (req, res) {
+        const databaseName = req.params.databaseName;
+        const database = await DatabaseModel.find({ name:databaseName });
+        let images = []
+
+        if (database[0]) {
+            let imagesCC = database[0].images.filter(image => image.orientation == 'CC');
+            let imagesMLO = database[0].images.filter(image => image.orientation == 'MLO');
+
+            imagesCC = imagesCC.slice(0, 10);
+            imagesMLO = imagesMLO.slice(0, 10);
+            images = images.concat(imagesCC, imagesMLO);
+
+            res.status(200).json(images);
+            return
+
+        } else {
+            res.status(404).json({ err: "Banco de dados não encontrado" });
+            return;
+        }
+    }
+
     async newDatabase (req, res) {
         const { name, examType, description, imageQuality, imageType, sourceLink } = req.body;
 

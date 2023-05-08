@@ -63,5 +63,39 @@ module.exports = {
             res.status(403).send("Você não está autenticado");
             return; 
         }
+    },
+
+    async authDbSolicitation (req, res, next) {
+        let { type } = req.body;
+        
+        if (type === 'newDatabase'){
+            const authToken = req.headers['authorization'];
+
+            if (authToken != undefined){
+                const token = authToken.split(" ")[1];
+                const secret = process.env.SECRET;
+    
+                try {
+                    const decoded = jwt.verify(token, secret);
+                    const tokenDatabase = await AuthToken.find(token);
+    
+                    if (tokenDatabase[0] === undefined){
+                        res.status(403).send("Token inválido, não existe na base de dados!");
+                        return; 
+                    }
+    
+                    next();
+                } catch (err) {
+                    res.status(403).send("Token inválido!.");
+                    return;            
+                }
+                
+            } else {
+                res.status(403).send("Você não está autenticado");
+                return; 
+            }
+
+        } else 
+            next ();    
     }
 }
