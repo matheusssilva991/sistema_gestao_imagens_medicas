@@ -1,6 +1,6 @@
 const validator = require("validator");
-const Solicitation = require("../models/Solicitation");
-const Database = require("../models/Database");
+const SolicitationService = require("../services/SolicitationService");
+const DatabaseService = require("../services/DatabaseService");
 const User = require("../models/User");
 
 module.exports =  {
@@ -60,7 +60,7 @@ module.exports =  {
                 return;
             }
 
-            if (await Solicitation.solicitationEmailExists(email)) {
+            if (await SolicitationService.solicitationEmailExists(email)) {
                 res.status(403).json({ err: "Já existe solicitação de cadastro com esse e-mail!" });
                 return;
             }
@@ -75,12 +75,12 @@ module.exports =  {
         } else if (type === 'newDatabase') {
             const { name, description, sourceLink } = data
 
-            if (await Solicitation.solicitationDatabaseExists(name)) {
+            if (await SolicitationService.solicitationDatabaseExists(name)) {
                 res.status(403).json({ err: "Já existe solicitação para esse banco de dados!" });
                 return;
             }
 
-            if (await Database.DatabaseExists(name)) {
+            if (await DatabaseService.DatabaseExists(name)) {
                 res.status(403).json({ err: "Já existe um banco de dados cadastrado com esse nome!" });
                 return;
             }

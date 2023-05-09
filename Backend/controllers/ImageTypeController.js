@@ -1,9 +1,9 @@
-const ImageType = require("../models/ImageType");
+const ImageTypeService = require("../services/ImageTypeService");
 
 class ImageTypeController {
 
     async getImagesTypes (req, res) {
-        const imagesTypes = await ImageType.find();
+        const imagesTypes = await ImageTypeService.find();
 
         res.status(200).json(imagesTypes);
         return
@@ -11,7 +11,7 @@ class ImageTypeController {
 
     async getImageType (req, res) {
         const id = req.params.id;
-        const imageType = await ImageType.find({ _id: id });
+        const imageType = await ImageTypeService.find({ _id: id });
 
         if (imageType[0]) {
             res.status(200).json(imageType[0]);
@@ -26,8 +26,8 @@ class ImageTypeController {
     async newImageType (req, res) {
         const { name, description, requiredData, optionalData } = req.body;
 
-        if (!await ImageType.imageTypeExists(name)) {
-            const result = await ImageType.create(name, description, requiredData, optionalData);
+        if (!await ImageTypeService.imageTypeExists(name)) {
+            const result = await ImageTypeService.create(name, description, requiredData, optionalData);
 
             if (result.sucess){
                 res.status(201).json({ msg: "Tipo de imagem criado com sucesso!" });
@@ -47,13 +47,13 @@ class ImageTypeController {
     async updateImageType (req, res) {
         const id = req.params.id;
         const { name, description, requiredData, optionalData } = req.body;
-        const imageType = await ImageType.find({ _id: id });
+        const imageType = await ImageTypeService.find({ _id: id });
 
         if (imageType[0]) {
-            const imageTypeExists = await ImageType.imageTypeExists(name);
+            const imageTypeExists = await ImageTypeService.imageTypeExists(name);
 
             if (!imageTypeExists || imageTypeExists && imageType[0].name.toLowerCase() === name.toLowerCase()) {
-                await ImageType.update(id, name, description, requiredData, optionalData);
+                await ImageTypeService.update(id, name, description, requiredData, optionalData);
 
                 res.status(200).json({ msg: "Tipo de imagem atualizado com sucesso" });
                 return;
@@ -71,11 +71,11 @@ class ImageTypeController {
 
     async deleteImageType (req, res) {
         const { id } = req.params;
-        const imageType = await ImageType.find({ _id: id });
+        const imageType = await ImageTypeService.find({ _id: id });
 
         if (imageType[0]) {
             try {
-                await ImageType.delete(id);
+                await ImageTypeService.delete(id);
                 res.status(200).json({ msg: "Tipo de imagem deletado com sucesso!" });
                 return;
     

@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt");
-const Solicitation = require("../models/Solicitation");
+const SolicitationService = require("../services/SolicitationService");
 
 class SolicitationController{
 
     async getSolicitations (req, res) {
-        const solicitations = await Solicitation.find();
+        const solicitations = await SolicitationService.find();
         let filteredSolicitations = [];
 
         for (let solicitation of solicitations) {
@@ -22,7 +22,7 @@ class SolicitationController{
 
     async getSolicitation (req, res) {
         const id = req.params.id;
-        const solicitations = await Solicitation.find({ _id: id });
+        const solicitations = await SolicitationService.find({ _id: id });
 
         if (solicitations[0]){
             solicitations[0] = solicitations[0]._doc;
@@ -48,7 +48,7 @@ class SolicitationController{
             data['password'] = passwordCripted;
         } 
 
-        const result = await Solicitation.create(type, "pending" , data);
+        const result = await SolicitationService.create(type, "pending" , data);
         
         if (result.sucess) {
             res.status(201).json({ msg: "Solicitação criado com sucesso!." });
@@ -63,11 +63,11 @@ class SolicitationController{
     async updateSolicitation (req, res) {
         const id = req.params.id;
         const status = req.body.status;
-        const solicitation = await Solicitation.find({ _id: id });
+        const solicitation = await SolicitationService.find({ _id: id });
 
         if (solicitation[0]) {
             if (status === "pending" || status === "accepted" || status === "rejected" ){
-                await Solicitation.update(id, status);
+                await SolicitationService.update(id, status);
     
                 res.status(200).json({ msg: "Solicitação Atualizada com sucesso" });
                 return;
@@ -85,11 +85,11 @@ class SolicitationController{
 
     async deleteSolicitation (req, res) {
         const { id } = req.params;
-        const solicitation = await Solicitation.find({ _id: id });
+        const solicitation = await SolicitationService.find({ _id: id });
 
         if (solicitation[0]) {
             try {
-                await Solicitation.delete(id);
+                await SolicitationService.delete(id);
     
                 res.status(200).json({ msg: "Solicitação deletada com sucesso!" });
                 return;

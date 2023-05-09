@@ -1,5 +1,4 @@
-const User = require("../models/User");
-const AuthToken = require("../models/AuthToken");
+const AuthTokenService = require("../services/AuthTokenService");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 
@@ -13,7 +12,7 @@ module.exports = {
 
             try {
                 const decoded = jwt.verify(token, secret);
-                const tokenDatabase = await AuthToken.find(token);
+                const tokenDatabase = await AuthTokenService.find(token);
 
                 if (tokenDatabase[0] === undefined){
                     res.status(403).send("Token inválido, não existe na base de dados!");
@@ -46,7 +45,7 @@ module.exports = {
 
             try {
                 const decoded = jwt.verify(token, secret);
-                const tokenDatabase = await AuthToken.find(token);
+                const tokenDatabase = await AuthTokenService.find(token);
 
                 if (tokenDatabase[0] === undefined){
                     res.status(403).send("Token inválido, não existe na base de dados!");
@@ -77,7 +76,7 @@ module.exports = {
     
                 try {
                     const decoded = jwt.verify(token, secret);
-                    const tokenDatabase = await AuthToken.find(token);
+                    const tokenDatabase = await AuthTokenService.find(token);
     
                     if (tokenDatabase[0] === undefined){
                         res.status(403).send("Token inválido, não existe na base de dados!");

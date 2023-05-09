@@ -1,6 +1,7 @@
-const User = require("../models/User");
-const Solicitation = require("../models/Solicitation");
-const AuthToken = require("../models/AuthToken");
+const UserService = require("../services/UserService");
+const SolicitationService = require("../services/SolicitationService");
+const AuthTokenService = require("../services/AuthTokenService");
+
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const dotenv = require("dotenv").config();
@@ -8,7 +9,7 @@ const jwt = require("jsonwebtoken");
 
 class UserController {
     async getUsers (req, res) {
-        const users = await User.find();
+        const users = await UserService.find();
         let filteredUsers = [];
 
         for (let user of users) {
@@ -22,7 +23,7 @@ class UserController {
 
     async getUser (req, res) {
         const id = req.params.id;
-        const user = await User.find({_id: id });
+        const user = await UserService.find({_id: id });
 
         if (user[0]){
             let { password, ...resultObject } = user[0]._doc;
@@ -37,7 +38,7 @@ class UserController {
 
     async newUser (req, res) {
         const { idSolicitation } = req.body;
-        const solicitation = await Solicitation.find({ _id: idSolicitation });
+        const solicitation = await SolicitationService.find({ _id: idSolicitation });
 
         if (solicitation[0].type != 'newUser'){
             res.status(400).json({ err: "Tipo de solicitação incorreto." });
@@ -50,7 +51,7 @@ class UserController {
         let { name, email, password, institution, country, city, lattes, role } = solicitation[0].data;
         role = role || 0;
 
-        if (!await User.emailExists(email)) {
+        if (!await UserService.emailExists(email)) {
             
             let passwordCripted = password;
         
@@ -59,11 +60,11 @@ class UserController {
                 passwordCripted = await bcrypt.hash(password, salt)
             }
             
-            const result = await User.create(name, email, passwordCripted, institution, country, city, lattes, role);
+            const result = await UserService.create(name, email, passwordCripted, institution, country, city, lattes, role);
         
             if (result.sucess) {
                 res.status(201).json({ msg: "Usuário criado com sucesso!." });
-                await Solicitation.update(idSolicitation, "accepted");
+                await SolicitationService.update(idSolicitation, "accepted");
                 return;
             } else {
                 res.status(400).json({ err: "Erro ao cadastrar." });
@@ -79,14 +80,14 @@ class UserController {
     async updateUser(req, res) {
         const id = req.params.id;
         let { name, email, password, institution, country, city, lattes, role} = req.body;
-        const user = await User.find({ _id: id })
+        const user = await UserService.find({ _id: id })
 
         if (!user[0]){
             res.status(404).json({ err: "Usuário não encontrado!" });
             return;
         }
 
-        const emailExists = await User.emailExists(email);
+        const emailExists = await UserService.emailExists(email);
 
         if (!emailExists || emailExists && user[0].email.toLowerCase() === email.toLowerCase()) {
             let passwordCripted = password;
@@ -96,7 +97,7 @@ class UserController {
                 passwordCripted = await bcrypt.hash(password, salt)
             }
 
-            await User.update(id, name, email, passwordCripted, institution, country, city, lattes, role)
+            await UserService.update(id, name, email, passwordCripted, institution, country, city, lattes, role)
 
             res.status(200).json({ msg: "Usuário atualizado com sucesso!" });
             return;
@@ -108,7 +109,7 @@ class UserController {
 
     async deleteUser(req, res) {
         const { id } = req.params;
-        const user = await User.find({ _id: id})
+        const user = await UserService.find({ _id: id})
 
         if (user[0] === undefined){
             res.status(404).json({ err: "Usuário não encontrado!" });
@@ -116,7 +117,7 @@ class UserController {
         }
 
         try {
-            await User.delete(id);
+            await UserService.delete(id);
             res.status(200).json({ msg: "Usuário deletado com sucesso!" });
             return;
 
@@ -130,7 +131,7 @@ class UserController {
         const { email, password } = req.body;
         const secret = process.env.SECRET;
 
-        let user = await User.find({ email });
+        let user = await UserService.find({ email });
         user = user[0];
 
         if (user){
@@ -140,7 +141,7 @@ class UserController {
                 const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, secret, 
                                        { expiresIn: 3600 });
 
-                const resultToken = await AuthToken.create(token);
+                const resultToken = await AuthTokenService.create(token);
 
                 if (resultToken.sucess)
                     res.status(200).json({ token: token });
@@ -156,7 +157,7 @@ class UserController {
 
     async logout (req, res) {
         let token = req.headers['authorization'].split(" ")[1];
-        const authToken = await AuthToken.find(token);
+        const authToken = await AuthTokenService.find(token);
 
         if (authToken[0] == undefined) {
             res.status(404).json({ err: "Token não encontrado!" });
@@ -164,7 +165,7 @@ class UserController {
         }
 
         try {
-            await AuthToken.delete(authToken[0]._id);
+            await AuthTokenService.delete(authToken[0]._id);
             res.status(200).json({ msg: "Logout realizado com sucesso!" });
             return;
 

@@ -1,10 +1,10 @@
-const DatabaseModel = require("../models/Database");
-const ImageType = require("../models/ImageType");
+const DatabaseService = require("../services/DatabaseService");
+const ImageTypeService = require("../services/ImageTypeService");
 
 class DatabaseController {
 
     async getDatabases (req, res) {
-        const databases = await DatabaseModel.find();
+        const databases = await DatabaseService.find();
 
         res.status(200).json(databases);
         return
@@ -12,7 +12,7 @@ class DatabaseController {
 
     async getDatabase (req, res) {
         const id = req.params.id;
-        const databases = await DatabaseModel.find({ _id: id });
+        const databases = await DatabaseService.find({ _id: id });
 
         if (databases[0]){
             res.status(200).json(databases[0]);
@@ -24,7 +24,7 @@ class DatabaseController {
     }
 
     async getImages (req, res) {
-        const databases = await DatabaseModel.find();
+        const databases = await DatabaseService.find();
         let images = []
 
         for (let database in databases) {
@@ -44,7 +44,7 @@ class DatabaseController {
 
     async getDatabaseImages (req, res) {
         const databaseName = req.params.databaseName;
-        const database = await DatabaseModel.find({ name:databaseName });
+        const database = await DatabaseService.find({ name:databaseName });
         let images = []
 
         if (database[0]) {
@@ -67,17 +67,17 @@ class DatabaseController {
     async newDatabase (req, res) {
         const { name, examType, description, imageQuality, imageType, sourceLink } = req.body;
 
-        if(await DatabaseModel.databaseExists(name)){
+        if(await DatabaseService.databaseExists(name)){
             res.status(403).json({ err: "Já existe banco de dados cadastrado com esse nome!" });
             return;
         }
 
-        if (!await ImageType.imageTypeExists(imageType)){
+        if (!await ImageTypeService.imageTypeExists(imageType)){
             res.status(400).json({ err: "Tipo de imagem não existe!" });
             return;
         }
 
-        const result = await DatabaseModel.create(name, examType, description, imageQuality, imageType, sourceLink);
+        const result = await DatabaseService.create(name, examType, description, imageQuality, imageType, sourceLink);
 
         if (result.sucess) {
             res.status(201).json({ msg: "Banco de dados criado com sucesso!." });
@@ -92,23 +92,23 @@ class DatabaseController {
     async updateDatabase (req, res) {
         const id = req.params.id;
         const { name, examType, description, imageQuality, imageType, sourceLink } = req.body;
-        const database = await DatabaseModel.find({ _id: id });
+        const database = await DatabaseService.find({ _id: id });
 
         if (!database[0]) {
             res.status(404).json({ err: "Banco de dados não encontrado!" });
             return;
         }
 
-        if (!await ImageType.imageTypeExists(imageType)){
+        if (!await ImageTypeService.imageTypeExists(imageType)){
             res.status(400).json({ err: "Tipo de imagem não existe!" });
             return;
         }
 
-        const databaseExists = await DatabaseModel.databaseExists(name);
+        const databaseExists = await DatabaseService.databaseExists(name);
         const namesEquals = name.toLowerCase() === database[0].name;
 
         if (!databaseExists || databaseExists && namesEquals){
-            await DatabaseModel.update(id, name, examType, description, imageQuality, imageType, sourceLink);
+            await DatabaseService.update(id, name, examType, description, imageQuality, imageType, sourceLink);
 
             res.status(200).json({ msg: "Banco de dados atualizado com sucesso" });
             return;
@@ -121,11 +121,11 @@ class DatabaseController {
 
     async deleteDatabase (req, res) {
         const { id } = req.params;
-        const database = await DatabaseModel.find({ _id: id });
+        const database = await DatabaseService.find({ _id: id });
 
         if (database[0]) {
             try {
-                await DatabaseModel.delete(id);
+                await DatabaseService.delete(id);
     
                 res.status(200).json({ msg: "Banco de dados deletado com sucesso!" });
                 return;

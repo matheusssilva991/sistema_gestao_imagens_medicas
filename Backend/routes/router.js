@@ -16,8 +16,8 @@ router.get('/api/users/:id', Auth.loginAuth, UserController.getUser);
 router.post('/api/users', Auth.adminAuth, UserController.newUser);
 router.put('/api/users/:id', Auth.adminAuth, CheckFields.checkUserFields, UserController.updateUser);
 router.delete('/api/users/:id', Auth.adminAuth, UserController.deleteUser);
-router.post('login', UserController.login);
-router.get('logout', Auth.loginAuth, UserController.logout);
+router.post('/login', UserController.login);
+router.get('/logout', Auth.loginAuth, UserController.logout);
 
 // Solicitações
 router.get('/api/solicitations', Auth.adminAuth, SolicitationController.getSolicitations);
