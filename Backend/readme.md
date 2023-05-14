@@ -57,9 +57,10 @@ SECRET=RXRXM7X1LIXO # Padrão
 ```text
  |--controllers\    # Controllers
  |--middlewares\    # Express middlewares customizados
- |--models\         # Modelos Mongoose 
+ |--models\         # Schemas das entidades - Mongoose 
+ |--services\       # Regras de negócio
  |--routes\         # Rotas
- |--database\       # Conexão com o banco de dados
+ |--config\         # Conexão com o banco de dados
  |--index.js        # App 
 ```
 

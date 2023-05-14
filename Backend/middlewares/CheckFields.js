@@ -1,7 +1,7 @@
 const validator = require("validator");
 const SolicitationService = require("../services/SolicitationService");
 const DatabaseService = require("../services/DatabaseService");
-const User = require("../models/User");
+const UserService = require("../services/UserService");
 
 module.exports =  {
     async checkEmptyFields(req, res, next) {
@@ -55,7 +55,7 @@ module.exports =  {
                 return;
             }
 
-            if (await User.emailExists(email)) {
+            if (await UserService.emailExists(email)) {
                 res.status(403).json({ err: "Já existe cadastro com esse e-mail!" });
                 return;
             }

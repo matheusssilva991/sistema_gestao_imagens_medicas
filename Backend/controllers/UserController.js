@@ -46,21 +46,13 @@ class UserController {
         }  else if (solicitation[0].status === 'accepted' || solicitation[0].status === 'rejected'){
             res.status(403).json({ err: "Solicitação inválida!" });
             return;
-        } 
+        }
 
         let { name, email, password, institution, country, city, lattes, role } = solicitation[0].data;
         role = role || 0;
 
         if (!await UserService.emailExists(email)) {
-            
-            let passwordCripted = password;
-        
-            if (!validator.isHash(password)){
-                const salt = await bcrypt.genSalt(10);
-                passwordCripted = await bcrypt.hash(password, salt)
-            }
-            
-            const result = await UserService.create(name, email, passwordCripted, institution, country, city, lattes, role);
+            const result = await UserService.create(name, email, password, institution, country, city, lattes, role);
         
             if (result.sucess) {
                 res.status(201).json({ msg: "Usuário criado com sucesso!." });
@@ -135,7 +127,8 @@ class UserController {
         user = user[0];
 
         if (user){
-            const result = await bcrypt.compare(password, user.password);             
+            const result = await bcrypt.compare(password, user.password);
+            console.log(user)            
             
             if (result){
                 const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, secret, 
