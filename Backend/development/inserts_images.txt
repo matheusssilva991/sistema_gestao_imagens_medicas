@@ -1,0 +1,330 @@
+db.databases.updateOne({name: "cbis-ddsm"},
+	{$push: 
+		{"images": 
+			{$each: [
+						{
+							"pacient": {
+								"id": 1,
+								"name": "paciente 1",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 2,
+								"name": "paciente 2",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 3,
+								"name": "paciente 3",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 4,
+								"name": "paciente 4",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 5,
+								"name": "paciente 5",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 6,
+								"name": "paciente 6",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 7,
+								"name": "paciente 7",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 8,
+								"name": "paciente 8",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 9,
+								"name": "paciente 9",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 10,
+								"name": "paciente 10",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 11,
+								"name": "paciente 11",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 12,
+								"name": "paciente 12",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 13,
+								"name": "paciente 13",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 14,
+								"name": "paciente 14",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 15,
+								"name": "paciente 15",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 16,
+								"name": "paciente 16",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 17,
+								"name": "paciente 17",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 18,
+								"name": "paciente 18",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 19,
+								"name": "paciente 19",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 20,
+								"name": "paciente 20",
+								"age": 22
+							},
+							"orientation": "MLO",
+							"imagePath": "sem caminho",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						}
+					]
+				}
+			}
+		}
+)
+

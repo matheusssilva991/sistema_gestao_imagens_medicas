@@ -27,7 +27,7 @@ class DatabaseController {
         const databases = await DatabaseService.find();
         let images = []
 
-        for (let database in databases) {
+        for (let database of databases) {
             let imagesCC = database.images.filter(image => image.orientation == 'CC');
             let imagesMLO = database.images.filter(image => image.orientation == 'MLO');
 

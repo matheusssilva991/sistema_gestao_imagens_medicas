@@ -1,0 +1,814 @@
+{
+	"info": {
+		"_postman_id": "657ccece-e0c3-4a64-8282-81dfa1b4a867",
+		"name": "Projeto Web",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21539221"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "USERS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "USER / ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzQ5MDM4MmFkZmRjYzRiYjRjMzA4MSIsImVtYWlsIjoidmluaWNpdXNAZW1haWwuY29tIiwicm9sZSI6MCwidGVtcG9yYXJ5UGVybWlzc2lvbiI6dHJ1ZSwiaWF0IjoxNjgxMzMzNDAzfQ.bNkBIvyP0J6S_BNIcDawuKE3XBc8RsVXO3zIxIWGqZ4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/user/643490382adfdcc4bb4c3081",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"643490382adfdcc4bb4c3081"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "USER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idSolicitation\": \"64611f7a2ddd7a521eb9894c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/user",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "USER / ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzAwYzAxODQ1OTE4MzljMTk4NjNlYyIsImVtYWlsIjoibWF0aGV1c0BlbWFpbC5jb20iLCJyb2xlIjoxLCJpYXQiOjE2ODExNjY5NjZ9._vfzNEiGNEiLLQDYy5kxWsNQU4pen8OZ1kkyDR7Zzzg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "vinicius",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "vinicius@email.com",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123456@Mc",
+									"type": "default"
+								},
+								{
+									"key": "institution",
+									"value": "UESC",
+									"type": "default"
+								},
+								{
+									"key": "country",
+									"value": "Brasil",
+									"type": "default"
+								},
+								{
+									"key": "city",
+									"value": "Itabuna",
+									"type": "default"
+								},
+								{
+									"key": "lattes",
+									"value": "nenhum",
+									"type": "default"
+								},
+								{
+									"key": "role",
+									"value": "0",
+									"type": "default"
+								},
+								{
+									"key": "temporaryPermission",
+									"value": "true",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/user/64611aef2f718509310ce30a",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"64611aef2f718509310ce30a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "USER / ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/user/64611d5f62478c06b419d37f",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"64611d5f62478c06b419d37f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentications",
+			"item": [
+				{
+					"name": "LOGIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzAwYzAxODQ1OTE4MzljMTk4NjNlYyIsImVtYWlsIjoibWF0aGV1c0BlbWFpbC5jb20iLCJyb2xlIjoxLCJ0ZW1wb3JhcnlQZXJtaXNzaW9uIjpmYWxzZSwiaWF0IjoxNjgxMzMzODExfQ.MYXjQt7jZLTqEedg2PKYEQjzEsCjwro1SycJZmeKBGI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "matheus@email.com",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123456@Mc",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGOUT",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NjExZjhhMmRkZDdhNTIxZWI5ODk1MSIsImVtYWlsIjoibWF0aGV1c0BlbWFpbC5jb20iLCJyb2xlIjowLCJpYXQiOjE2ODQ2OTA1NDIsImV4cCI6MTY4NDY5NDE0Mn0.QJCv1xcDdmn0eijIleQaV2D5FDImB9oySsqnCq4W1UE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Solicitations",
+			"item": [
+				{
+					"name": "SOLICITATIONS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/solicitations",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"solicitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOLICITATION / ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/solicitation/646117d3e902cd2fd94c27b3",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"solicitation",
+								"646117d3e902cd2fd94c27b3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOLICITATION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"newUser\",\n    \"data\": {\n        \"name\": \"matheus\",\n        \"email\": \"matheus@email.com\",\n        \"password\": \"123456@Mc\",\n        \"institution\": \"UESC\",\n        \"country\": \"Brasil\",\n        \"city\": \"Itabuna\",\n        \"lattes\": \"lattes\"\n    }\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/solicitation",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"solicitation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOLICITATION / ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "status",
+									"value": "accepted",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/solicitation/6456de43e73e74ce352cfacf",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"solicitation",
+								"6456de43e73e74ce352cfacf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SOLICITATION / ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/solicitation/64611d4962478c06b419d37a",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"solicitation",
+								"64611d4962478c06b419d37a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ImagesTypes",
+			"item": [
+				{
+					"name": "IMAGES-TYPES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/images-types",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"images-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IMAGE-TYPE/ ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/image-type/64302e7b8373d8eb98664c57",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"image-type",
+								"64302e7b8373d8eb98664c57"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IMAGE-TYPE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"DICOM\",\n    \"description\": \"padrão DICOM\",\n    \"requiredData\": {\n        \"atribA\": \"pskakp\",\n        \"atribB\": \"asofjao\"\n    },\n    \"optionalData\": {\n        \"atribA\": \"asojoa\",\n        \"atribB\": \"zaef\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/image-type",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"image-type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IMAGE-TYPE / ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Dicom\",\n    \"description\": \"Padrão DICOM\",\n    \"requiredData\": {\n        \"atribA\": \"A\",\n        \"AtribB\": \"B\"\n    },\n    \"optionalData\": {\n        \"AtribA\": \"A\",\n        \"AtribB\": \"B\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/images-types/64302e158373d8eb98664c52",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"images-types",
+								"64302e158373d8eb98664c52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IMAGE-TYPE / ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/image-type/6430311c4560417cea89acfb",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"image-type",
+								"6430311c4560417cea89acfb"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Databases",
+			"item": [
+				{
+					"name": "DATABASES",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzcxZmFiMTc3ZTcyZDFhZGIyZmY0NSIsImVtYWlsIjoiY2xlYmVyQGVtYWlsLmNvbSIsInJvbGUiOjAsImlhdCI6MTY4MzU5NjAyOCwiZXhwIjoxNjgzNTk5NjI4fQ.Ji50wfWw2xDJoFzRD6-jwPrNIkjhiUsoEgUUz3mK4z8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/databases",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"databases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DATABASE / ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/database/6430231b705f6ef64ba2da65",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"database",
+								"6430231b705f6ef64ba2da65"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DATABASE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenTemporaryPermission}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"CBIS-DDSM\",\n    \"examType\": \"Mamografia\",\n    \"description\": \"Banco de imagens derivado do DDSM\",\n    \"imageQuality\": [8, 12, 16],\n    \"imageType\": \"Dicom\",\n    \"sourceLink\": \"site do CBIS-DDSM\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/database",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"database"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DATABASE / ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "MIAS",
+									"type": "default"
+								},
+								{
+									"key": "examType",
+									"value": "Mamografia",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "Banco de dados MIAS",
+									"type": "default"
+								},
+								{
+									"key": "imageQuality",
+									"value": "[8, 12, 16]",
+									"type": "default"
+								},
+								{
+									"key": "imageType",
+									"value": "PGM",
+									"type": "default"
+								},
+								{
+									"key": "sourceLink",
+									"value": "lugar nenhum",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/database/642efc02090c2d2a5987e752",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"database",
+								"642efc02090c2d2a5987e752"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DATABASE / ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/database/64371da3177e72d1adb2ff1c",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"database",
+								"64371da3177e72d1adb2ff1c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Images",
+			"item": [
+				{
+					"name": "DATABASES / IMAGES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/databases/images",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"databases",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DATABASE / DATABASENAME / IMAGES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/database/6430231b705f6ef64ba2da65/images",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"database",
+								"6430231b705f6ef64ba2da65",
+								"images"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{tokenAdmin}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://localhost:8081",
+			"type": "default"
+		},
+		{
+			"key": "tokenAdmin",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzAwYzAxODQ1OTE4MzljMTk4NjNlYyIsImVtYWlsIjoibWF0aGV1c0BlbWFpbC5jb20iLCJyb2xlIjoxLCJ0ZW1wb3JhcnlQZXJtaXNzaW9uIjpmYWxzZSwiaWF0IjoxNjgxMzMzODExfQ.MYXjQt7jZLTqEedg2PKYEQjzEsCjwro1SycJZmeKBGI",
+			"type": "default"
+		},
+		{
+			"key": "tokenUser",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzcxZmFiMTc3ZTcyZDFhZGIyZmY0NSIsImVtYWlsIjoiY2xlYmVyQGVtYWlsLmNvbSIsInJvbGUiOjAsInRlbXBvcmFyeVBlcm1pc3Npb24iOmZhbHNlLCJpYXQiOjE2ODEzMzQyNTZ9.BnqxO1Pf2aXdz3C_aDzpXxz5bQv6QlbdJrx2komfQGE",
+			"type": "default"
+		}
+	]
+}

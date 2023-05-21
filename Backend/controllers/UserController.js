@@ -48,11 +48,10 @@ class UserController {
             return;
         }
 
-        let { name, email, password, institution, country, city, lattes, role } = solicitation[0].data;
-        role = role || 0;
+        let { name, email, password, institution, country, city, lattes } = solicitation[0].data;
 
         if (!await UserService.emailExists(email)) {
-            const result = await UserService.create(name, email, password, institution, country, city, lattes, role);
+            const result = await UserService.create(name, email, password, institution, country, city, lattes, 0);
         
             if (result.sucess) {
                 res.status(201).json({ msg: "Usuário criado com sucesso!." });
@@ -69,9 +68,37 @@ class UserController {
         }  
     }
 
+    async updateRole(req, res) {
+        const id = req.params.id;
+        let { role } = req.body;
+        const user = await UserService.find({ _id: id })
+
+        if (!user[0]){
+            res.status(404).json({ err: "Usuário não encontrado!" });
+            return;
+        }
+
+        if (role != 0 && role != 1){
+            res.status(400).json({ err: "Tipo de usuário inválido." });
+            return;
+        } 
+
+        try {
+            await UserService.update(id, user.name, user.email, user.password, user.institution, user.country, 
+                                     user.city, user.lattes, role);
+
+            res.status(200).json({ msg: "Tipo de usuário atualizado com sucesso!" });
+            return;
+        } catch (error) {
+            res.status(400).json({ err: "Erro ao atualizar." });
+            return;
+        }
+        
+    }
+
     async updateUser(req, res) {
         const id = req.params.id;
-        let { name, email, password, institution, country, city, lattes, role} = req.body;
+        let { name, email, password, institution, country, city, lattes} = req.body;
         const user = await UserService.find({ _id: id })
 
         if (!user[0]){
@@ -88,8 +115,9 @@ class UserController {
                 const salt = await bcrypt.genSalt(10);
                 passwordCripted = await bcrypt.hash(password, salt)
             }
-
-            await UserService.update(id, name, email, passwordCripted, institution, country, city, lattes, role)
+            
+            await UserService.update(id, name, email, passwordCripted, institution, country, city, lattes,
+                                     user.role);
 
             res.status(200).json({ msg: "Usuário atualizado com sucesso!" });
             return;
