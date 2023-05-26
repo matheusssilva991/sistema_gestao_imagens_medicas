@@ -1,4 +1,4 @@
-# **Minha parte no projeto**
+# **Minha Contribuição no projeto**
 
 ## Descrição:
 - Minha contribuição no projeto de web
