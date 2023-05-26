@@ -1,0 +1,1 @@
+1° Falta refatorar em componentes
