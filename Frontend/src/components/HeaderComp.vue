@@ -67,10 +67,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .header {
-    width: 100%;
+    width: 90%;
     display: flex;
     justify-content: space-around;
     margin: auto;
+    background-color: white;
 }
 
 .navbar-header {
