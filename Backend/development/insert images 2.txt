@@ -1,0 +1,74 @@
+db.databases.updateOne({name: "cbis-ddsm"},
+	{$push: 
+		{"images": 
+			{$each: [
+						{
+							"pacient": {
+								"id": 1,
+								"name": "paciente 1",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "/home/matheus/Dropbox/Meus Codes/sistema_gestao_imagens_medicas/Backend/imagens/1-1.dcm",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 2,
+								"name": "paciente 2",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "/home/matheus/Dropbox/Meus Codes/sistema_gestao_imagens_medicas/Backend/imagens/1-2.dcm",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 3,
+								"name": "paciente 3",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "/home/matheus/Dropbox/Meus Codes/sistema_gestao_imagens_medicas/Backend/imagens/1-3.dcm",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						},
+						{
+							"pacient": {
+								"id": 4,
+								"name": "paciente 4",
+								"age": 22
+							},
+							"orientation": "CC",
+							"imagePath": "/home/matheus/Dropbox/Meus Codes/sistema_gestao_imagens_medicas/Backend/imagens/1-4.dcm",
+							"size": 3,
+							"dimension": "255x255",
+							"imageQuality": 8,
+							"classification": {
+								"birads": 4,
+								"pathology": "malign"
+							}
+						}
+					]
+				}
+			}
+		}
+)
+

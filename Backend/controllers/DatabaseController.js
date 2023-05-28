@@ -1,5 +1,7 @@
 const DatabaseService = require("../services/DatabaseService");
 const ImageTypeService = require("../services/ImageTypeService");
+const imageProcessingService = require("../services/imageProcessingService");
+const ImageProcessingService = require("../services/imageProcessingService");
 
 class DatabaseController {
 
@@ -28,12 +30,20 @@ class DatabaseController {
         let images = []
 
         for (let database of databases) {
-            let imagesCC = database.images.filter(image => image.orientation == 'CC');
-            let imagesMLO = database.images.filter(image => image.orientation == 'MLO');
+            let index = 0;
+            for (let image of database.images.slice(0, 20)) {
+                let newPath = `./assets/images/image_${index}_${database.name}.png`;
 
-            imagesCC = imagesCC.slice(0, 10);
-            imagesMLO = imagesMLO.slice(0, 10);
-            images = images.concat(imagesCC, imagesMLO);
+                if (image.imagePath.includes("dcm")){
+                    await ImageProcessingService.convertDicomPNG(image.imagePath, newPath);
+                } else {
+                    await imageProcessingService.saveImage(image.imagePath, newPath)
+                }
+                
+                image.imagePath = newPath;
+                images.push(image);
+                index++;
+            }
         }
 
         // Usar sharp para miniaturizar(redemensionar) as imagens
@@ -48,12 +58,7 @@ class DatabaseController {
         let images = []
 
         if (database[0]) {
-            let imagesCC = database[0].images.filter(image => image.orientation == 'CC');
-            let imagesMLO = database[0].images.filter(image => image.orientation == 'MLO');
-
-            imagesCC = imagesCC.slice(0, 10);
-            imagesMLO = imagesMLO.slice(0, 10);
-            images = images.concat(imagesCC, imagesMLO);
+            images = images.concat(images, database[0].images.slice(0, 20));
 
             res.status(200).json(images);
             return
