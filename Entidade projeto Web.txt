@@ -1,0 +1,55 @@
+Usuário: 
+	Nome
+	Email
+	Senha
+	Lattes
+	Instituição
+	Cidade
+	País
+	Permissao
+	PermissãoTemporaria: Atributo || Entidade Separada
+	
+Bancos de Imagens:
+	Nome do Banco
+	Tipos de Exames: [Mamografia, Ultrassom, Termografia, etc...]
+	Descrição
+	Qualidade das Imagens: [8 bits, 12 bits, 16 bits, etc...]
+	Tipo de Imagem
+	Link Origem
+	imagens: []
+	
+PermissaoTemporaria:
+	idUsuario:
+	used: True | False	
+	
+Tipo de Imagem:
+	Titulo: Dicom | Jpeg | JPG | etc...
+	Descrição
+	Dados Obrigatórios = [{}]
+	Dados Opcionais = [{}]
+	
+Solicitação
+	Tipo: Cadastro usuário | Inserção de Banco
+	status: pendente, aceita, recusada
+	Data da Solicitação
+	Dados da Solicitação: Dados do usuário | {nome, Descrição do banco, link origem }
+			
+Imagem
+	Paciente: {id, nome, sexo, idade, apenas informações disponíveis sobre o paciente}
+	orientação: Crãnio Caudal (CC) ou Médio Lateral Obliqua (MLO)
+	Caminho da Imagem
+	Tamanho
+	Dimensão da Imagem
+	Qualidade da Imagem
+	Classificação: {BIRADS: [0, 1, ..., 5], Patologia: Benigno ou Maligno}
+	Banco de Origem(Nome do Banco): 
+	Processamentos: [{ 
+			Tipo de processamento, 
+			Caminho da Imagem processada,
+			Classificação: {},
+			DadosImagem(Dados obtidos no processamento: {
+				Nome do Estudo
+				Dados: {}
+				})
+	}]
+	

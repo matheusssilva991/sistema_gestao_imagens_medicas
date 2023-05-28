@@ -1,0 +1,8 @@
+User:
+	Cadastro/Atualizar: name, email, password, lattes, institution, country, city
+	
+Database:
+	Cadastro/Atualizar: name, examType [checkbox - unico]*, description, imageQuality[check-mult], imageType[check -unico], sourceLink[URL]
+	
+imageType:
+	Cadastro/Atualizar: name, description, requiredData[não definido], optionalData[]
