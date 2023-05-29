@@ -1,7 +1,7 @@
 const DatabaseService = require("../services/DatabaseService");
 const ImageTypeService = require("../services/ImageTypeService");
-const imageProcessingService = require("../services/imageProcessingService");
 const ImageProcessingService = require("../services/imageProcessingService");
+const fs = require("fs");
 
 class DatabaseController {
 
@@ -31,22 +31,33 @@ class DatabaseController {
 
         for (let database of databases) {
             let index = 0;
+
             for (let image of database.images.slice(0, 20)) {
-                let newPath = `./assets/images/image_${index}_${database.name}.png`;
 
                 if (image.imagePath.includes("dcm")){
-                    await ImageProcessingService.convertDicomPNG(image.imagePath, newPath);
+                    let newPath = `./assets/images/image_${index}_${database.name}.png`;
+
+                    // Converte imagem Dicom em PNG
+                    ImageProcessingService.convertDicomPNGSync(image.imagePath, newPath);
+                    image.imagePath = newPath;
+
+                    // Redimensiona a imagem
+                    newPath = newPath.replace(".png", "_resized.png");
+                    ImageProcessingService.resizeSync(image.imagePath, { width: 64, height: 64 }, newPath);
+
+                    image.imagePath = newPath;
+
                 } else {
-                    await imageProcessingService.saveImage(image.imagePath, newPath)
+                    let newPath = `./assets/images/image_${index}_${database.name}_resized.png`;
+
+                    ImageProcessingService.resizeSync(image.imagePath, { width: 64, height: 64 }, newPath);
+                    image.imagePath = newPath;
                 }
-                
-                image.imagePath = newPath;
+
                 images.push(image);
                 index++;
             }
         }
-
-        // Usar sharp para miniaturizar(redemensionar) as imagens
 
         res.status(200).json(images);
         return
@@ -58,7 +69,30 @@ class DatabaseController {
         let images = []
 
         if (database[0]) {
-            images = images.concat(images, database[0].images.slice(0, 20));
+            for (let image of database[0].images.slice(0, 20)) {
+
+                if (image.imagePath.includes("dcm")){
+                    let newPath = `./assets/images/image_${index}_${database.name}.png`;
+
+                    // Converte imagem Dicom em PNG
+                    ImageProcessingService.convertDicomPNGSync(image.imagePath, newPath);
+                    image.imagePath = newPath;
+
+                    // Redimensiona a imagem
+                    newPath = newPath.replace(".png", "_resized.png");
+                    ImageProcessingService.resizeSync(image.imagePath, { width: 64, height: 64 }, newPath);
+
+                    image.imagePath = newPath;
+                } else {
+                    let newPath = `./assets/images/image_${index}_${database.name}_resized.png`;
+
+                    ImageProcessingService.resizeSync(image.imagePath, { width: 64, height: 64 }, newPath);
+                    image.imagePath = newPath;
+                }
+
+                images.push(image);
+                index++;
+            }
 
             res.status(200).json(images);
             return
