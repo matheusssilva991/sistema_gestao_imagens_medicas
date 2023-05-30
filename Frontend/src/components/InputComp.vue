@@ -32,6 +32,7 @@ export default {
 .input-control {
     border: none;
     width: 100%;
+    height: 35px;
     border-radius: 20px;
     background-color: #F2F2F2;
     padding-left: 10%;
