@@ -33,6 +33,7 @@ Imagem:
 	Paciente: {id, nome, sexo, idade, apenas informações disponíveis sobre o paciente}
 	orientação: Crãnio Caudal (CC) ou Médio Lateral Obliqua (MLO)
 	Caminho da Imagem
+	Caminho da Imagem redimensionada
 	Tamanho
 	Dimensão da Imagem
 	Qualidade da Imagem
