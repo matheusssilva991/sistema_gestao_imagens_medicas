@@ -1,3 +1,4 @@
 1° Falta refatorar em componentes
 2° Tentar trocar a cor da marcação no checkbox/radio
 3° Resolver a resposividades para telas menores de 300px (não tão importante)
+4° Aplicar Margin no botão salvar
