@@ -5,11 +5,11 @@
         </div>
 
         <div class="div-form">
-            <h2 class="text-form">Cadastro Banco de Dados</h2>
+            <h2 class="text-form">Atualizar Banco de Dados</h2>
             <form action="" method="post" class="grid-form">
                  <div class="name flex-form-input">
                     <label for="name">Nome do banco :</label>
-                    <input type="text" name="name" id="name" placeholder="Nome do banco" required>
+                    <input type="text" name="name" id="name" placeholder="Nome do banco"  required>
                 </div>
 
                 <div class="examType flex-form-input">
@@ -23,7 +23,7 @@
 
                 <div class="description flex-form-input">
                      <label for="description">Descrição</label>
-                     <textarea class="text-description" v-model="texto" @input="countCaractere" name="description" id="description" cols="38" rows="4" placeholder="Descrição da imagem">
+                     <textarea class="text-description"  v-model="texto" @input="countCaractere" name="description" id="description" cols="38" rows="4" placeholder="Descrição da imagem">
                      </textarea>
                      <span class="span-description">{{caracteresDigitados}}/500 caracteres</span>
                 </div>
@@ -31,9 +31,9 @@
                 <div class="imageQuality flex-form-input ">
                         <label for="imageQuality" class="label-checkbox">Escolha a qualidade da imagem: </label>
                         <div class="input-checkbox">
-                            <input type="checkbox" name="imageQuality" value="8bits" class="input-a1"> <span class="span-a1">8 bits</span>
+                            <input type="checkbox" name="imageQuality" value="8bits" class="input-a1" > <span class="span-a1">8 bits</span>
                             <input type="checkbox" name="imageQuality" value="12bits" class="input-a2"> <span class="span-a2">12 bits</span>
-                            <input type="checkbox" name="imageQuality" value="16bits" class="input-a3"> <span class="span-a3">16 bits</span>
+                            <input type="checkbox" name="imageQuality" value="16bits" class="input-a3" > <span class="span-a3">16 bits</span>
                         </div>
 
                 </div>
@@ -43,14 +43,14 @@
                      <div class="input-checkbox">
                         <input type="radio" name="imageType" value="Dicom" class="input-a1"><span class="span-a1">Dicom</span>
                         <input type="radio" name="imageType" value="Jpeg" class="input-a2"><span class="span-a2">Jpeg</span>
-                        <input type="radio" name="imageType" value="JPG" class="input-a3"><span class="span-a3">JPG</span>
+                        <input type="radio" name="imageType" value="JPG" class="input-a3" ><span class="span-a3">JPG</span>
                      </div>
                      
                 </div>
 
                 <div class="sourceLink flex-form-input">
                      <label for="sourceLink">Link da imagem: </label>
-                     <input type="url" name="sourceLink" placeholder="Link da imagem">
+                     <input type="url"  name="sourceLink" placeholder="Link da imagem">
                 </div>
 
                  <div class="button-save button-flex">
@@ -64,34 +64,35 @@
 
 <script>
 
-export default {
-    name: "CadastroDatabase",
-
-    data(){
-        return{
-            texto: "",
-            limiteCaracteres: 500,
-            caracteresDigitados: 0,
-        }
-    },
-    methods:{
-        countCaractere(){
-             if (this.caracteresDigitados >= this.limiteCaracteres) {
-                this.texto = this.texto.slice(0, this.limiteCaracteres);
-            }else{this.caracteresDigitados = this.texto.length}
+    export default {
+        name: "AtualizarDatabase",
+        data(){
+            return{
+                name: "Ze Da Manga",
+                sourceLink: "https://www.MinhasMangas.com.br",
+                texto: "",
+                limiteCaracteres: 500,
+                caracteresDigitados: 0,
+            }
+        },
+        methods:{
+            countCaractere(){
+                if (this.caracteresDigitados >= this.limiteCaracteres) {
+                    this.texto = this.texto.slice(0, this.limiteCaracteres);
+                }else{this.caracteresDigitados = this.texto.length}
+            }
         }
     }
-}
 </script>
 
 <style scoped>
-   input[type="checkbox"], input[type="radio"] {
-        width: 20px; /* Defina a largura desejada */
-        height: 20px; /* Defina a altura desejada */
-        border: none;
-        border-radius: 10px;
-        margin-left: 5px;
-        
+    input[type="checkbox"], input[type="radio"] {
+    width: 20px; /* Defina a largura desejada */
+    height: 20px; /* Defina a altura desejada */
+    border: none;
+    border-radius: 10px;
+    margin-left: 5px;
+    
     }
 
     .input-checkbox{
@@ -215,7 +216,7 @@ export default {
     }
 
     .button:hover{
-        background-color: #1d4e2e;
+         background-color: #1d4e2e;
     }
 
     input, select, textarea{

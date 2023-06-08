@@ -37,19 +37,19 @@
                      <input type="text" name="city" id="city" placeholder="Cidade" required>
               </div>
 
-              <div class="lattes flex-form-input">
+              <div class="lattes lattes-flex flex-form-input">
                      <label for="lattes">Lattes:</label>
                      <input type="text" name="lattes" id="lattes" placeholder="Lattes" >
               </div>
 
              
-              <div class="role flex-form-input">
+              <!-- <div class="role flex-form-input">
                      <label for="role">Tipo usuário:</label>
                      <select name="role" id="role">
                             <option value="researcher">Pesquisador</option>
                             <option value="administrator">Administrador</option>
                       </select>
-              </div>
+              </div> -->
               
               <div class="button-save button-flex">
                       <button type="submit" class="button">Salvar</button>
@@ -88,13 +88,13 @@
         background: white;
         border-radius: 20px;
         box-shadow: 5px 5px 8px rgb(95, 91, 91);
+       /*  border: 1px solid red; */
     }
 
     .flex-form-input{
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-       
     }
 
     .text-form{
@@ -126,9 +126,10 @@
         "name email"
         "password institution"
         "country city"
-        "lattes role"
+        "lattes lattes"
         "button-save button-save"
        ;
+     /*   border: 1px solid blue; */
     }
 
     .name {
@@ -157,6 +158,9 @@
 
     .lattes {
           grid-area: lattes;
+          /* display: flex;
+          flex-direction: column;
+          align-items: center; */
     }
 
     .role {
@@ -168,7 +172,7 @@
          grid-area: button-save;
     }
 
-    .button-flex{
+    .button-flex {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
@@ -183,6 +187,7 @@
         border: 1px solid #73BF8E;
         font-weight: 800;
         transition: .5s;
+        cursor: pointer;
     }
 
     .button:hover{
@@ -222,7 +227,6 @@
         "country"
         "city"
         "lattes"
-        "role"
         "button-save"
        ;
     }
@@ -241,8 +245,5 @@
         width: 200px;
       }
 
-      .text-form{
-        text-align: center;
-      }
     }
 </style>

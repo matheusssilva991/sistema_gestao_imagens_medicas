@@ -9,47 +9,46 @@
             <form action="" method="post" class="grid-form">
                <div class="name flex-form-input">
                     <label for="name">Seu nome:</label>
-                    <input type="text" name="name" id="name" placeholder="Informe seu nome" :value="name" required>
+                    <input type="text" name="name" id="name" placeholder="Informe seu nome" required>
                </div>
               
                 <div class="email flex-form-input">
-                    <label for="email">Seu email:</label>
-                    <input type="text" name="email" id="email" placeholder="Informe seu email" :value="email" required>
+                    <label for="email">Seu e-mail:</label>
+                    <input type="text" name="email" id="email" placeholder="Informe seu email"  required>
                 </div>
 
                 <div class="password flex-form-input">
                      <label for="password">Senha:</label>
-                     <input type="password" name="password" id="password" placeholder="Informe uma senha"  :value="password" required>
+                     <input type="password" name="password" id="password" placeholder="Informe uma senha"  required>
                 </div>
 
               <div class="institution flex-form-input">
                      <label for="institution">Instituição:</label>
-                     <input type="text" name="institution" id="institution" placeholder="Instituição" :value="institution" required>
+                     <input type="text" name="institution" id="institution" placeholder="Instituição" required>
               </div>
 
               <div class="country flex-form-input">
                      <label for="country">País:</label>
-                     <input type="text" name="country" id="country" placeholder="País" :value="country" required>
+                     <input type="text" name="country" id="country" placeholder="País"  required>
               </div>
 
               <div class="city flex-form-input">
                      <label for="city">Cidade:</label>
-                     <input type="text" name="city" id="city" placeholder="Cidade" :value="city" required>
+                     <input type="text" name="city" id="city" placeholder="Cidade"  required>
               </div>
 
               <div class="lattes flex-form-input">
                      <label for="lattes">Lattes:</label>
-                     <input type="text" name="lattes" id="lattes" :value="lattes" placeholder="Lattes" >
+                     <input type="text" name="lattes" id="lattes"  placeholder="Lattes" >
               </div>
 
-             
+             <!-- 
               <div class="role flex-form-input">
                      <label for="role">Tipo usuário:</label>
                      <select name="role" id="role">
                             <option :value="Pesquisador">Pesquisador</option>
-                            <!-- <option value="administrator">Administrador</option> -->
                       </select>
-              </div>
+              </div> -->
               
               <div class="button-save button-flex">
                       <button type="submit" class="button">Salvar</button>
@@ -138,7 +137,7 @@
         "name email"
         "password institution"
         "country city"
-        "lattes role"
+        "lattes lattes"
         "button-save button-save"
        ;
     }
@@ -195,10 +194,11 @@
         border: 1px solid #73BF8E;
         font-weight: 800;
         transition: .5s;
+        cursor: pointer;
     }
 
     .button:hover{
-        color: black;
+         background-color: #1d4e2e;
     }
 
     input, select{
@@ -230,7 +230,6 @@
         "country"
         "city"
         "lattes"
-        "role"
         "button-save"
        ;
     }
