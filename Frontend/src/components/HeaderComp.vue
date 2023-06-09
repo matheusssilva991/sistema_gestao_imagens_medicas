@@ -14,12 +14,13 @@
                     <span class="button-text">Log in</span>
                     <i class="fa-regular fa-circle-user"></i>
                 </button>
-                <button type="submit" class="button-header">Sign in</button>
+               <!--  <button type="submit" class="button-header">Sign in</button> -->
+                <router-link to="/cadastroUsuario" class="button-header">Sign in</router-link>
             </div>
 
             <div v-else:=this.logged class="form-logged-header">
-                <button class="button-logged">
-                    Your name <i class="fa-regular fa-circle-user"></i>
+                <button id="button-logged">
+                   {{ this.user.name }} <i class="fa-regular fa-circle-user"></i>
                 </button>
             </div>
         </header>
@@ -43,7 +44,8 @@ export default {
             logged: false,
             erro: undefined,
             email: "",
-            password: ""
+            password: "",
+            user: {}
         }
     },
     methods: {
@@ -53,15 +55,31 @@ export default {
 
         async logar() {
             try {
-                const token = await axios.post(("http://localhost:8081/login"), {
+                let response = await axios.post(("http://localhost:8081/login"), {
                     email: this.email,
                     password: this.password
                 })
 
+                const { id, token } = response.data;
+
                 if (token) {
                     this.logged = true;
                     localStorage.setItem('token', token);
-                    this.$router.push({name: 'about'})
+
+                    const req = {
+                        headers: {
+                            Authorization: "Bearer " + localStorage.getItem('token')
+                        }
+                    }
+
+                    axios.get(`http://localhost:8081/api/user/${id}`, req).then(response => {
+                        this.user = response.data;
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+
+                    this.$emit('logged');
+                    this.$router.push({name: 'databases'});
                 }
             } catch (err) {
                 const msgError = err.response.data?.err;
@@ -113,6 +131,13 @@ html, body {
     padding-right: 5%;
 }
 
+.form-logged-header {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 5%;
+}
+
 .nav-link-header, .nav-link-header:visited {
     color: #73BF8E;
     width: 20%;
@@ -126,7 +151,7 @@ html, body {
     margin-left: 5%;
 }
 
-.button-logged {
+#button-logged {
     background-color: #73BF8E;
     border: 1px solid #73BF8E;
     color: white;
@@ -135,6 +160,15 @@ html, body {
     border-radius: 35px;
     height: 35px;
     align-items: center;
+    padding-left: 2%;
+    padding-right: 2%;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#button-logged:hover {
+    background-color: #459c63;
+    border: 1px solid #459c63;
 }
 
 .button-header {
@@ -146,6 +180,7 @@ html, body {
     background-color: white;
     color: #73BF8E;
     align-items: center;
+    text-decoration: none;
 }
 
 .button-header:hover {

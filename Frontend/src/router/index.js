@@ -1,5 +1,11 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHashHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import CadastroUsuarioView from '../views/Cadastro/CadastroUsuarioView.vue';
+import DatabaseView from '../views/DatabaseView.vue';
+import AboutView from '../views/AboutView.vue';
+import UserView from '../views/UsersView.vue';
+import SolicitationsView from '../views/SolicitationView.vue';
+import ImagesView from '../views/ImagesView.vue';
 
 const routes = [
   {
@@ -10,10 +16,32 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    component: AboutView
+  },
+  {
+    path: '/cadastroUsuario',
+    name: 'cadastroUsuario',
+    component: CadastroUsuarioView
+  },
+  {
+    path: '/databases',
+    name: 'databases',
+    component: DatabaseView
+  },
+  {
+    path: '/users',
+    name: 'users',
+    component: UserView
+  },
+  {
+    path: '/solicitations',
+    name: 'solicitations',
+    component: SolicitationsView
+  },
+  {
+    path: '/images',
+    name: 'images',
+    component: ImagesView
   }
 ]
 

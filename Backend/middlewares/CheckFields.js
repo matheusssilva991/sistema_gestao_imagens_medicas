@@ -86,6 +86,9 @@ module.exports =  {
             }
 
             Object.assign(tmp, tmp, { name, description, sourceLink })
+        } else {
+            res.status(400).json({ err: "Tipo de solicitação inválido." });
+            return;
         }
 
         for (const key in tmp) {

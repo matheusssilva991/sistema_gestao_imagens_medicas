@@ -164,7 +164,7 @@ class UserController {
                 const resultToken = await AuthTokenService.create(token);
 
                 if (resultToken.sucess)
-                    res.status(200).json({ token: token });
+                    res.status(200).json({ id: user._id, token: token });
                 else
                     res.status(400).json({ err: "Erro na criação do token"});
 
