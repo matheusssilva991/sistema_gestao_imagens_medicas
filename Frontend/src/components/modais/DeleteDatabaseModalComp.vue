@@ -3,24 +3,21 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title">Solicitação de banco de imagem</h2>
-					<button type="button" class="close btn btn-danger" @click="closeModal">
-					<span aria-hidden="true">&times;</span>
+					<h2 class="modal-title">Excluir banco de imagens</h2>
+					<button type="button" class="close btn btn-white" @click="closeModal">
+						<span class="h2" aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
 					<div class="user-profile">
-						<h3 class="profile-name"><i class="fa fa-database" aria-hidden="true"></i> {{ solicitation.data.name }}</h3>
+						<h3 class="profile-name"><i class="fa fa-database" aria-hidden="true"></i> {{ database.name}}</h3>
 					</div>
+					Deseja realmente excluir o banco de imagens?
 
-					<label for="examType" class="form-label mt-3">Tipo de exame</label>
-					<input class="form-control" type="text" :value=examType aria-label="Disabled examType" disabled readonly>
-					
-					<label for="description" class="form-label mt-3">Descrição</label>
-					<textarea class="form-control" id="description" rows="3" disabled readonly v-model="this.description"></textarea>
-
-					<label for="sourceLink" class="form-label mt-3">Link de origem</label>
-					<input class="form-control mb-3" type="text" :value=sourceLink aria-label="Disabled sourceLink" disabled readonly>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" @click="closeModal">Voltar</button>
+					<button type="button" class="btn btn-danger" @click="DeleteDatabase">Excluir</button>
 				</div>
 			</div>
 		</div>
@@ -29,24 +26,14 @@
   
 <script>
 	export default {
-		created() {
-			this.examType = this.solicitation.data.examType;
-			this.description = this.solicitation.data.description;
-			this.sourceLink = this.solicitation.data.sourceLink;
-		},
-		props: {
-			solicitation: {
+        props: {
+			database: {
 				type: Object,
 				required: true,
 			},
 		},
 		data() {
 			return {
-				examType: undefined,
-				description: undefined,
-				sourceLink: undefined,
-				showModal: true,
-				selectedProfile: undefined, // Nova propriedade para armazenar o perfil selecionado
 			};
 		},
 		methods: {
@@ -54,6 +41,9 @@
 				this.showModal = false;
 				this.$emit('close-modal');
 			},
+			DeleteDatabase() {
+				this.$emit('delete-database', this.database);
+			}
 		},
 	};
 
@@ -61,7 +51,7 @@
   
 <style scoped>
   /* Estilos do Modal */
-  
+
 .modal {
     font-family: 'Montserrat', sans-serif;
 	margin: 0 auto;

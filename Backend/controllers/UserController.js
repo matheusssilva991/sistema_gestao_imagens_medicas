@@ -169,10 +169,10 @@ class UserController {
                     res.status(400).json({ err: "Erro na criação do token"});
 
             } else 
-                res.status(406).json({ err: "Senha incorreta" }); 
+                res.status(406).json({ err: "Senha incorreta." }); 
 
         } else 
-            res.status(403).json({ err: "O usuário não existe!" });
+            res.status(403).json({ err: "Não existe usuário cadastrado com esse e-mail." });
     }
 
     async logout (req, res) {

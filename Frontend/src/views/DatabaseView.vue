@@ -35,52 +35,146 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="bank in banks" :key="bank.id">
+                    <tr v-for="database in databases" :key="database.id">
                         <td scope="row">
-                            <router-link :to="`/bank/${bank.id}`" class="table-item bank-link">{{ bank.name }}</router-link>
+                            <span class="table-item">{{ database.name }}</span>
                         </td>
                         <td>
-                            <span class="table-item">{{ bank.examType }}</span>
+                            <span class="table-item">{{ database.examType }}</span>
                         </td>
                         <td>
-                            <span class="table-item">{{ bank.imageCount }} imagens</span>
+                            <span class="table-item">{{ database.imageCount }} imagens</span>
                         </td>
                         <td>
-                            <i class="fa fa-download table-item" style="margin-right: 15px"></i>
-                            <i class="fa fa-edit table-item" style="margin-right: 15px"></i>
-                            <i class="fa fa-eye table-item" style="margin-right: 15px"></i>
-                            <i class="fa fa-trash table-item" style="margin-right: 15px"></i>
+                            <button @click="openEditModal(database)" class="btn">
+                                <i class="fa fa-download table-item"></i>
+                            </button>
+                            <button @click="openEditModal(database)" class="btn">
+                                <i class="fa fa-edit table-item"></i>
+                            </button>
+                            <button @click="openViewModal(database)" class="btn">
+                                <i class="fa fa-eye table-item"></i>
+                            </button>
+                            <button @click="openDeleteModal(database)" class="btn">
+                                <i class="fa fa-trash table-item"></i>
+                            </button>
                         </td>  
                     </tr>
                 </tbody>
-                
             </table>
         </div>
+
+        <EditDatabaseModalComp v-if="showEditModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
+        <DeleteDatabaseModalComp v-if="showDeleteModal" :database="this.selectedDatabase" @close-modal="closeModal" @delete-database="deleteDatabase" />
+        <ShowDatabaseModalComp v-if="showViewModal" :database="this.selectedDatabase" @close-modal="closeModal"/>
     </div>
 </template>
   
 <script>
 import InputComp from '../components/InputComp.vue'
+import ShowDatabaseModalComp from '@/components/modais/ShowDatabaseModalComp.vue';
+import EditDatabaseModalComp from '@/components/modais/EditDatabaseModalComp.vue';
+import DeleteDatabaseModalComp from '@/components/modais/DeleteDatabaseModalComp.vue';
 
 export default {
+    created() {
+        this.databases = this.databases.map((database) => {
+            database.imageQuality = database.imageQuality.join(", ")
+            database.imageCount = database.images.length
+            return database
+        });
+    },
     data() {
         return {
-        banks: [
-            { id: 1, name: 'Banco 1', imageCount: 10, examType:'Mamografia' },
-            { id: 2, name: 'Banco 2', imageCount: 5, examType:'Mamografia' },
-            { id: 3, name: 'Banco 3', imageCount: 8, examType:'Mamografia' }
-        ]
+            databases: [
+                { id: 1,
+                    name: 'Banco 1',
+                    images: [1, 2, 3, 4], 
+                    examType:'Mamografia',
+                    imageQuality: [8, 12, 16],
+                    imageType: 'DICOM',
+                    description: 'Banco de imagens médica',
+                    sourceLink: 'Link de origem'    
+                },
+                { id: 2,
+                    name: 'Banco 2',
+                    images: [1, 2, 3, 4, 5, 6, 7, 8], 
+                    examType:'Mamografia',
+                    imageQuality: [16],
+                    imageType: 'DICOM',
+                    description: 'Banco de imagens médica',
+                    sourceLink: 'Link de origem'        
+                },
+                { id: 3,
+                    name: 'Banco 3',
+                    images: [1, 2], 
+                    examType:'Mamografia',
+                    imageQuality: [8, 12],
+                    imageType: 'DICOM',
+                    description: 'Banco de imagens médica',
+                    sourceLink: 'Link de origem'        
+                }
+            ],
+            showViewModal: false,
+            showEditModal: false,
+            showDeleteModal: false,
+            selectedDatabase: null
         };
     },
     methods: {
         addBank() {
-        const newBankId = this.banks.length + 1;
-        const newBank = { id: newBankId, name: `Banco ${newBankId}`, imageCount: 0, examType:'Mamografia' };
-        this.banks.push(newBank);
-        }
+            const newBankId = this.databases.length + 1;
+            const newBank = { id: newBankId, name: `Banco ${newBankId}`, imageCount: 0, examType:'Mamografia' };
+            this.databases.push(newBank);
+        },
+        openViewModal(database) {
+            this.selectedDatabase = database;
+            this.showViewModal = true;
+        },
+        openEditModal(database) {
+            this.selectedDatabase = database;
+            this.showEditModal = true;
+        },
+        openDeleteModal(database) {
+            this.selectedDatabase = database;
+            this.showDeleteModal = true;
+        },
+        closeModal() {
+            this.selectedDatabase = null;
+            this.showViewModal = false;
+            this.showEditModal = false;
+            this.showDeleteModal = false;
+        },
+        deleteDatabase(database) {
+            // Lógica para excluir usuário
+            console.log('Excluir banco:', database);
+        },
+        saveChanges(newDatabase) {
+            this.databases = this.databases.map((database) => {
+                if (database.id == newDatabase.id)
+                    return newDatabase;
+                else
+                    return database
+            })
+
+            this.databases = this.databases.map((database) => {
+                if (typeof database.imageQuality == 'object') {
+                    database.imageQuality = database.imageQuality.join(", ")
+                }
+
+                database.imageCount = database.images.length
+                return database
+            });
+
+            this.closeModal();
+        },
+
     },
     components: {
-        InputComp
+        InputComp,
+        ShowDatabaseModalComp,
+        EditDatabaseModalComp,
+        DeleteDatabaseModalComp
     }
 };
 </script>
@@ -127,6 +221,10 @@ export default {
     color: #80BFAD;
 }
 
+.table-item:hover {
+    color: #459c63;
+}
+
 #filter {
     width: 30%;
     display: flex;
@@ -144,15 +242,6 @@ export default {
     justify-content: space-around;
 }
 
-.bank-link {
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.bank-link:hover {
-    color: #459c63;
-}
-
 .add-button {
     background-color: #73bf8e;;
     color: #ffffff;
@@ -166,6 +255,16 @@ export default {
 
 .add-button:hover {
     background-color: #459c63;
+    border: none;
+} 
+
+tbody td button {
+    padding: 0px;
+    margin-left: 10px;
+    border: none;
+}
+
+tbody td button:hover {
     border: none;
 }
   

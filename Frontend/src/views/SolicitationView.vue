@@ -60,8 +60,8 @@
 </template>
   
 <script>
-import UserSolicitationModal from '../components/UserSolicitationModalComp.vue';
-import DatabaseSolicitationModal from '../components/DatabaseSolicitationModalComp.vue';
+import UserSolicitationModal from '../components/modais/UserSolicitationModalComp.vue';
+import DatabaseSolicitationModal from '../components/modais/DatabaseSolicitationModalComp.vue';
 import InputComp from '../components/InputComp.vue'
 
 export default {

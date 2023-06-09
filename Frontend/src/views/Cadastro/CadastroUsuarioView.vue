@@ -50,49 +50,65 @@
             </div>
             
         </div>
+
+        <div v-if="this.erro" class="error-msg">
+            <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
+        </div>
     </div>
 </template>
 
 <script>
     import axios from 'axios';
+    import ErrorMessageModalComp from '@/components/modais/ErrorMessageModalComp.vue';
 
     export default{
-      name: "CadastroUsuario",
-      data(){
-        return {
-            name: "",
-            email: "",
-            password: "",
-            institution: "",
-            country: "",
-            city: "",
-            lattes: ""
-        }
-      },
-      methods: {
-        async cadastrar(){
-            try {
-                await axios.post(('http://localhost:8081/api/solicitation'), {
-                    "type": "newUser",
-                    "data": {
-                        'name': this.name,
-                        'email': this.email,
-                        'password': this.password,
-                        'institution': this.institution,
-                        'country': this.country,
-                        'city': this.city,
-                        'lattes': this.lattes
-                    }
-                })
-
-                this.$router.push('/');
-
-            } catch (err) {
-                console.log(err.response.data?.err);
+        name: "CadastroUsuario",
+        data(){
+            return {
+                name: "",
+                email: "",
+                password: "",
+                institution: "",
+                country: "",
+                city: "",
+                lattes: "",
+                erro: undefined
             }
-            
+        },
+        methods: {
+            async cadastrar(){
+                try {
+                    await axios.post(('http://localhost:8081/api/solicitation'), {
+                        "type": "newUser",
+                        "data": {
+                            'name': this.name,
+                            'email': this.email,
+                            'password': this.password,
+                            'institution': this.institution,
+                            'country': this.country,
+                            'city': this.city,
+                            'lattes': this.lattes
+                        }
+                    })
+
+                    this.$router.push('/');
+
+                } catch (err) {
+                    let msgError = err.response.data?.err;
+                    msgError = msgError.replace("institution", "instituição")
+                                       .replace("country", "país")
+                                       .replace("city", "cidade");
+                    this.erro = msgError;
+                }
+                
+            },
+            closeModal() {
+            this.erro = undefined;
+            }
+        },
+        components: {
+            ErrorMessageModalComp
         }
-      }
     }
 </script>
 

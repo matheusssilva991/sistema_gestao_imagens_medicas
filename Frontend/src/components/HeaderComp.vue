@@ -8,25 +8,32 @@
             </div>
             
             <div v-if:=!this.logged class="form-header">
+                <i class="fa-regular fa-circle-user green-theme me-1 h5 pt-2"></i>
                 <InputComp name="email" type="email" placeHolder="email" :function="changeValues"/>
+                
+                <i class="fa fa-lock ms-4 green-theme me-1 h5 pt-2" aria-hidden="true"></i>
                 <InputComp name="password" type="password" placeHolder="password" :function="changeValues"/>  
-                <button @click="logar" class="button-header" id="button-login">
-                    <span class="button-text">Log in</span>
-                    <i class="fa-regular fa-circle-user"></i>
+
+                <button @click="logar" class="button-header ms-4" id="button-login">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    <span class="button-text ms-1">Sig-in</span>
                 </button>
-               <!--  <button type="submit" class="button-header">Sign in</button> -->
-                <router-link to="/cadastroUsuario" class="button-header">Sign in</router-link>
+
+                <router-link to="/cadastroUsuario" class="button-header ms-2 pt-1"> 
+                    <i class="fa fa-user-plus me-1" aria-hidden="true"></i>
+                    Sign up
+                </router-link>
             </div>
 
             <div v-else:=this.logged class="form-logged-header">
                 <button id="button-logged">
-                   {{ this.user.name }} <i class="fa-regular fa-circle-user"></i>
+                   {{ this.user.name }} 
                 </button>
             </div>
         </header>
 
         <div v-if="this.erro" class="error-msg">
-            <h1>{{ this.erro }}</h1>
+            <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
         </div>
     </div>
 </template>
@@ -34,6 +41,7 @@
 <script>
 import axios from 'axios'; 
 import InputComp from '@/components/InputComp.vue';
+import ErrorMessageModalComp from '../components/modais/ErrorMessageModalComp.vue';
 
 export default {
     name: 'HeaderComp',
@@ -51,6 +59,9 @@ export default {
     methods: {
         changeValues(prop, text) {
             this[`${prop}`] = text
+        },
+        closeModal() {
+            this.erro = undefined;
         },
 
         async logar() {
@@ -88,8 +99,9 @@ export default {
         }
     },
     components: {
-    InputComp
-}
+        InputComp,
+        ErrorMessageModalComp
+    }
 }
 </script>
 
@@ -116,7 +128,7 @@ html, body {
 }
 
 .navbar-header {
-    width: 50%;
+    width: 49%;
 }
 
 .button-text {
@@ -124,7 +136,7 @@ html, body {
 }
 
 .form-header {
-    width: 50%;
+    width: 51%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -207,4 +219,9 @@ html, body {
     width: 30%;
     margin-left: 10%;
 }
+
+.green-theme {
+    color: #73BF8E;
+}
+
 </style>

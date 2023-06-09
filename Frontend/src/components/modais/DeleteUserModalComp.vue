@@ -3,32 +3,21 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title">Alterar Perfil</h2>
-					<button type="button" class="close btn btn-danger" @click="closeModal">
-					<span aria-hidden="true">&times;</span>
+					<h2 class="modal-title">Excluir usuário</h2>
+					<button type="button" class="close btn btn-white" @click="closeModal">
+						<span class="h2" aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
 					<div class="user-profile">
-						<h3 class="profile-name"><i class="fa-regular fa-circle-user"></i> {{ user.name }}</h3>
+						<h3 class="profile-name"><i class="fa fa-database" aria-hidden="true"></i> {{ user.name}}</h3>
 					</div>
-					
-					<div class="select-profile mt-5">
-						<h3 class="select-profile-title">Selecionar Perfil</h3>
-						<div class="profile-options">
-							<div class="profile-option">
-								<input class="form-check-input mt-0" type="radio" id="pesquisador" name="profile" value=0 v-model="selectedProfile" checked>
-								<label for="pesquisador">Pesquisador</label>
-							</div>
-							<div class="profile-option">
-								<input class="form-check-input mt-0" type="radio" id="administrador" name="profile" value=1 v-model="selectedProfile">
-								<label for="administrador">Administrador</label>
-							</div>
-						</div>
-					</div>
+					Deseja realmente excluir o usuário?
+
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success" @click="saveChanges">Salvar</button>
+					<button type="button" class="btn btn-secondary" @click="closeModal">Voltar</button>
+					<button type="button" class="btn btn-danger" @click="DeleteUser">Excluir</button>
 				</div>
 			</div>
 		</div>
@@ -37,10 +26,7 @@
   
 <script>
 	export default {
-		created(){
-			this.selectedProfile = this.user.cargo;
-		},
-		props: {
+        props: {
 			user: {
 				type: Object,
 				required: true,
@@ -48,8 +34,6 @@
 		},
 		data() {
 			return {
-				showModal: true,
-				selectedProfile: undefined, // Nova propriedade para armazenar o perfil selecionado
 			};
 		},
 		methods: {
@@ -57,16 +41,17 @@
 				this.showModal = false;
 				this.$emit('close-modal');
 			},
-			saveChanges() {
-				this.$emit('save-changes', this.selectedProfile);
-			},
+			DeleteUser() {
+				this.$emit('delete-user', this.user);
+			}
 		},
 	};
+
 </script>
   
 <style scoped>
   /* Estilos do Modal */
-  
+
 .modal {
     font-family: 'Montserrat', sans-serif;
 	margin: 0 auto;
@@ -143,5 +128,5 @@
     margin-top: 20px;
     text-align: right;
 }
-  </style>
-  
+
+</style>

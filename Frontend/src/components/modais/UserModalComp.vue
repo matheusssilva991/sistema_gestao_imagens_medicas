@@ -3,35 +3,32 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title">Solicitação de usuário</h2>
-					<button type="button" class="close btn btn-danger" @click="closeModal">
-					<span aria-hidden="true">&times;</span>
+					<h2 class="modal-title">Alterar Perfil</h2>
+					<button type="button" class="close btn btn-white" @click="closeModal">
+						<span class="h2" aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
 					<div class="user-profile">
-						<h3 class="profile-name"><i class="fa-regular fa-circle-user"></i> {{ solicitation.data.name }}</h3>
+						<h3 class="profile-name"><i class="fa-regular fa-circle-user"></i> {{ user.name }}</h3>
 					</div>
 					
-					<label for="email" class="form-label mt-2">Email</label>
-					<input class="form-control" type="email" :value=email aria-label="Disabled email" disabled readonly>
-
-					<label for="institution" class="form-label mt-3">Instituição</label>
-					<input class="form-control" type="text" :value=institution aria-label="Disabled institution" disabled readonly>
-				
-					<div class="location mt-3">
-						<div class="location-item">
-							<label for="country" class="form-label">País</label>
-							<input class="form-control" type="text" :value=country aria-label="Disabled country" disabled readonly>
-						</div>
-						<div class="location-item">
-							<label for="city" class="form-label">Cidade</label>
-							<input class="form-control" type="text" :value=city aria-label="Disabled city" disabled readonly>
+					<div class="select-profile mt-5">
+						<h3 class="select-profile-title">Selecionar Perfil</h3>
+						<div class="profile-options">
+							<div class="profile-option">
+								<input class="form-check-input mt-0" type="radio" id="pesquisador" name="profile" value=0 v-model="selectedProfile" checked>
+								<label for="pesquisador">Pesquisador</label>
+							</div>
+							<div class="profile-option">
+								<input class="form-check-input mt-0" type="radio" id="administrador" name="profile" value=1 v-model="selectedProfile">
+								<label for="administrador">Administrador</label>
+							</div>
 						</div>
 					</div>
-				
-					<label for="lattes" class="form-label mt-3">Lattes</label>
-					<input class="form-control mb-3" type="lattes" :value=lattes aria-label="Disabled lattes" disabled readonly>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" @click="saveChanges">Salvar</button>
 				</div>
 			</div>
 		</div>
@@ -40,26 +37,17 @@
   
 <script>
 	export default {
-		created() {
-			this.email = this.solicitation.data.email
-			this.institution = this.solicitation.data.institution
-			this.country = this.solicitation.data.country
-			this.city = this.solicitation.data.city
-			this.lattes = this.solicitation.data.lattes
+		created(){
+			this.selectedProfile = this.user.cargo;
 		},
 		props: {
-			solicitation: {
+			user: {
 				type: Object,
 				required: true,
 			},
 		},
 		data() {
 			return {
-				email: undefined,
-				institution: undefined,
-				country: undefined,
-				city: undefined,
-				lattes: undefined,
 				showModal: true,
 				selectedProfile: undefined, // Nova propriedade para armazenar o perfil selecionado
 			};
@@ -68,6 +56,9 @@
 			closeModal() {
 				this.showModal = false;
 				this.$emit('close-modal');
+			},
+			saveChanges() {
+				this.$emit('save-changes', this.selectedProfile);
 			},
 		},
 	};
@@ -152,15 +143,5 @@
     margin-top: 20px;
     text-align: right;
 }
-
-.location {
-	display: flex;
-	justify-content: space-between;
-}
-
-.location-item {
-	width: 45%;
-}
-
-</style>
+  </style>
   

@@ -41,7 +41,7 @@
                             <button @click="openModal(user)">
                                 <i class="fas fa-eye table-item" style="margin-right: 15px"></i>
                             </button>
-                            <button @click="deleteUser(user)">
+                            <button @click="openDeleteModal(user)">
                                 <i class="fas fa-trash table-item" style="margin-right: 15px"></i>
                             </button>
                         </td>  
@@ -51,17 +51,20 @@
       </div>
       <!-- UserModal component -->
       <UserModal v-if="showModal" :user="selectedUser" @save-changes="saveChanges" @close-modal="closeModal" />
+      <DeleteUserModalComp v-if="showDeleteModal" :user="this.selectedUser" @close-modal="closeModal" @delete-user="deleteUser" />
     </div>
 </template>
   
 <script>
-import UserModal from '../components/UserModalComp.vue';
-import InputComp from '../components/InputComp.vue'
+import UserModal from '../components/modais/UserModalComp.vue';
+import InputComp from '../components/InputComp.vue';
+import DeleteUserModalComp from '@/components/modais/DeleteUserModalComp.vue';
 
 export default {
     components: {
         UserModal,
-        InputComp
+        InputComp,
+        DeleteUserModalComp
     },
     data() {
         return {
@@ -73,6 +76,7 @@ export default {
             ],
             filter: '',
             showModal: false,
+            showDeleteModal: false,
             selectedUser: null,
         };
     },
@@ -88,9 +92,14 @@ export default {
             this.selectedUser = user;
             this.showModal = true;
         },
+        openDeleteModal(user) {
+            this.selectedUser = user;
+            this.showDeleteModal = true;
+        },
         closeModal() {
             this.selectedUser = null;
             this.showModal = false;
+            this.showDeleteModal = false;
         },
         deleteUser(user) {
             // Lógica para excluir usuário

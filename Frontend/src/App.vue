@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <HeaderComp @logged="isLogged()"></HeaderComp>
-    <div id="content-logged" v-if:= logged>
+    <div id="content-logged" v-if:= !logged>
       <SideBarComp></SideBarComp>
       <router-view/>
     </div>
-    <div v-else:=!logged>
+    <div v-else:=logged>
       <router-view/>
     </div>
     
