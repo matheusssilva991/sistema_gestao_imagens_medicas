@@ -22,17 +22,16 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "idSolicitation": {
-                                            "type": "string"
-                                        }
-                                    }
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/ArrayUsers"
                                 }
                             }
                         }
                     }
                 }
-            },
+            }  
+        },
+        "/user": {
             "post": {
                 "tags": ["Users"],
                 "summary": "Cadastra um novo usuário",
@@ -41,7 +40,14 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "string"
+                                "properties": {
+                                    "idSolicitation": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "idSolicitation": "15e41f48e4gfeg1e5151f5e11211"
+                                }
                             }
                         }
                     }
@@ -95,7 +101,7 @@
                 }
             }
         },
-        "/users/{id}": {
+        "/user/{id}": {
             "get": {
                 "tags": ["Users"],
                 "summary": "Pega um usuário",
@@ -116,7 +122,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Users"
+                                    "$ref": "#/components/schemas/UserGet"
                                 }
                             }
                         }
@@ -157,7 +163,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Users"
+                                "$ref": "#/components/schemas/UserPut"
                             }
                         }
                     }
@@ -283,13 +289,16 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array" 
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/ArraySolicitations"
                                 }
                             }
                         }
                     }
                 }
-            },
+            }
+        },
+        "/solicitation":  {
             "post": {
                 "tags": ["Solicitations"],
                 "summary": "Cadastra uma nova solicitação",
@@ -298,7 +307,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Solicitations"
+                                "$ref": "#/components/schemas/SolicitationPost"
                             }
                         }
                     }
@@ -335,9 +344,9 @@
                         }
                     } 
                 }
-            }
+            }  
         },
-        "/solicitations/{id}": {
+        "/solicitation/{id}": {
             "get": {
                 "tags": ["Solicitations"],
                 "summary": "Pega uma solicitação",
@@ -358,7 +367,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Solicitations"
+                                    "$ref": "#/components/schemas/SolicitationGet"
                                 }
                             }
                         }
@@ -399,7 +408,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Solicitations"
+                                "$ref": "#/components/schemas/SolicitationPut"
                             }
                         }
                     }
@@ -525,13 +534,16 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array" 
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/ArrayDatabases"
                                 }
                             }
                         }
                     }
                 }
-            },
+            }
+        },
+        "/database": {
             "post": {
                 "tags": ["Databases"],
                 "summary": "Cadastra um novo banco de dados",
@@ -540,7 +552,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Databases"
+                                "$ref": "#/components/schemas/DatabasePostPut"
                             }
                         }
                     }
@@ -594,7 +606,7 @@
                 }
             }
         },
-        "/databases/{id}": {
+        "/database/{id}": {
             "get": {
                 "tags": ["Databases"],
                 "summary": "Pega um banco de dados",
@@ -615,7 +627,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Databases"
+                                    "$ref": "#/components/schemas/DatabaseGet"
                                 }
                             }
                         }
@@ -656,7 +668,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Databases"
+                                "$ref": "#/components/schemas/DatabasePostPut"
                             }
                         }
                     }
@@ -797,13 +809,16 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array" 
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/ArrayImagesTypes" 
                                 }
                             }
                         }
                     }
                 }
-            },
+            }
+        },
+        "/image-type": {
             "post": {
                 "tags": ["ImagesTypes"],
                 "summary": "Cadastra um novo tipo de imagem",
@@ -812,7 +827,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ImagesTypes"
+                                "$ref": "#/components/schemas/ImageTypePostPut"
                             }
                         }
                     }
@@ -866,7 +881,7 @@
                 }
             }
         },
-        "/images-types/{id}": {
+        "/image-type/{id}": {
             "get": {
                 "tags": ["ImagesTypes"],
                 "summary": "Pega um banco de dados",
@@ -887,7 +902,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ImagesTypes"
+                                    "$ref": "#/components/schemas/ImageTypeGet"
                                 }
                             }
                         }
@@ -928,7 +943,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ImagesTypes"
+                                "$ref": "#/components/schemas/ImageTypePostPut"
                             }
                         }
                     }
@@ -1119,105 +1134,244 @@
     },
     "components": {
         "schemas": {
-            "Users": {
+            "UserGet": {
                 "type": "object",
                 "properties": {
                     "_id": {
-                        "type": "string",
-                        "example": "0fe551515184182023"
+                        "type": "string"
                     },
                     "name": {
-                        "type": "string",
-                        "example": "Matheus Santos Silva"
+                        "type": "string"
                     },
                     "email": {
-                        "type": "string",
-                        "example": "matheus@email.com"
-                    },
-                    "password": {
-                        "type": "string",
-                        "example": "12354567@Sc"
+                        "type": "string"
                     },
                     "institution": {
-                        "type": "string",
-                        "example": "UESC"
+                        "type": "string"
                     },
                     "country": {
-                        "type": "string",
-                        "example": "Brasil"
+                        "type": "string"
                     },
                     "city": {
-                        "type": "string",
-                        "example": "Itabuna"
+                        "type": "string"
                     },
                     "lattes": {
-                        "type": "string",
-                        "example": "https://lattes.cnpq.br/3699730704312237"
+                        "type": "string"
                     },
                     "role": {
-                        "type": "number",
-                        "example": 0
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "_id": "0fe551515184182023",
+                    "name": "Matheus Santos Silva",
+                    "email": "matheus@email.com",
+                    "institution": "UESC",
+                    "country": "Brasil",
+                    "city": "Itabuna",
+                    "lattes": "https://lattes.cnpq.br/3699730704312237",
+                    "role": 0
+                }
+            },
+            "UserPut": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
                     },
-                    "temporaryPermission": {
-                        "type": "boolean",
-                        "example": false
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "institution": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "lattes": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "name": "Matheus Santos Silva",
+                    "email": "matheus@email.com",
+                    "password": "1355151@Senha",
+                    "institution": "UESC",
+                    "country": "Brasil",
+                    "city": "Itabuna",
+                    "lattes": "https://lattes.cnpq.br/3699730704312237",
+                    "role": 0
+                }
+            },
+            "ArrayUsers": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string"
+                        },
+                        "institution": {
+                            "type": "string"
+                        },
+                        "country": {
+                            "type": "string"
+                        },
+                        "city": {
+                            "type": "string"
+                        },
+                        "lattes": {
+                            "type": "string"
+                        },
+                        "role": {
+                            "type": "number"
+                        }
+                    },
+                    "example": {
+                        "_id": "0fe551515184182023",
+                        "name": "Matheus Santos Silva",
+                        "email": "matheus@email.com",
+                        "institution": "UESC",
+                        "country": "Brasil",
+                        "city": "Itabuna",
+                        "lattes": "https://lattes.cnpq.br/3699730704312237",
+                        "role": 0
                     }
                 }
             },
-            "Solicitations": {
+            "SolicitationPost": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"  
+                    }
+                },
+                "example": {
+                    "type": "newDatabase",
+                    "data": {
+                        "name": "CBIS-DDSM",
+                        "description":  "Banco de dados derivado do DDSM",
+                        "sourceLink": "http://link-banco.com"
+                    }
+                }
+            },
+            "SolicitationGet": {
                 "type": "object",
                 "properties": {
                     "_id": {
-                        "type": "string",
-                        "example": "0fe551515184182023"
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
                     },
                     "status": {
-                        "type": "string",
-                        "example": "pending"
+                        "type": "string"
                     },
                     "solicitationDate": {
-                        "type": "string",
-                        "example": "28/04/2023"
+                        "type": "string"
                     },
                     "data": {
-                        "type": "object",
-                        "example": {
-                            "description": "Banco tal",
-                            "sourceLink": "link do banco tal"
+                        "type": "object"  
+                    }
+                },
+                "example": {
+                    "_id": "0fe551515184182023",
+                    "type": "newDatabase",
+                    "status": "pending",
+                    "solicitationDate": "28/04/2023",
+                    "data": {
+                        "name": "CBIS-DDSM",
+                        "description":  "Banco de dados derivado do DDSM",
+                        "sourceLink": "http://link-banco.com"
+                    }
+                }
+            },
+            "SolicitationPut": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "status": "accepted"
+                }
+            },
+            "ArraySolicitations": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string"
+                        },
+                        "solicitationDate": {
+                            "type": "string"
+                        },
+                        "data": {
+                            "type": "object"  
+                        }
+                    },
+                    "example": {
+                        "_id": "0fe551515184182023",
+                        "type": "newDatabase",
+                        "status": "pending",
+                        "solicitationDate": "28/04/2023",
+                        "data": {
+                            "name": "CBIS-DDSM",
+                            "description":  "Banco de dados derivado do DDSM",
+                            "sourceLink": "http://link-banco.com"
                         }
                     }
                 }
             },
-            "Databases": {
+            "DatabaseGet": {
                 "type": "object",
                 "properties": {
                     "_id": {
-                        "type": "string",
-                        "example": "0fe551515184182023"
+                        "type": "string"
                     },
                     "name": {
-                        "type": "string",
-                        "example": "CBIS-DDSM"
+                        "type": "string"
                     },
                     "examType": {
-                        "type": "string",
-                        "example": "Mamografia"
+                        "type": "string"
                     },
                     "description": {
-                        "type": "string",
-                        "example": "Banco gerado por processamento do DDSM"
+                        "type": "string"
                     },
                     "imageQuality": {
-                        "type": "array",
-                        "example": [8, 12, 16]
+                        "type": "array"
                     },
                     "imageType": {
-                        "type": "string",
-                        "example": "DICOM"
+                        "type": "string"
                     },
                     "sourceLink": {
-                        "type": "string",
-                        "example": "http://link-banco.com"
+                        "type": "string"
                     },
                     "images": {
                         "type": "array",
@@ -1230,7 +1384,8 @@
                                     "age": 22 
                                 },
                                 "orientation": "CC",
-                                "path": "C:/caminhoImagem",
+                                "imagePath": "C:/caminhoImagem",
+                                "resizedImagePath": "C:/caminhoImagemResized",
                                 "size": "16MB",
                                 "dimension": "255x255",
                                 "imageQuality": 8,
@@ -1248,30 +1403,246 @@
                             }
                         ]
                     }
+                },
+                "example": {
+                    "_id": "0fe551515184182023",
+                    "name": "CBIS-DDSM",
+                    "examType": "Mamografia",
+                    "description": "Banco de imagens derivado do processamento do DDSM",
+                    "imageQuality": [8, 12, 16],
+                    "imageType": "DICOM",
+                    "SourceLink": "http://link-banco.com",
+                    "images": [
+                                {
+                                    "pacient": {
+                                        "id": "12315362ffe2023", 
+                                        "name": "matheus", 
+                                        "sex": "Masculino", 
+                                        "age": 22 
+                                    },
+                                    "orientation": "CC",
+                                    "imagePath": "C:/caminhoImagem",
+                                    "resizedImagePath": "C:/caminhoImagemResized",
+                                    "size": "16MB",
+                                    "dimension": "255x255",
+                                    "imageQuality": 8,
+                                    "classification": {
+                                        "birads": 5,
+                                        "pathology": "malign"
+                                    },
+                                    "processings": [
+                                        {
+                                            "processingType": "cropped",
+                                            "processedImagePath": "C:/caminhoImagemProcessada",
+                                            "imageData": {}
+                                        }
+                                    ]
+                                }
+                            ]
                 }
             },
-            "ImagesTypes": {
+            "DatabasePostPut": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "examType": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "imageQuality": {
+                        "type": "array"
+                    },
+                    "imageType": {
+                        "type": "string"
+                    },
+                    "sourceLink": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "name": "CBIS-DDSM",
+                    "examType": "Mamografia",
+                    "description": "Banco de imagens derivado do processamento do DDSM",
+                    "imageQuality": [8, 12, 16],
+                    "imageType": "DICOM",
+                    "SourceLink": "http://link-banco.com"  
+                }
+            },
+            "ArrayDatabases": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "examType": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "imageQuality": {
+                            "type": "array"
+                        },
+                        "imageType": {
+                            "type": "string"
+                        },
+                        "sourceLink": {
+                            "type": "string"
+                        },
+                        "images": {
+                            "type": "array",
+                            "example": [
+                                {
+                                    "pacient": {
+                                        "id": "12315362ffe2023", 
+                                        "name": "matheus", 
+                                        "sex": "Masculino", 
+                                        "age": 22 
+                                    },
+                                    "orientation": "CC",
+                                    "imagePath": "C:/caminhoImagem",
+                                    "resizedImagePath": "C:/caminhoImagemResized",
+                                    "size": "16MB",
+                                    "dimension": "255x255",
+                                    "imageQuality": 8,
+                                    "classification": {
+                                        "birads": 5,
+                                        "pathology": "malign"
+                                    },
+                                    "processings": [
+                                        {
+                                            "processingType": "cropped",
+                                            "processedImagePath": "C:/caminhoImagemProcessada",
+                                            "imageData": {}
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "example": {
+                        "_id": "0fe551515184182023",
+                        "name": "CBIS-DDSM",
+                        "examType": "Mamografia",
+                        "description": "Banco de imagens derivado do processamento do DDSM",
+                        "imageQuality": [8, 12, 16],
+                        "imageType": "DICOM",
+                        "SourceLink": "http://link-banco.com",
+                        "images": [
+                                    {
+                                        "pacient": {
+                                            "id": "12315362ffe2023", 
+                                            "name": "matheus", 
+                                            "sex": "Masculino", 
+                                            "age": 22 
+                                        },
+                                        "orientation": "CC",
+                                        "imagePath": "C:/caminhoImagem",
+                                        "resizedImagePath": "C:/caminhoImagemResized",
+                                        "size": "16MB",
+                                        "dimension": "255x255",
+                                        "imageQuality": 8,
+                                        "classification": {
+                                            "birads": 5,
+                                            "pathology": "malign"
+                                        },
+                                        "processings": [
+                                            {
+                                                "processingType": "cropped",
+                                                "processedImagePath": "C:/caminhoImagemProcessada",
+                                                "imageData": {}
+                                            }
+                                        ]
+                                    }
+                                ]
+                    }
+                }
+            },
+            "ImageTypeGet": {
                 "type": "object",
                 "properties": {
                     "_id": {
-                        "type": "string",
-                        "example": "0fe551515184182023"
+                        "type": "string"
                     },
                     "name": {
-                        "type": "string",
-                        "example": "DICOM"
+                        "type": "string"
                     },
                     "description": {
-                        "type": "string",
-                        "example": "Padrão Dicom"
+                        "type": "string"
                     },
                     "requiredData": {
-                        "type": "object",
-                        "example": {}
+                        "type": "object"
                     },
                     "optionalData": {
-                        "type": "object",
-                        "example": {}
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "_id": "0fe551515184182023",
+                    "name": "DICOM",
+                    "description": "Padrão DICOM",
+                    "requiredDAta": {},
+                    "optionalData":{}
+                }
+            },
+            "ImageTypePostPut": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "requiredData": {
+                        "type": "object"
+                    },
+                    "optionalData": {
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "name": "DICOM",
+                    "description": "Padrão DICOM",
+                    "requiredDAta": {},
+                    "optionalData":{}
+                }
+            },
+            "ArrayImagesTypes": {
+                "type": "array",
+                "items": {
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "requiredData": {
+                            "type": "object"
+                        },
+                        "optionalData": {
+                            "type": "object"
+                        }
+                    },
+                    "example": {
+                        "_id": "0fe551515184182023",
+                        "name": "DICOM",
+                        "description": "Padrão DICOM",
+                        "requiredDAta": {},
+                        "optionalData":{}
                     }
                 }
             }

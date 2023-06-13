@@ -1,19 +1,19 @@
 <template>
-  <div>
-    <Side-Bar-Component />
-    <!-- <router-view></router-view> ONDE EU TAVA ERRANDO, GERANDO DUAS ROTAS -->
+  <div id="app">
+    <HeaderComp></HeaderComp>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import SideBarComponent from './components/SideBarComponente.vue'
+  import HeaderComp from './components/HeaderComp.vue';
 
-export default {
-  name: 'App',
-  components: {
-    SideBarComponent
+  export default {
+    name:"App",
+    components: {
+      HeaderComp
+    }
   }
-}
 </script>
 
 <style>
@@ -40,3 +40,4 @@ strong {
   margin-top: 60px;
 }
 </style>
+
