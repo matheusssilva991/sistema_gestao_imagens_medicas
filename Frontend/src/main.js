@@ -5,14 +5,4 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import './styles.css';
-
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
-
-createApp(App)
-  .use(router)
-  .mount('#app');
+createApp(App).use(router).mount('#app')

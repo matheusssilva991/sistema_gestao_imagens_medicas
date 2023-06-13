@@ -1,6 +1,8 @@
 <template>
     <div class="input">
-        <input class="input-control" :type=this.type :placeholder=this.name :name="this.name" v-model="text" @input="changeFromChildren()">
+        <input class="input-control" :type=this.type :placeholder=this.name :name="this.name" 
+            v-model="text" @input="changeFromChildren()"
+        >
     </div>
 </template>
 

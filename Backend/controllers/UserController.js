@@ -164,15 +164,15 @@ class UserController {
                 const resultToken = await AuthTokenService.create(token);
 
                 if (resultToken.sucess)
-                    res.status(200).json({ token: token });
+                    res.status(200).json({ id: user._id, token: token });
                 else
                     res.status(400).json({ err: "Erro na criação do token"});
 
             } else 
-                res.status(406).json({ err: "Senha incorreta" }); 
+                res.status(406).json({ err: "Senha incorreta." }); 
 
         } else 
-            res.status(403).json({ err: "O usuário não existe!" });
+            res.status(403).json({ err: "Não existe usuário cadastrado com esse e-mail." });
     }
 
     async logout (req, res) {

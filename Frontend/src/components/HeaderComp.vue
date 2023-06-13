@@ -8,24 +8,32 @@
             </div>
             
             <div v-if:=!this.logged class="form-header">
+                <i class="fa-regular fa-circle-user green-theme me-1 h5 pt-2"></i>
                 <InputComp name="email" type="email" placeHolder="email" :function="changeValues"/>
+                
+                <i class="fa fa-lock ms-4 green-theme me-1 h5 pt-2" aria-hidden="true"></i>
                 <InputComp name="password" type="password" placeHolder="password" :function="changeValues"/>  
-                <button @click="logar" class="button-header" id="button-login">
-                    <span class="button-text">Log in</span>
-                    <i class="fa-regular fa-circle-user"></i>
+
+                <button @click="logar" class="button-header ms-4" id="button-login">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    <span class="button-text ms-1">Sig-in</span>
                 </button>
-                <button type="submit" class="button-header">Sign in</button>
+
+                <router-link to="/cadastroUsuario" class="button-header ms-2 pt-1"> 
+                    <i class="fa fa-user-plus me-1" aria-hidden="true"></i>
+                    Sign up
+                </router-link>
             </div>
 
             <div v-else:=this.logged class="form-logged-header">
-                <button class="button-logged">
-                    Your name <i class="fa-regular fa-circle-user"></i>
+                <button id="button-logged">
+                   {{ this.user.name }} 
                 </button>
             </div>
         </header>
 
         <div v-if="this.erro" class="error-msg">
-            <h1>{{ this.erro }}</h1>
+            <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
         </div>
     </div>
 </template>
@@ -33,6 +41,7 @@
 <script>
 import axios from 'axios'; 
 import InputComp from '@/components/InputComp.vue';
+import ErrorMessageModalComp from '../components/modais/ErrorMessageModalComp.vue';
 
 export default {
     name: 'HeaderComp',
@@ -43,25 +52,45 @@ export default {
             logged: false,
             erro: undefined,
             email: "",
-            password: ""
+            password: "",
+            user: {}
         }
     },
     methods: {
         changeValues(prop, text) {
             this[`${prop}`] = text
         },
+        closeModal() {
+            this.erro = undefined;
+        },
 
         async logar() {
             try {
-                const token = await axios.post(("http://localhost:8081/login"), {
+                let response = await axios.post(("http://localhost:8081/login"), {
                     email: this.email,
                     password: this.password
                 })
 
+                const { id, token } = response.data;
+
                 if (token) {
                     this.logged = true;
                     localStorage.setItem('token', token);
-                    this.$router.push({name: 'about'})
+
+                    const req = {
+                        headers: {
+                            Authorization: "Bearer " + localStorage.getItem('token')
+                        }
+                    }
+
+                    axios.get(`http://localhost:8081/api/user/${id}`, req).then(response => {
+                        this.user = response.data;
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+
+                    this.$emit('logged');
+                    this.$router.push({name: 'databases'});
                 }
             } catch (err) {
                 const msgError = err.response.data?.err;
@@ -70,8 +99,9 @@ export default {
         }
     },
     components: {
-    InputComp
-}
+        InputComp,
+        ErrorMessageModalComp
+    }
 }
 </script>
 
@@ -98,7 +128,7 @@ html, body {
 }
 
 .navbar-header {
-    width: 50%;
+    width: 49%;
 }
 
 .button-text {
@@ -106,10 +136,17 @@ html, body {
 }
 
 .form-header {
-    width: 50%;
+    width: 51%;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding-right: 5%;
+}
+
+.form-logged-header {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
     padding-right: 5%;
 }
 
@@ -126,7 +163,7 @@ html, body {
     margin-left: 5%;
 }
 
-.button-logged {
+#button-logged {
     background-color: #73BF8E;
     border: 1px solid #73BF8E;
     color: white;
@@ -135,6 +172,15 @@ html, body {
     border-radius: 35px;
     height: 35px;
     align-items: center;
+    padding-left: 2%;
+    padding-right: 2%;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#button-logged:hover {
+    background-color: #459c63;
+    border: 1px solid #459c63;
 }
 
 .button-header {
@@ -146,6 +192,7 @@ html, body {
     background-color: white;
     color: #73BF8E;
     align-items: center;
+    text-decoration: none;
 }
 
 .button-header:hover {
@@ -172,4 +219,9 @@ html, body {
     width: 30%;
     margin-left: 10%;
 }
+
+.green-theme {
+    color: #73BF8E;
+}
+
 </style>
