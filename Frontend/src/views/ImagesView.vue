@@ -317,7 +317,12 @@ export default {
 
   .sidebar-title {
     font-size: 20px;
+    margin-top: 5px;
+    justify-content: center;
   }
+  .sidebar-header{
+        flex-direction: column;
+    }
 
   #filter {
     width: 80%;
@@ -339,7 +344,7 @@ export default {
   }
 
     .modal-content {
-    width: 90%;
+    width: auto;
   }
 
    .modal-body {
@@ -359,19 +364,10 @@ export default {
   }
 }
 
-
-@media (min-width: 340px) and (max-width: 576px){
-    .sidebar{
-        height: auto;
-    }
-    .pagination{
-      bottom: 1px;
-    }
-} 
  @media (min-width:577px) and (max-width: 735px) {
 
     .modal-content {
-    width: 90%;
+    width: auto;
   }
 
   .modal-body {
@@ -391,15 +387,22 @@ export default {
   }
 
   .sidebar-title {
-    margin-top: -5%;
-    text-align: center;
-  }
-  .sidebar-header{
+    
+    margin-top: 5px;
     justify-content: center;
   }
+  .sidebar-header{
+        flex-direction: column;
+    }
+
 
   .sidebar{
     height: auto;
+  }
+
+  #filter {
+    width: 80%;
+    margin-top: 10px;
   }
   .pagination{
     margin-left: auto;
@@ -414,12 +417,47 @@ export default {
     width: 40%;
     margin: 10px;
   }
+  .sidebar-title {
+    
+    margin-top: 5px;
+    justify-content: center;
+  }
+  .sidebar-header{
+        flex-direction: column;
+    }
+
+
   .sidebar{
     height: auto;
+  }
+
+  #filter {
+    width: 65%;
+    margin-top: 10px;
   }
   .pagination{
     margin:auto;
   }
+  .modal-content {
+    width: auto;
+  }
+
+  .modal-body {
+    flex-direction: column;
+  }
+
+  .modal-image-container{
+    flex: 1;
+    text-align: center;
+  }
+  .modal-info {
+    margin: 10px 0;
+  }
+
+  .modal-image {
+    max-height: 200px;
+  }
+
 } 
 @media (min-width: 1001px) and (max-width: 1220px) {
   .imagens li {
@@ -428,6 +466,9 @@ export default {
   }
   .sidebar{
     height: auto;
+  }
+  .modal-content {
+    width: auto;
   }
 } 
 
