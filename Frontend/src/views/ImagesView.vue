@@ -17,6 +17,7 @@
             <div class="imagens mt-4">
                <template v-for="(imagem, index) in imagensPagina" :key="index">
                  <li><img class="mamografia.jpg" src="../assets/mamografia.jpg" :alt="imagem.alt" @click="openModal('mamografia.jpg')"/></li>
+                 
                </template>
             </div>
 
@@ -126,6 +127,11 @@ export default {
       { src: '../assets/mamografia.jpg', alt: 'Imagem 11' , idPaciente: '133', orientacao: '...', qualidade: '...', patologia: '...' },
       { src: '../assets/mamografia.jpg', alt: 'Imagem 12', idPaciente: '134', orientacao: '...', qualidade: '...', patologia: '...'  },
       { src: '../assets/mamografia.jpg', alt: 'Imagem 13', idPaciente: '135', orientacao: '...', qualidade: '...', patologia: '...'  },
+      { src: '../assets/mamografia.jpg', alt: 'Imagem 10' , idPaciente: '132', orientacao: '...', qualidade: '...', patologia: '...' },
+      { src: '../assets/mamografia.jpg', alt: 'Imagem 11' , idPaciente: '133', orientacao: '...', qualidade: '...', patologia: '...' },
+      { src: '../assets/mamografia.jpg', alt: 'Imagem 12', idPaciente: '134', orientacao: '...', qualidade: '...', patologia: '...'  },
+      { src: '../assets/mamografia.jpg', alt: 'Imagem 13', idPaciente: '135', orientacao: '...', qualidade: '...', patologia: '...'  },
+
 
 
     ];
@@ -319,6 +325,7 @@ export default {
     font-size: 20px;
     margin-top: 5px;
     justify-content: center;
+    text-align: center;
   }
   .sidebar-header{
         flex-direction: column;
