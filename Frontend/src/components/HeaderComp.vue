@@ -2,9 +2,7 @@
     <div> 
         <header class="header">
             <div class="navbar-header">
-                <a href="/"><img src="../assets/logo.png" alt="Logo" id="logo"></a>
-                <router-link to="/" class="nav-link-header" v-if:=!this.logged>Home</router-link>
-                <router-link to="/about" class="nav-link-header" v-if:=!this.logged>Sobre o projeto</router-link>
+                <a><img src="../assets/logo.png" alt="Logo" id="logo"></a>
             </div>
             
             <div v-if:=!this.logged class="form-header">
@@ -21,14 +19,18 @@
 
                 <router-link to="/cadastroUsuario" class="button-header ms-2 pt-1"> 
                     <i class="fa fa-user-plus me-1" aria-hidden="true"></i>
-                    Sign up
+                    Signup
                 </router-link>
             </div>
 
-            <div v-else:=this.logged class="form-logged-header">
-                <button id="button-logged">
-                   {{ this.user.name }} 
+            <div v-else:=this.logged class="dropdown form-logged-header">
+                <button id="button-logged" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-circle-user"></i> {{ this.user.name }} 
                 </button>
+                <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Editar perfil</a></li>
+                <li><a class="dropdown-item" href="/">Logout</a></li>
+            </ul>
             </div>
         </header>
 
@@ -185,6 +187,7 @@ html, body {
 
 .button-header {
     height: 35px;
+    width: 150px;
     border-radius: 20px;
     padding-left: 3%;
     padding-right: 3%;
