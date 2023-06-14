@@ -1,6 +1,3 @@
-# **Minha Contribuição no projeto**
+# sistema_gestao_imagens_medicas
 
-## Descrição:
-
-Neste projeto, minha participação se concentra na área de desenvolvimento web. Fui responsável por implementar as páginas de cadastro/atualização de todo o sistema.
-
+Sistema de gestão de imagens médicas

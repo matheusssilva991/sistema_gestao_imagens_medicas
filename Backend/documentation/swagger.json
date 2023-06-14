@@ -1,0 +1,1652 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+      "title":"API para um sistema de uma datawarehouse de bancos de imagens médicas",
+      "contact": {
+        "name": "Matheus Santos Silva",
+        "email": "matheus.ssilva991@gmail.com"
+      },
+      "version":"1.0"
+    },
+    "servers": [
+      {"url":"https://localhost:8081"}
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Pega todos os usuários",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/ArrayUsers"
+                                }
+                            }
+                        }
+                    }
+                }
+            }  
+        },
+        "/user": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Cadastra um novo usuário",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "idSolicitation": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "idSolicitation": "15e41f48e4gfeg1e5151f5e11211"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao criar",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Email já cadastrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Pega um usuário",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id do usuário",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserGet"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Users"],
+                "summary": "Atualizar um usuário",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id do usuário",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Email já cadastrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "tags": ["Users"],
+                "summary": "Deletar um usuário",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id do usuário",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao deletar",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/solicitations": {
+            "get": {
+                "tags": ["Solicitations"],
+                "summary": "Pega todas as solicitações",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/ArraySolicitations"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/solicitation":  {
+            "post": {
+                "tags": ["Solicitations"],
+                "summary": "Cadastra uma nova solicitação",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SolicitationPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Solicitação criada",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao criar",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } 
+                }
+            }  
+        },
+        "/solicitation/{id}": {
+            "get": {
+                "tags": ["Solicitations"],
+                "summary": "Pega uma solicitação",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id da solicitação",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SolicitationGet"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Solicitação não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Solicitations"],
+                "summary": "Atualizar uma solicitação",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id da solicitação",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SolicitationPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Tipo de status inválido",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Solicitação não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "tags": ["Solicitations"],
+                "summary": "Deletar uma solicitação",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id da solicitação",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao deletar",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Solicitação não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/databases": {
+            "get": {
+                "tags": ["Databases"],
+                "summary": "Pega todos os bancos de dados",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/ArrayDatabases"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/database": {
+            "post": {
+                "tags": ["Databases"],
+                "summary": "Cadastra um novo banco de dados",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DatabasePostPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Banco de dados criado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Tipo de imagem não existe",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Banco de dados já cadastrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/database/{id}": {
+            "get": {
+                "tags": ["Databases"],
+                "summary": "Pega um banco de dados",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id do banco de dados",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DatabaseGet"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Banco de dados não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Databases"],
+                "summary": "Atualizar um banco de dados",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id do banco de dados",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DatabasePostPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Tipo de imagem não existe",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Banco de dados já cadastrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Banco de dados não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "tags": ["Databases"],
+                "summary": "Deletar um banco de dados",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id do banco de dados",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao deletar",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Banco de dados não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/images-types": {
+            "get": {
+                "tags": ["ImagesTypes"],
+                "summary": "Pega todos os tipos de imagens",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/ArrayImagesTypes" 
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/image-type": {
+            "post": {
+                "tags": ["ImagesTypes"],
+                "summary": "Cadastra um novo tipo de imagem",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ImageTypePostPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tipo de imagem criado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao cadastrar",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Tipo de imagem já cadastrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/image-type/{id}": {
+            "get": {
+                "tags": ["ImagesTypes"],
+                "summary": "Pega um banco de dados",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id do tipo de imagem",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImageTypeGet"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Tipo de imagem não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["ImagesTypes"],
+                "summary": "Atualizar um tipo de imagem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id do tipo de imagem",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ImageTypePostPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Tipo de imagem já cadastrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Tipo de imagem não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "tags": ["ImagesTypes"],
+                "summary": "Deletar um tipo de imagem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "id do tipo de imagem",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao deletar",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Tipo de imagem não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post":{
+                "tags": ["Auth"],
+                "summary": "Login de usuário",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                               "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "matheus@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345687@Lol"
+                                    }
+                               }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Usuário não existe",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Senha incorreta",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }                 
+    },
+    "components": {
+        "schemas": {
+            "UserGet": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "institution": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "lattes": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "_id": "0fe551515184182023",
+                    "name": "Matheus Santos Silva",
+                    "email": "matheus@email.com",
+                    "institution": "UESC",
+                    "country": "Brasil",
+                    "city": "Itabuna",
+                    "lattes": "https://lattes.cnpq.br/3699730704312237",
+                    "role": 0
+                }
+            },
+            "UserPut": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "institution": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "lattes": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "name": "Matheus Santos Silva",
+                    "email": "matheus@email.com",
+                    "password": "1355151@Senha",
+                    "institution": "UESC",
+                    "country": "Brasil",
+                    "city": "Itabuna",
+                    "lattes": "https://lattes.cnpq.br/3699730704312237",
+                    "role": 0
+                }
+            },
+            "ArrayUsers": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string"
+                        },
+                        "institution": {
+                            "type": "string"
+                        },
+                        "country": {
+                            "type": "string"
+                        },
+                        "city": {
+                            "type": "string"
+                        },
+                        "lattes": {
+                            "type": "string"
+                        },
+                        "role": {
+                            "type": "number"
+                        }
+                    },
+                    "example": {
+                        "_id": "0fe551515184182023",
+                        "name": "Matheus Santos Silva",
+                        "email": "matheus@email.com",
+                        "institution": "UESC",
+                        "country": "Brasil",
+                        "city": "Itabuna",
+                        "lattes": "https://lattes.cnpq.br/3699730704312237",
+                        "role": 0
+                    }
+                }
+            },
+            "SolicitationPost": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"  
+                    }
+                },
+                "example": {
+                    "type": "newDatabase",
+                    "data": {
+                        "name": "CBIS-DDSM",
+                        "description":  "Banco de dados derivado do DDSM",
+                        "sourceLink": "http://link-banco.com"
+                    }
+                }
+            },
+            "SolicitationGet": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "solicitationDate": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"  
+                    }
+                },
+                "example": {
+                    "_id": "0fe551515184182023",
+                    "type": "newDatabase",
+                    "status": "pending",
+                    "solicitationDate": "28/04/2023",
+                    "data": {
+                        "name": "CBIS-DDSM",
+                        "description":  "Banco de dados derivado do DDSM",
+                        "sourceLink": "http://link-banco.com"
+                    }
+                }
+            },
+            "SolicitationPut": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "status": "accepted"
+                }
+            },
+            "ArraySolicitations": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string"
+                        },
+                        "solicitationDate": {
+                            "type": "string"
+                        },
+                        "data": {
+                            "type": "object"  
+                        }
+                    },
+                    "example": {
+                        "_id": "0fe551515184182023",
+                        "type": "newDatabase",
+                        "status": "pending",
+                        "solicitationDate": "28/04/2023",
+                        "data": {
+                            "name": "CBIS-DDSM",
+                            "description":  "Banco de dados derivado do DDSM",
+                            "sourceLink": "http://link-banco.com"
+                        }
+                    }
+                }
+            },
+            "DatabaseGet": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "examType": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "imageQuality": {
+                        "type": "array"
+                    },
+                    "imageType": {
+                        "type": "string"
+                    },
+                    "sourceLink": {
+                        "type": "string"
+                    },
+                    "images": {
+                        "type": "array",
+                        "example": [
+                            {
+                                "pacient": {
+                                    "id": "12315362ffe2023", 
+                                    "name": "matheus", 
+                                    "sex": "Masculino", 
+                                    "age": 22 
+                                },
+                                "orientation": "CC",
+                                "imagePath": "C:/caminhoImagem",
+                                "resizedImagePath": "C:/caminhoImagemResized",
+                                "size": "16MB",
+                                "dimension": "255x255",
+                                "imageQuality": 8,
+                                "classification": {
+                                    "birads": 5,
+                                    "pathology": "malign"
+                                },
+                                "processings": [
+                                    {
+                                        "processingType": "cropped",
+                                        "processedImagePath": "C:/caminhoImagemProcessada",
+                                        "imageData": {}
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "example": {
+                    "_id": "0fe551515184182023",
+                    "name": "CBIS-DDSM",
+                    "examType": "Mamografia",
+                    "description": "Banco de imagens derivado do processamento do DDSM",
+                    "imageQuality": [8, 12, 16],
+                    "imageType": "DICOM",
+                    "SourceLink": "http://link-banco.com",
+                    "images": [
+                                {
+                                    "pacient": {
+                                        "id": "12315362ffe2023", 
+                                        "name": "matheus", 
+                                        "sex": "Masculino", 
+                                        "age": 22 
+                                    },
+                                    "orientation": "CC",
+                                    "imagePath": "C:/caminhoImagem",
+                                    "resizedImagePath": "C:/caminhoImagemResized",
+                                    "size": "16MB",
+                                    "dimension": "255x255",
+                                    "imageQuality": 8,
+                                    "classification": {
+                                        "birads": 5,
+                                        "pathology": "malign"
+                                    },
+                                    "processings": [
+                                        {
+                                            "processingType": "cropped",
+                                            "processedImagePath": "C:/caminhoImagemProcessada",
+                                            "imageData": {}
+                                        }
+                                    ]
+                                }
+                            ]
+                }
+            },
+            "DatabasePostPut": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "examType": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "imageQuality": {
+                        "type": "array"
+                    },
+                    "imageType": {
+                        "type": "string"
+                    },
+                    "sourceLink": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "name": "CBIS-DDSM",
+                    "examType": "Mamografia",
+                    "description": "Banco de imagens derivado do processamento do DDSM",
+                    "imageQuality": [8, 12, 16],
+                    "imageType": "DICOM",
+                    "SourceLink": "http://link-banco.com"  
+                }
+            },
+            "ArrayDatabases": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "examType": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "imageQuality": {
+                            "type": "array"
+                        },
+                        "imageType": {
+                            "type": "string"
+                        },
+                        "sourceLink": {
+                            "type": "string"
+                        },
+                        "images": {
+                            "type": "array",
+                            "example": [
+                                {
+                                    "pacient": {
+                                        "id": "12315362ffe2023", 
+                                        "name": "matheus", 
+                                        "sex": "Masculino", 
+                                        "age": 22 
+                                    },
+                                    "orientation": "CC",
+                                    "imagePath": "C:/caminhoImagem",
+                                    "resizedImagePath": "C:/caminhoImagemResized",
+                                    "size": "16MB",
+                                    "dimension": "255x255",
+                                    "imageQuality": 8,
+                                    "classification": {
+                                        "birads": 5,
+                                        "pathology": "malign"
+                                    },
+                                    "processings": [
+                                        {
+                                            "processingType": "cropped",
+                                            "processedImagePath": "C:/caminhoImagemProcessada",
+                                            "imageData": {}
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "example": {
+                        "_id": "0fe551515184182023",
+                        "name": "CBIS-DDSM",
+                        "examType": "Mamografia",
+                        "description": "Banco de imagens derivado do processamento do DDSM",
+                        "imageQuality": [8, 12, 16],
+                        "imageType": "DICOM",
+                        "SourceLink": "http://link-banco.com",
+                        "images": [
+                                    {
+                                        "pacient": {
+                                            "id": "12315362ffe2023", 
+                                            "name": "matheus", 
+                                            "sex": "Masculino", 
+                                            "age": 22 
+                                        },
+                                        "orientation": "CC",
+                                        "imagePath": "C:/caminhoImagem",
+                                        "resizedImagePath": "C:/caminhoImagemResized",
+                                        "size": "16MB",
+                                        "dimension": "255x255",
+                                        "imageQuality": 8,
+                                        "classification": {
+                                            "birads": 5,
+                                            "pathology": "malign"
+                                        },
+                                        "processings": [
+                                            {
+                                                "processingType": "cropped",
+                                                "processedImagePath": "C:/caminhoImagemProcessada",
+                                                "imageData": {}
+                                            }
+                                        ]
+                                    }
+                                ]
+                    }
+                }
+            },
+            "ImageTypeGet": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "requiredData": {
+                        "type": "object"
+                    },
+                    "optionalData": {
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "_id": "0fe551515184182023",
+                    "name": "DICOM",
+                    "description": "Padrão DICOM",
+                    "requiredDAta": {},
+                    "optionalData":{}
+                }
+            },
+            "ImageTypePostPut": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "requiredData": {
+                        "type": "object"
+                    },
+                    "optionalData": {
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "name": "DICOM",
+                    "description": "Padrão DICOM",
+                    "requiredDAta": {},
+                    "optionalData":{}
+                }
+            },
+            "ArrayImagesTypes": {
+                "type": "array",
+                "items": {
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "requiredData": {
+                            "type": "object"
+                        },
+                        "optionalData": {
+                            "type": "object"
+                        }
+                    },
+                    "example": {
+                        "_id": "0fe551515184182023",
+                        "name": "DICOM",
+                        "description": "Padrão DICOM",
+                        "requiredDAta": {},
+                        "optionalData":{}
+                    }
+                }
+            }
+        }
+    
+    }
+}
