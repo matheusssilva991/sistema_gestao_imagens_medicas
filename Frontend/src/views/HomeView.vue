@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div>
     <transition-group name="fade" tag="div">
       <div v-for="i in [currentIndex]" :key="i">
@@ -24,10 +25,15 @@
     </transition-group>
     <a class="prev" @click="prev" href="#">&#10094; Previous</a>
     <a class="next" @click="next" href="#">&#10095; Next</a>
+=======
+  <div class="home">
+    <h1>Home</h1>
+>>>>>>> Alessandro
   </div>
 </template>
 
 <script>
+<<<<<<< HEAD
 import image1 from "@/assets/image1.jpg";
 import image2 from "@/assets/image2.jpg";
 import image3 from "@/assets/image3.jpg";
@@ -142,5 +148,19 @@ img {
 .prev:hover,
 .next:hover {
   background-color: rgba(0, 0, 0, 0.9);
+=======
+// @ is an alias to /src
+export default {
+  name: 'HomeView',
+  components: {
+  }
+}
+</script>
+
+<style scoped>
+.home {
+  width: 90%;
+  margin: auto;
+>>>>>>> Alessandro
 }
 </style>

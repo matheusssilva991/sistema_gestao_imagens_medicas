@@ -2,7 +2,13 @@
     <div> 
         <header class="header">
             <div class="navbar-header">
+<<<<<<< HEAD
                 <a><img src="../assets/logo.png" alt="Logo" id="logo"></a>
+=======
+                <a href="/"><img src="../assets/logo.png" alt="Logo" id="logo"></a>
+                <router-link to="/" class="nav-link-header" v-if:=!this.logged>Home</router-link>
+                <router-link to="/about" class="nav-link-header" v-if:=!this.logged>Sobre o projeto</router-link>
+>>>>>>> Alessandro
             </div>
             
             <div v-if:=!this.logged class="form-header">
@@ -19,6 +25,7 @@
 
                 <router-link to="/cadastroUsuario" class="button-header ms-2 pt-1"> 
                     <i class="fa fa-user-plus me-1" aria-hidden="true"></i>
+<<<<<<< HEAD
                     Signup
                 </router-link>
             </div>
@@ -31,6 +38,20 @@
                 <li><a class="dropdown-item" href="#">Editar perfil</a></li>
                 <li><a class="dropdown-item" href="/">Logout</a></li>
             </ul>
+=======
+                    Sign up
+                </router-link>
+            </div>
+
+            <div v-else:=this.logged class="form-logged-header">
+                <button id="button-logged">
+                   {{ this.user.name }} 
+                </button>
+                <button @click="openModalEditUser">
+                    Editar Usuário
+                </button>
+                <EditUser v-if="showModalEdit" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
+>>>>>>> Alessandro
             </div>
         </header>
 
@@ -38,12 +59,18 @@
             <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
         </div>
     </div>
+
+
 </template>
 
 <script>
 import axios from 'axios'; 
 import InputComp from '@/components/InputComp.vue';
 import ErrorMessageModalComp from '../components/modais/ErrorMessageModalComp.vue';
+<<<<<<< HEAD
+=======
+import EditUser from '../components/modais/EditUsuer.vue'
+>>>>>>> Alessandro
 
 export default {
     name: 'HeaderComp',
@@ -55,7 +82,12 @@ export default {
             erro: undefined,
             email: "",
             password: "",
+<<<<<<< HEAD
             user: {}
+=======
+            user: {},
+            showModalEdit: false
+>>>>>>> Alessandro
         }
     },
     methods: {
@@ -64,6 +96,13 @@ export default {
         },
         closeModal() {
             this.erro = undefined;
+<<<<<<< HEAD
+=======
+            this.showModalEdit = false;
+        },
+        openModalEditUser(){
+            this.showModalEdit = true;
+>>>>>>> Alessandro
         },
 
         async logar() {
@@ -102,7 +141,12 @@ export default {
     },
     components: {
         InputComp,
+<<<<<<< HEAD
         ErrorMessageModalComp
+=======
+        ErrorMessageModalComp,
+        EditUser
+>>>>>>> Alessandro
     }
 }
 </script>
@@ -187,7 +231,10 @@ html, body {
 
 .button-header {
     height: 35px;
+<<<<<<< HEAD
     width: 150px;
+=======
+>>>>>>> Alessandro
     border-radius: 20px;
     padding-left: 3%;
     padding-right: 3%;
