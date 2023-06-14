@@ -10,7 +10,11 @@
                     </div>
                     <div class="filter-item-container">
                         <i class="fa fa-filter mt-2" aria-hidden="true"></i>
-                        <InputComp class="filter-item" name="filtro" type="filtro" placeHolder="Filtro" :function="changeValues"></InputComp>
+                        <select class="filter-item" name="filtro" type="filtro" placeHolder="Filtro" :function="changeValues">
+                            <option value="Banco 1">Banco 1</option>
+                            <option value="Banco 2">Banco 2</option>
+                            <option value="Banco 3">Banco 3</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -31,7 +35,9 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h2 class="modal-title">Visualização</h2>
-                  <button class="modal-close" @click="closeModal">&#10006;</button>
+                  <button class="modal-close" @click="closeModal" @mouseover="changeCloseButtonColor(true)" @mouseleave="changeCloseButtonColor(false)">
+                    &#10006;
+                  </button>
                 </div>
                  <div class="modal-body">
                    <div class="modal-image-container">
@@ -72,7 +78,8 @@ export default {
             info4: '',
             imagensBackend: [], // Array para armazenar as imagens obtidas do backend
             imagensPorPagina: 8,
-            paginaAtual: 1
+            paginaAtual: 1,
+            isCloseButtonHovered: false,
         };
 
     },
@@ -109,7 +116,10 @@ export default {
       if (this.paginaAtual < this.totalPaginas) {
         this.paginaAtual++;
       }
-    }
+    },
+    changeCloseButtonColor(isHovered) {
+        this.isCloseButtonHovered = isHovered;
+    },
   },
   created() {
 /*teste*/
@@ -183,13 +193,29 @@ export default {
 
 .filter-item {
     width: 90%;
+    gap: 5px;
     margin-bottom: 10px;
+    border-radius: 25px;
+    border: 0px solid rgb(250, 250, 250);
+    box-shadow: 2px 2px 5px rgb(219, 218, 218);
+    margin-top: auto;
+    height: 32px;
+}
+select.filter-item {
+  border: none;
+  outline: none;
+}
+.filter-item{
+  color: #646363;
 }
 
 .filter-item-container{
     width: 100%;
     display: flex;
     justify-content: space-around;
+}
+.filter-item {
+  margin-left: 5px;
 }
 
 .imagens {
@@ -227,6 +253,11 @@ export default {
 .pagination-button {
   padding: 5px 10px;
   font-size: 14px;
+  border-radius: 10px;
+  border: 3px #f2f2f2;
+}
+.pagination-button :hover{
+    background-color: gray;
 }
 .modal {
   position: fixed;
@@ -304,14 +335,16 @@ export default {
 
 .modal-close {
   padding: 5px 10px;
-  background-color: #73bf8e;
-  color: white;
+  background-color: #fbfdfc;
+  color: rgb(2, 2, 2);
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
-
-
+.modal-close:hover {
+  color: #459c63;
+  
+}
 
 @media (max-width: 576px) {
     .container{
