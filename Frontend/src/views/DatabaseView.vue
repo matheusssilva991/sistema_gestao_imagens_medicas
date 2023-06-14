@@ -3,7 +3,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Bancos
-                    <button class="add-button" @click="addBank">+ Novo</button>
+                    <button class="add-button" @click="openCreateDatabase()">+ Novo</button>
                 </h2>
                 <div id="filter">
                     <div class="filter-item-container">
@@ -63,7 +63,7 @@
                 </tbody>
             </table>
         </div>
-
+        <CreateDatabaseVue v-if="showCreateModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
         <EditDatabaseModalComp v-if="showEditModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
         <DeleteDatabaseModalComp v-if="showDeleteModal" :database="this.selectedDatabase" @close-modal="closeModal" @delete-database="deleteDatabase" />
         <ShowDatabaseModalComp v-if="showViewModal" :database="this.selectedDatabase" @close-modal="closeModal"/>
@@ -75,6 +75,7 @@ import InputComp from '../components/InputComp.vue'
 import ShowDatabaseModalComp from '@/components/modais/ShowDatabaseModalComp.vue';
 import EditDatabaseModalComp from '@/components/modais/EditDatabaseModalComp.vue';
 import DeleteDatabaseModalComp from '@/components/modais/DeleteDatabaseModalComp.vue';
+import CreateDatabaseVue from '../components/modais/CreateDatabase.vue';
 
 export default {
     created() {
@@ -118,14 +119,21 @@ export default {
             showViewModal: false,
             showEditModal: false,
             showDeleteModal: false,
-            selectedDatabase: null
+            selectedDatabase: null,
+            showCreateModal: false /* Alterar o nome depois */
         };
     },
     methods: {
         addBank() {
-            const newBankId = this.databases.length + 1;
+            /* const newBankId = this.databases.length + 1;
             const newBank = { id: newBankId, name: `Banco ${newBankId}`, imageCount: 0, examType:'Mamografia' };
-            this.databases.push(newBank);
+            this.databases.push(newBank); */
+            
+            this.showModal = true;
+        },
+        openCreateDatabase(){
+            this.showCreateModal = true;
+            console.log("Entrei aqui");
         },
         openViewModal(database) {
             this.selectedDatabase = database;
@@ -144,6 +152,7 @@ export default {
             this.showViewModal = false;
             this.showEditModal = false;
             this.showDeleteModal = false;
+            this.showCreateModal = false;
         },
         deleteDatabase(database) {
             // Lógica para excluir usuário
@@ -174,7 +183,9 @@ export default {
         InputComp,
         ShowDatabaseModalComp,
         EditDatabaseModalComp,
-        DeleteDatabaseModalComp
+        DeleteDatabaseModalComp,
+        CreateDatabaseVue
+
     }
 };
 </script>

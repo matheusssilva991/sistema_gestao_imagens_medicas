@@ -2,9 +2,7 @@
     <div> 
         <header class="header">
             <div class="navbar-header">
-                <a href="/"><img src="../assets/logo.png" alt="Logo" id="logo"></a>
-                <router-link to="/" class="nav-link-header" v-if:=!this.logged>Home</router-link>
-                <router-link to="/about" class="nav-link-header" v-if:=!this.logged>Sobre o projeto</router-link>
+                <a><img src="../assets/logo.png" alt="Logo" id="logo"></a>
             </div>
             
             <div v-if:=!this.logged class="form-header">
@@ -21,27 +19,38 @@
 
                 <router-link to="/cadastroUsuario" class="button-header ms-2 pt-1"> 
                     <i class="fa fa-user-plus me-1" aria-hidden="true"></i>
-                    Sign up
+                    Signup
                 </router-link>
             </div>
 
-            <div v-else:=this.logged class="form-logged-header">
-                <button id="button-logged">
-                   {{ this.user.name }} 
+            <div v-else:=this.logged class="dropdown form-logged-header">
+                <button id="button-logged" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-circle-user"></i> {{ this.user.name }} 
                 </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <button class="dropdown-item" @click="openModalEditUser">Editar perfil</button>
+                    </li>
+                    <li><a class="dropdown-item" href="/">Logout</a></li>
+                </ul>
+                <EditUserComp v-if="showModalEdit" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
             </div>
+
         </header>
 
         <div v-if="this.erro" class="error-msg">
             <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
         </div>
     </div>
+
+
 </template>
 
 <script>
 import axios from 'axios'; 
 import InputComp from '@/components/InputComp.vue';
 import ErrorMessageModalComp from '../components/modais/ErrorMessageModalComp.vue';
+import EditUserComp from '../components/modais/EditUsuer.vue'
 
 export default {
     name: 'HeaderComp',
@@ -53,7 +62,8 @@ export default {
             erro: undefined,
             email: "",
             password: "",
-            user: {}
+            user: {},
+            showModalEdit: false
         }
     },
     methods: {
@@ -62,6 +72,10 @@ export default {
         },
         closeModal() {
             this.erro = undefined;
+            this.showModalEdit = false;
+        },
+        openModalEditUser(){
+            this.showModalEdit = true;
         },
 
         async logar() {
@@ -100,7 +114,8 @@ export default {
     },
     components: {
         InputComp,
-        ErrorMessageModalComp
+        ErrorMessageModalComp,
+        EditUserComp
     }
 }
 </script>
@@ -185,6 +200,7 @@ html, body {
 
 .button-header {
     height: 35px;
+    width: 150px;
     border-radius: 20px;
     padding-left: 3%;
     padding-right: 3%;
