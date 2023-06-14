@@ -3,11 +3,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Bancos
-<<<<<<< HEAD
-                    <button class="add-button" @click="addBank">+ Novo</button>
-=======
-                    <button class="add-button" @click="openCreateDatabase(database)">+ Novo</button>
->>>>>>> Alessandro
+                    <button class="add-button" @click="openCreateDatabase()">+ Novo</button>
                 </h2>
                 <div id="filter">
                     <div class="filter-item-container">
@@ -67,11 +63,7 @@
                 </tbody>
             </table>
         </div>
-<<<<<<< HEAD
-
-=======
         <CreateDatabaseVue v-if="showCreateModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
->>>>>>> Alessandro
         <EditDatabaseModalComp v-if="showEditModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
         <DeleteDatabaseModalComp v-if="showDeleteModal" :database="this.selectedDatabase" @close-modal="closeModal" @delete-database="deleteDatabase" />
         <ShowDatabaseModalComp v-if="showViewModal" :database="this.selectedDatabase" @close-modal="closeModal"/>
@@ -83,10 +75,7 @@ import InputComp from '../components/InputComp.vue'
 import ShowDatabaseModalComp from '@/components/modais/ShowDatabaseModalComp.vue';
 import EditDatabaseModalComp from '@/components/modais/EditDatabaseModalComp.vue';
 import DeleteDatabaseModalComp from '@/components/modais/DeleteDatabaseModalComp.vue';
-<<<<<<< HEAD
-=======
 import CreateDatabaseVue from '../components/modais/CreateDatabase.vue';
->>>>>>> Alessandro
 
 export default {
     created() {
@@ -130,32 +119,21 @@ export default {
             showViewModal: false,
             showEditModal: false,
             showDeleteModal: false,
-<<<<<<< HEAD
-            selectedDatabase: null
-=======
             selectedDatabase: null,
             showCreateModal: false /* Alterar o nome depois */
->>>>>>> Alessandro
         };
     },
     methods: {
         addBank() {
-<<<<<<< HEAD
-            const newBankId = this.databases.length + 1;
-            const newBank = { id: newBankId, name: `Banco ${newBankId}`, imageCount: 0, examType:'Mamografia' };
-            this.databases.push(newBank);
-=======
             /* const newBankId = this.databases.length + 1;
             const newBank = { id: newBankId, name: `Banco ${newBankId}`, imageCount: 0, examType:'Mamografia' };
             this.databases.push(newBank); */
             
             this.showModal = true;
         },
-        openCreateDatabase(database){
-            this.selectedDatabase = database;
+        openCreateDatabase(){
             this.showCreateModal = true;
             console.log("Entrei aqui");
->>>>>>> Alessandro
         },
         openViewModal(database) {
             this.selectedDatabase = database;
@@ -174,10 +152,7 @@ export default {
             this.showViewModal = false;
             this.showEditModal = false;
             this.showDeleteModal = false;
-<<<<<<< HEAD
-=======
             this.showCreateModal = false;
->>>>>>> Alessandro
         },
         deleteDatabase(database) {
             // Lógica para excluir usuário
@@ -208,13 +183,9 @@ export default {
         InputComp,
         ShowDatabaseModalComp,
         EditDatabaseModalComp,
-<<<<<<< HEAD
-        DeleteDatabaseModalComp
-=======
         DeleteDatabaseModalComp,
         CreateDatabaseVue
 
->>>>>>> Alessandro
     }
 };
 </script>

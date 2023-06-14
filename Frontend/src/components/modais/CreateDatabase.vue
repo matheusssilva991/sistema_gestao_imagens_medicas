@@ -42,22 +42,6 @@
   
 <script>
 	export default {
-		created() {
-           /*  this.description = this.database.description;
-			this.imageQuality = this.database.imageQuality;
-			this.examType = this.database.examType;
-			this.sourceLink = this.database.sourceLink;
-			this.imageType = this.database.imageType;
-			this.name = this.database.name;
-			this.id = this.database.id;
-			this.images = this.database.images; */
-        },
-        props: {
-			database: {
-				type: Object,
-				required: true,
-			},
-		},
 		data() {
 			return {
 				showModal: true,
