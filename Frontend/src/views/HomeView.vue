@@ -1,30 +1,42 @@
 <template>
-  <div>
-    <transition-group name="fade" tag="div">
-      <div v-for="i in [currentIndex]" :key="i">
-        <div class="overlay"></div>
-        <img :src="currentImg" />
-        <div class="slide-text">
-          <h1>Med Storage</h1>
-          <p>
-            O Med Storage é o seu destino confiável para acessar uma ampla gama
-            de imagens médicas. Nossa plataforma intuitiva permite que
-            profissionais da saúde, pesquisadores e estudantes encontrem
-            facilmente radiografias, tomografias, ressonâncias magnéticas e
-            muito mais. Nossa coleção em constante expansão oferece imagens de
-            alta qualidade e precisão, garantindo que você encontre exatamente o
-            que procura. Com o Med Storage, você terá acesso rápido e seguro a
-            um banco de dados de imagens médicas essenciais. Aprimore seus
-            estudos, pesquise casos clínicos e aprofunde seu conhecimento com
-            facilidade. Junte-se a nós no Med Storage e descubra um mundo de
-            imagens médicas ao seu alcance.
-          </p>
-        </div>
-      </div>
-    </transition-group>
-    <a class="prev" @click="prev" href="#">&#10094; Previous</a>
-    <a class="next" @click="next" href="#">&#10095; Next</a>
+  <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
   </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="5000">
+      <img src="../assets/image1.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h3>Mamografia</h3>
+        <p>A mamografia é um exame de diagnóstico por imagem usado para detectar alterações no tecido mamário, especialmente em mulheres. É uma ferramenta essencial na detecção precoce do câncer de mama, permitindo um tratamento mais eficaz e aumentando as chances de cura.</p>
+      </div>
+    </div>
+    <div class="carousel-item" data-bs-interval="5000">
+      <img src="../assets/image2.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h3>Ressonância Magnética</h3>
+        <p>A ressonância magnética (RM) é uma técnica de imagem avançada que utiliza campos magnéticos e ondas de radiofrequência para criar imagens detalhadas do interior do corpo humano. É um exame não invasivo e altamente preciso, amplamente utilizado em diagnósticos médicos.</p>
+      </div>
+    </div>
+    <div class="carousel-item" data-bs-interval="5000">
+      <img src="../assets/image3.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h3>Ultrassom</h3>
+        <p>O ultrassom é uma técnica de diagnóstico por imagem que utiliza ondas sonoras de alta frequência para produzir imagens internas do corpo humano. É um exame não invasivo e indolor, amplamente utilizado em diversas áreas da medicina.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 </template>
 
 <script>
@@ -67,6 +79,14 @@ export default {
 <style scoped>
 
 h1{
+  font-family: Montserrat extrabold;
+}
+
+p{
+  font-family: Montserrat;
+}
+
+h3{
   font-family: Montserrat extrabold;
 }
 .slide-text {
