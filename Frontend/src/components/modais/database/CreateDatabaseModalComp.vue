@@ -31,16 +31,14 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-success" @click="saveChanges">Salvar</button>
 				</div> 
-				
-				<!-- <div class="modal-footer">
-					<button type="button" class="btn btn-success" @click="callMethods">Salvar</button>
-				</div>  -->
 			</div>
 		</div>
 	</div>
 </template>
   
 <script>
+import axios from 'axios';
+
 	export default {
 		data() {
 			return {
@@ -51,7 +49,6 @@
 				sourceLink: "",
 				imageType: "",
 				name: "",
-				id: ""
 			};
 		},
 		methods: {
@@ -63,17 +60,26 @@
 				let tmpImageQuality = this.imageQuality.split(",")
 
 				const newDatabase = { 
-					id: this.id,
 					name: this.name,
 					examType: this.examType,
 					imageType: this.imageType,
 					imageQuality: tmpImageQuality,
 					description: this.description,
-					sourceLink: this.imageType,
-					images: this.images
+					sourceLink: this.sourceLink,
 				}
 
-				this.$emit('save-changes', newDatabase);
+				const token = localStorage.getItem('token');
+
+                if (token != undefined){
+                    const req = {
+                        headers: {
+                            Authorization: "Bearer " + token
+                        }
+                    }
+                    axios.post('http://localhost:8081/api/database', newDatabase, req)
+                }
+
+				this.$emit('save-changes');
 			}
 		},
 	};

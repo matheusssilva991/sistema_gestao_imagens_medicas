@@ -1,0 +1,66 @@
+[{
+  "_id": {
+    "$oid": "64611f8a2ddd7a521eb98951"
+  },
+  "name": "matheus",
+  "email": "matheus@email.com",
+  "password": "$2b$10$iCRN0JFusmWzCVIdX66q8OatY55G8MGvhKcS97LvgK9MqnWew/n2a",
+  "institution": "UESC",
+  "country": "Brasil",
+  "city": "Itabuna",
+  "lattes": "lattes",
+  "role": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6495c280eff6da93d327765f"
+  },
+  "name": "cleber",
+  "email": "cleber@email.com",
+  "password": "$2b$10$pl/6jAifiv6JowJ/bFa2d.hSSxHdNPEo10AEkATeP1c4h5mo0mXZC",
+  "institution": "UESC",
+  "country": "Brasil",
+  "city": "Itabuna",
+  "lattes": "lattes",
+  "role": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6495c2aceff6da93d3277669"
+  },
+  "name": "alessandro",
+  "email": "alessandro@email.com",
+  "password": "$2b$10$HhEE1HgzuJPfNfDUq7wQzOZzm9LnsTQfsMRzcsUuFdGX/6fgv.FXK",
+  "institution": "UESC",
+  "country": "Brasil",
+  "city": "Itabuna",
+  "lattes": "lattes",
+  "role": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6496deb7451fdef5bb4ac5d8"
+  },
+  "name": "Matheus",
+  "email": "matheus@gmail.com",
+  "password": "$2b$10$bkGMrNrvtnUThmcoalUdO.mQ3z8tlanP4uWeej4VqUvLE1TEP4fku",
+  "institution": "uesc",
+  "country": "Brasil",
+  "city": "Itabuna",
+  "lattes": "linkQualquer",
+  "role": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6496e12ce5cd128e87f581b5"
+  },
+  "name": "vinicius",
+  "email": "vinicius@email.com",
+  "password": "$2b$10$.yM7hMw4lq5GUjMx0FwX5OikyggEnLqMs4gX4MEvzKPjILsCdJWfC",
+  "institution": "UESC",
+  "country": "Brasil",
+  "city": "Itabuna",
+  "lattes": "lattes",
+  "role": 0,
+  "__v": 0
+}]

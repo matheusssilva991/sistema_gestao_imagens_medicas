@@ -32,11 +32,21 @@
 				</div>
 			</div>
 		</div>
+
+		<div v-if="this.erro" class="error-msg">
+            <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
+        </div>
 	</div>
 </template>
   
 <script>
+import axios from 'axios'
+import ErrorMessageModalComp from '../ErrorMessageModalComp.vue';
+
 	export default {
+		components: {
+			ErrorMessageModalComp
+		},
 		created() {
             this.description = this.database.description;
 			this.imageQuality = this.database.imageQuality;
@@ -44,7 +54,7 @@
 			this.sourceLink = this.database.sourceLink;
 			this.imageType = this.database.imageType;
 			this.name = this.database.name;
-			this.id = this.database.id;
+			this.id = this.database._id;
 			this.images = this.database.images;
         },
         props: {
@@ -62,7 +72,8 @@
 				sourceLink: "",
 				imageType: "",
 				name: "",
-				id: ""
+				id: "teste",
+				erro: false,
 			};
 		},
 		methods: {
@@ -74,17 +85,31 @@
 				let tmpImageQuality = this.imageQuality.split(",")
 
 				const newDatabase = { 
-					id: this.id,
 					name: this.name,
 					examType: this.examType,
 					imageType: this.imageType,
 					imageQuality: tmpImageQuality,
 					description: this.description,
-					sourceLink: this.imageType,
+					sourceLink: this.sourceLink,
 					images: this.images
 				}
 
-				this.$emit('save-changes', newDatabase);
+				const token = localStorage.getItem('token');
+
+                if (token != undefined){
+                    const req = {
+                        headers: {
+                            Authorization: "Bearer " + token
+                        }
+                    }
+                    axios.put(`http://localhost:8081/api/database/${this.id}`, newDatabase, req)
+					.then(response => {
+						console.log(response.data);
+						this.$emit('save-changes');
+					}).catch(err => {
+						this.erro = err.response.data?.err;
+					}) 
+                }
 			}
 		},
 	};

@@ -158,13 +158,14 @@ class UserController {
             const result = await bcrypt.compare(password, user.password);          
             
             if (result){
-                const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, secret, 
+                const token = jwt.sign({ id: user._id, name: user.name, 
+                                        email: user.email, role: user.role }, secret, 
                                        { expiresIn: 3600 });
 
                 const resultToken = await AuthTokenService.create(token);
 
                 if (resultToken.sucess)
-                    res.status(200).json({ id: user._id, token: token });
+                    res.status(200).json({ token: token });
                 else
                     res.status(400).json({ err: "Erro na criação do token"});
 
@@ -193,6 +194,24 @@ class UserController {
             res.status(400).json({ msg: "Erro ao deslogar!." });
             return;
         }
+    }
+
+    async authenticate (req, res) {
+        let token = req.headers['authorization'].split(" ")[1];
+        const authToken = await AuthTokenService.find(token);
+        const secret = process.env.SECRET;
+
+        if (authToken[0] == undefined) {
+            res.status(404).json({ err: "Token não encontrado!" });
+            return;
+        }
+
+        let decoded = jwt.verify(token, secret);
+        delete decoded['iat'];
+        delete decoded['exp'];
+
+        res.status(200).json(decoded);
+
     }
 }
 
