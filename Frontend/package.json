@@ -15,7 +15,8 @@
     "core-js": "^3.31.0",
     "vue": "^3.3.4",
     "vue-future-slider": "^1.0.5",
-    "vue-router": "^4.2.2"
+    "vue-router": "^4.2.2",
+    "vue3-carousel": "^0.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
