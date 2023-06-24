@@ -6,11 +6,13 @@
                 <div id="filter">
                     <div class="filter-item-container">
                         <i class="fa fa-search mt-2" aria-hidden="true"></i>
-                        <InputComp class="filter-item" name="pesquisar" type="pesquisar" placeHolder="Pesquisar"></InputComp>
+                        <InputComp class="filter-item" name="pesquisa" type="pesquisar" placeHolder="Pesquisar"
+                        :function="changeValues"></InputComp>
                     </div>
                     <div class="filter-item-container">
                         <i class="fa fa-filter mt-2" aria-hidden="true"></i>
-                        <InputComp class="filter-item" name="filtro" type="filtro" placeHolder="Filtro" :function="changeValues"></InputComp>
+                        <InputComp class="filter-item" name="filtro" type="filtro" placeHolder="Filtrar por tipo"
+                        :function="changeValues"></InputComp>
                     </div>
                 </div>
             </div>
@@ -18,11 +20,14 @@
             <table class="table table-hover mt-4">
                 <thead>
                     <tr>
-                        <th scope="col">                
-                            <span class="table-header">Tipo de solicitação</span>
-                        </th>
-                        <th scope="col"> 
+                        <th scope="col">
                             <span class="table-header">Nome</span>
+                        </th>
+                        <th scope="col">
+                            <span class="table-header">Status</span>
+                        </th>
+                        <th scope="col">
+                            <span class="table-header">Tipo de solicitação</span>
                         </th>
                         <th scope="col">
                             <span class="table-header">Ações</span>
@@ -30,136 +35,241 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="solicitation in computedSolicitations" :key="solicitation.id">
+                    <tr v-for="solicitation in filteredSolicitations" :key="solicitation.id">
                         <td scope="row">
-                            <span class="table-item">{{ solicitation.type }}</span>
+                            <span class="table-item">{{ solicitation.data.name }}</span>
                         </td>
                         <td scope="row">
-                            <span class="table-item">{{ solicitation.data.name}}</span>
+                            <span class="table-item">{{ solicitation.status }}</span>
+                        </td>
+                        <td scope="row">
+                            <span class="table-item">{{ solicitation.type }}</span>
                         </td>
                         <td scope="row" class="actions">
                             <button @click="openModal(solicitation)">
                                 <i class="fas fa-eye table-item" style="margin-right: 15px"></i>
                             </button>
-                            <button>
+                            <button v-if="solicitation.status == 'Pendente'" @click="openAcceptModal(solicitation)">
                                 <i class="fa fa-check table-item" aria-hidden="true" style="margin-right: 15px"></i>
                             </button>
-                            
-                            <button @click="deleteUser(solicitation)">
+
+                            <button v-if="solicitation.status == 'Pendente'" @click="openRejectModal(solicitation)">
                                 <i class="fa fa-times table-item-red" style="margin-right: 15px"></i>
                             </button>
-                        </td>  
+                        </td>
                     </tr>
-                </tbody>      
+                </tbody>
             </table>
-      </div>
+        </div>
 
-      <DatabaseSolicitationModal v-if="showDatabaseModal" :solicitation="selectedSolicitation" @close-modal="closeModal"/>
-      <UserSolicitationModal v-if="showUserModal" :solicitation="selectedSolicitation" @close-modal="closeModal"/> 
+        <DatabaseSolicitationModal v-if="showDatabaseModal" :solicitation="selectedSolicitation"
+            @close-modal="closeModal" />
+        <UserSolicitationModal v-if="showUserModal" :solicitation="selectedSolicitation" @close-modal="closeModal" />
+        <AcceptSolicitationModalComp v-if="showAcceptModal" :solicitation="selectedSolicitation" @close-modal="closeModal"
+            @save-changes="saveChanges" />
+        <RejectSolicitationModalComp v-if="showRejectModal" :solicitation="selectedSolicitation" @close-modal="closeModal"
+            @save-changes="saveChanges" />
     </div>
 </template>
   
 <script>
-import UserSolicitationModal from '../components/modais/UserSolicitationModalComp.vue';
-import DatabaseSolicitationModal from '../components/modais/DatabaseSolicitationModalComp.vue';
-import InputComp from '../components/InputComp.vue'
+import UserSolicitationModal from '../components/modais/solicitation/UserSolicitationModalComp.vue';
+import DatabaseSolicitationModal from '../components/modais/solicitation/DatabaseSolicitationModalComp.vue';
+import AcceptSolicitationModalComp from '../components/modais/solicitation/AcceptSolicitationModalComp.vue';
+import RejectSolicitationModalComp from '../components/modais/solicitation/RejectSolicitationModalComp.vue';
+import InputComp from '../components/InputComp.vue';
+import axios from 'axios';
 
 export default {
     components: {
         UserSolicitationModal,
         DatabaseSolicitationModal,
+        AcceptSolicitationModalComp,
+        RejectSolicitationModalComp,
         InputComp
     },
-    data() {
-        return {
-            solicitations: [
-                { id: 1, type: 'newDatabase', data: { 
-                                                    name: "DDSM",
-                                                    description: "Banco de dados DDSM",
-                                                    examType: 'Mamografia',
-                                                    sourceLink: 'Link'
-                                                } 
-                },
-                { id: 2, type: 'newUser', data: { 
-                                                    name: "Usuário", 
-                                                    email: "usuario@email",
-                                                    institution: 'UESC',
-                                                    country: 'Brasil',
-                                                    city: 'Itabuna',
-                                                    lattes: 'link'
-                                               } 
-                },
-                { id: 3, type: 'newDatabase', data: { 
-                                                    name: "DDSM",
-                                                    description: "Banco de dados DDSM",
-                                                    examType: 'Mamografia',
-                                                    sourceLink: 'Link'
-                                                } 
-                },
-            // Adicione mais usuários conforme necessário
-            ],
-            filter: '',
-            showUserModal: false,
-            showDatabaseModal: false,
-            selectedSolicitation: null,
-        };
-    },
-    computed: {
-        filteredUsers() {
-            return this.solicitations.filter((user) =>
-            user.name.toLowerCase().includes(this.filter.toLowerCase())
-            );
-        },
-        computedSolicitations(){
-            return this.solicitations.map(solicitation => {
+    created() {
+        const token = localStorage.getItem('token');
 
-                if (solicitation.type == 'newUser') {
-                    solicitation.type = 'Novo Usuário';
-                    return solicitation;
-                } else {
-                    solicitation.type = 'Novo Banco de imagens';
-                    return solicitation;
+        if (token != undefined) {
+            const req = {
+                headers: {
+                    Authorization: "Bearer " + token
                 }
+            };
+
+            axios.get('http://localhost:8081/api/solicitations', req).then(response => {
+                this.solicitations = response.data.map(solicitation => {
+                    if (solicitation.status == 'pending') {
+                        solicitation.status = 'Pendente';
+                    } else if (solicitation.status == 'accepted')
+                        solicitation.status = 'Aceita';
+                    else
+                        solicitation.status = 'Rejeitada';
+
+                    if (solicitation.type == 'newUser') {
+                        solicitation.type = 'Novo Usuário';
+                    } else {
+                        solicitation.type = 'Novo Banco de imagens';
+                    }
+
+                    return solicitation;
+                });
+
+                this.solicitations = this.solicitations.sort((a, b) => {
+                    if (a.status === 'Pendente' && b.status !== 'Pendente') {
+                        return -1; // Solicitação pendente vem antes
+                    } else if (a.status !== 'Pendente' && b.status === 'Pendente') {
+                        return 1; // Solicitação pendente vem depois
+                    } else {
+                        return 0; // Mantém a ordem atual
+                    }
+                });
+
+                this.filteredSolicitations = this.solicitations;
             });
         }
     },
+    data() {
+        return {
+            solicitations: [],
+            filteredSolicitations: [],
+            filtro: '',
+            pesquisa: '',
+            showUserModal: false,
+            showDatabaseModal: false,
+            showRejectModal: false,
+            showAcceptModal: false,
+            selectedSolicitation: null,
+        };
+    },
     methods: {
+        changeValues(prop, text) {
+            this[`${prop}`] = text
+        },
         openModal(solicitation) {
             this.selectedSolicitation = solicitation;
 
-            if (solicitation.type == 'Novo Banco de imagens'){
+            if (solicitation.type == 'Novo Banco de imagens') {
                 this.showDatabaseModal = true;
             }
-            else{
-                this.showUserModal = true;  
+            else {
+                this.showUserModal = true;
             }
 
+        },
+        openAcceptModal(solicitation) {
+            this.selectedSolicitation = solicitation;
+            this.showAcceptModal = true;
+        },
+        openRejectModal(solicitation) {
+            this.selectedSolicitation = solicitation;
+            this.showRejectModal = true;
         },
         closeModal() {
             this.selectedSolicitation = null;
             this.showUserModal = false;
             this.showDatabaseModal = false;
+            this.showAcceptModal = false;
+            this.showRejectModal = false;
         },
-        deleteUser(user) {
-            // Lógica para excluir usuário
-            console.log('Excluir usuário:', user);
+        saveChanges() {
+            const token = localStorage.getItem('token');
+
+            if (token != undefined) {
+                const req = {
+                    headers: {
+                        Authorization: "Bearer " + token
+                    }
+                };
+
+                axios.get('http://localhost:8081/api/solicitations', req).then(response => {
+                    this.solicitations = response.data.map(solicitation => {
+                        if (solicitation.status == 'pending') {
+                            solicitation.status = 'Pendente';
+                        } else if (solicitation.status == 'accepted')
+                            solicitation.status = 'Aceita';
+                        else
+                            solicitation.status = 'Rejeitada';
+
+                        if (solicitation.type == 'newUser') {
+                            solicitation.type = 'Novo Usuário';
+                        } else {
+                            solicitation.type = 'Novo Banco de imagens';
+                        }
+
+                        return solicitation;
+                    });
+
+                    this.solicitations = this.solicitations.sort((a, b) => {
+                        if (a.status === 'Pendente' && b.status !== 'Pendente') {
+                            return -1; // Solicitação pendente vem antes
+                        } else if (a.status !== 'Pendente' && b.status === 'Pendente') {
+                            return 1; // Solicitação pendente vem depois
+                        } else {
+                            return 0; // Mantém a ordem atual
+                        }
+                    });
+
+                    this.filteredSolicitations = this.solicitations;
+                });
+            }
+
+            this.closeModal();
         },
+    },
+    watch: {
+        filtro: function (value) {
+            value = value.toLowerCase();
+
+            if (value == "" || value == " "){
+                this.filteredSolicitations = this.solicitations;
+            } else {
+                this.filteredSolicitations = this.solicitations.filter(item => {
+                    return item.type.toLowerCase().includes(value)
+                })
+            }
+
+            if (this.pesquisa != "" && this.pesquisa != " "){
+                this.filteredSolicitations = this.filteredSolicitations.filter(item => {
+                    return item.data.name.toLowerCase().includes(this.pesquisa.toLowerCase())
+                })
+            }
+        },
+        pesquisa: function (value) {
+            value = value.toLowerCase();
+
+            if (value == "" || value == " "){
+                this.filteredSolicitations = this.solicitations;
+            } else {
+                this.filteredSolicitations = this.solicitations.filter(item => {
+                    return item.data.name.toLowerCase().includes(value)
+                })
+            }
+
+            if (this.filtro != "" && this.filtro != " "){
+                this.filteredSolicitations = this.filteredSolicitations.filter(item => {
+                    return item.type.toLowerCase().includes(this.filtro.toLowerCase())
+                })
+            }
+        }
     }
 };
 </script>
   
 <style scoped>
-  
-  * {
+* {
     color: #73bf8e;
     font-weight: 100;
 }
+
 .sidebar {
     font-family: 'Montserrat', sans-serif;
     background-color: #ffffff;
     padding: 5%;
     padding-top: 2.5%;
-    margin: 0 auto; /* Adicionado para centralizar horizontalmente */
+    margin: 0 auto;
+    /* Adicionado para centralizar horizontalmente */
     height: 70vh;
     width: 100%;
     border-radius: 25px;
@@ -180,7 +290,7 @@ export default {
     font-weight: bold;
 }
 
-.table-header{
+.table-header {
     font-weight: bold;
     font-size: 18px;
 }
@@ -212,7 +322,7 @@ export default {
     margin-bottom: 10px;
 }
 
-.filter-item-container{
+.filter-item-container {
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -224,5 +334,4 @@ export default {
     cursor: pointer;
     padding: 0;
 }
-
 </style>

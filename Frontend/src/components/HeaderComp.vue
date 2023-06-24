@@ -50,7 +50,7 @@
 import axios from 'axios'; 
 import InputComp from '@/components/InputComp.vue';
 import ErrorMessageModalComp from '../components/modais/ErrorMessageModalComp.vue';
-import EditUserComp from '../components/modais/EditUsuer.vue'
+import EditUserModalComp from '../components/modais/user/EditUserModalComp.vue'
 
 export default {
     name: 'HeaderComp',
@@ -85,7 +85,7 @@ export default {
                     password: this.password
                 })
 
-                const { id, token } = response.data;
+                const { token } = response.data;
 
                 if (token) {
                     this.logged = true;
@@ -97,7 +97,7 @@ export default {
                         }
                     }
 
-                    axios.get(`http://localhost:8081/api/user/${id}`, req).then(response => {
+                    axios.get(`http://localhost:8081/authenticate`, req).then(response => {
                         this.user = response.data;
                     }).catch((err) => {
                         console.log(err);
@@ -115,7 +115,7 @@ export default {
     components: {
         InputComp,
         ErrorMessageModalComp,
-        EditUserComp
+        EditUserComp: EditUserModalComp
     }
 }
 </script>

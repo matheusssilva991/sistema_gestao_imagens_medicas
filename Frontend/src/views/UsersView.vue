@@ -6,11 +6,13 @@
                 <div id="filter">
                     <div class="filter-item-container">
                         <i class="fa fa-search mt-2" aria-hidden="true"></i>
-                        <InputComp class="filter-item" name="pesquisar" type="pesquisar" placeHolder="Pesquisar"></InputComp>
+                        <InputComp class="filter-item" name="pesquisa" type="pesquisar" placeHolder="Pesquisar usuário"
+                            :function="changeValues"></InputComp>
                     </div>
                     <div class="filter-item-container">
                         <i class="fa fa-filter mt-2" aria-hidden="true"></i>
-                        <InputComp class="filter-item" name="filtro" type="filtro" placeHolder="Filtro" :function="changeValues"></InputComp>
+                        <InputComp class="filter-item" name="filtro" type="filtro" placeHolder="Filtrar cargo"
+                            :function="changeValues"></InputComp>
                     </div>
                 </div>
             </div>
@@ -18,10 +20,13 @@
             <table class="table table-hover mt-4">
                 <thead>
                     <tr>
-                        <th scope="col">                
+                        <th scope="col">
                             <span class="table-header">Nome do usuário</span>
                         </th>
-                        <th scope="col"> 
+                        <th scope="col">
+                            <span class="table-header">Instituição</span>
+                        </th>
+                        <th scope="col">
                             <span class="table-header">Cargo</span>
                         </th>
                         <th scope="col">
@@ -30,12 +35,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="user in users" :key="user.id">
+                    <tr v-for="user in filteredUsers" :key="user._id">
                         <td scope="row">
                             <span class="table-item">{{ user.name }}</span>
                         </td>
                         <td scope="row">
-                            <span class="table-item">{{ user.cargo }}</span>
+                            <span class="table-item">{{ user.institution }}</span>
+                        </td>
+                        <td scope="row">
+                            <span class="table-item">{{ user.role }}</span>
                         </td>
                         <td scope="row" class="actions">
                             <button @click="openModal(user)">
@@ -44,50 +52,74 @@
                             <button @click="openDeleteModal(user)">
                                 <i class="fas fa-trash table-item" style="margin-right: 15px"></i>
                             </button>
-                        </td>  
+                        </td>
                     </tr>
-                </tbody>      
+                </tbody>
             </table>
-      </div>
-      <!-- UserModal component -->
-      <UserModal v-if="showModal" :user="selectedUser" @save-changes="saveChanges" @close-modal="closeModal" />
-      <DeleteUserModalComp v-if="showDeleteModal" :user="this.selectedUser" @close-modal="closeModal" @delete-user="deleteUser" />
+        </div>
+        <!-- UserModal component -->
+        <PermissionUserModalComp v-if="showModal" :user="selectedUser" @save-changes="saveChanges"
+            @close-modal="closeModal" />
+        <DeleteUserModalComp v-if="showDeleteModal" :user="this.selectedUser" @close-modal="closeModal"
+            @save-changes="saveChanges" />
     </div>
 </template>
   
 <script>
-import UserModal from '../components/modais/UserModalComp.vue';
+import PermissionUserModalComp from '../components/modais/user/PermissionUserModalComp.vue';
 import InputComp from '../components/InputComp.vue';
-import DeleteUserModalComp from '@/components/modais/DeleteUserModalComp.vue';
+import DeleteUserModalComp from '../components/modais/user/DeleteUserModalComp.vue';
+import axios from 'axios';
 
 export default {
     components: {
-        UserModal,
+        PermissionUserModalComp,
         InputComp,
         DeleteUserModalComp
     },
+    created() {
+        const token = localStorage.getItem('token');
+
+        if (token != undefined) {
+            const req = {
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            };
+
+            axios.get('http://localhost:8081/api/users', req).then(response => {
+                this.users = response.data;
+
+                this.users = this.users.map((user) => {
+                    if (user.role == 0) {
+                        user.role = "Pesquisador";
+                        return user;
+                    } else {
+                        user.role = "Administrador";
+                        return user;
+                    }
+                });
+
+                this.filteredUsers = this.users;
+            });
+        }
+
+    },
     data() {
         return {
-            users: [
-                { id: 1, name: 'Usuário 1', cargo: 'pesquisador'},
-                { id: 2, name: 'Usuário 2', cargo: 'administrador' },
-                { id: 3, name: 'Usuário 3', cargo: 'pesquisador' },
-            // Adicione mais usuários conforme necessário
-            ],
-            filter: '',
+            users: [],
+            filteredUsers: [],
+            filtro: "",
+            pesquisa: "",
             showModal: false,
             showDeleteModal: false,
             selectedUser: null,
         };
     },
-    computed: {
-        filteredUsers() {
-            return this.users.filter((user) =>
-            user.name.toLowerCase().includes(this.filter.toLowerCase())
-            );
-        },
-    },
     methods: {
+        changeValues(prop, text) {
+            this[ `${prop}` ] = text;
+        },
         openModal(user) {
             this.selectedUser = user;
             this.showModal = true;
@@ -101,31 +133,88 @@ export default {
             this.showModal = false;
             this.showDeleteModal = false;
         },
-        deleteUser(user) {
-            // Lógica para excluir usuário
-            console.log('Excluir usuário:', user);
+        saveChanges() {
+            const token = localStorage.getItem('token');
+
+            if (token != undefined) {
+                const req = {
+                    headers: {
+                        Authorization: "Bearer " + token
+                    }
+                };
+
+                axios.get('http://localhost:8081/api/users', req).then(response => {
+                    this.users = response.data;
+
+                    this.users = this.users.map((user) => {
+                        if (user.role == 0) {
+                            user.role = "Pesquisador";
+                            return user;
+                        } else {
+                            user.role = "Administrador";
+                            return user;
+                        }
+                    });
+
+                    this.filteredUsers = this.users;
+                });
+
+                this.closeModal();
+            }
         },
-        saveChanges(newProfile) {
-            // Lógica para salvar alterações no perfil do usuário
-            console.log('Perfil selecionado:', newProfile);
-            this.closeModal();
+    },
+    watch: {
+        filtro: function (value) {
+            value = value.toLowerCase();
+
+            if (value == "" || value == " ") {
+                this.filteredUsers = this.users;
+            } else {
+                this.filteredUsers = this.users.filter(item => {
+                    return item.role.toLowerCase().includes(value);
+                });
+            }
+
+            if (this.pesquisa != "" && this.pesquisa != " ") {
+                this.filteredUsers = this.filteredUsers.filter(item => {
+                    return item.name.toLowerCase().includes(this.pesquisa.toLowerCase());
+                });
+            }
         },
+        pesquisa: function (value) {
+            value = value.toLowerCase();
+
+            if (value == "" || value == " ") {
+                this.filteredUsers = this.users;
+            } else {
+                this.filteredUsers = this.users.filter(item => {
+                    return item.name.toLowerCase().includes(value);
+                });
+            }
+
+            if (this.filtro != "" && this.filtro != " ") {
+                this.filteredUsers = this.filteredUsers.filter(item => {
+                    return item.role.toLowerCase().includes(this.filtro.toLowerCase());
+                });
+            }
+        }
     }
 };
 </script>
   
 <style scoped>
-  
-  * {
+* {
     color: #73bf8e;
     font-weight: 100;
 }
+
 .sidebar {
     font-family: 'Montserrat', sans-serif;
     background-color: #ffffff;
     padding: 5%;
     padding-top: 2.5%;
-    margin: 0 auto; /* Adicionado para centralizar horizontalmente */
+    margin: 0 auto;
+    /* Adicionado para centralizar horizontalmente */
     height: 70vh;
     width: 100%;
     border-radius: 25px;
@@ -146,7 +235,7 @@ export default {
     font-weight: bold;
 }
 
-.table-header{
+.table-header {
     font-weight: bold;
     font-size: 18px;
 }
@@ -170,7 +259,7 @@ export default {
     margin-bottom: 10px;
 }
 
-.filter-item-container{
+.filter-item-container {
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -182,5 +271,4 @@ export default {
     cursor: pointer;
     padding: 0;
 }
-
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="input">
-        <input class="input-control" :type=this.type :placeholder=this.name :name="this.name" 
+        <input class="input-control" :type=this.type :placeholder=this.placeHolder :name="this.name" 
             v-model="text" @input="changeFromChildren()"
         >
     </div>
@@ -41,6 +41,7 @@ export default {
     padding-right: 10%;
     -webkit-box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181); 
     box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181);
+    color: #858282;
 }
 
 .input-control:focus{
