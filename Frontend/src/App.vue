@@ -36,6 +36,11 @@
 </script>
 
 <style>
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
 #app {
   font-family: 'Montserrat';
   font-weight: bold;

@@ -37,37 +37,55 @@
             </div>
 
             <div class="mobile-header">
-				<button v-if:=!this.isClicked class="mobile-header-button" @click="clicked">
-					<i class="fa-solid fa-bars"></i>
-				</button>
-				<button v-else:=this.isClicked class="mobile-header-button clicked" @click="clicked">
-					<i class="fa-solid fa-bars"></i>
-				</button>
+                <div v-if:=!this.logged>
+                    <button v-if:=!this.isClicked class="mobile-header-button" @click="clicked">
+					    <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <button v-else:=this.isClicked class="mobile-header-button clicked" @click="clicked">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
 				
-				<div v-if:=!this.logged>
-                	<div v-if:=this.isClicked class="mobile-form-header">
-                        <div class="mobile-input-header">
-                            <i class="fa-regular fa-circle-user green-theme me-1 h5 pt-2"></i>
-						    <InputComp name="email" type="email" placeHolder="email" :function="changeValues"/>
-                        </div>
+				    <div v-if:=!this.logged>
+                	    <div v-if:=this.isClicked class="mobile-form-header">
+                            <div class="mobile-input-header">
+                                <i class="fa-regular fa-circle-user green-theme me-1 h5 pt-2"></i>
+						        <InputComp name="email" type="email" placeHolder="email" :function="changeValues"/>
+                            </div>
 					
-                        <div class="mobile-input-header">
-                            <i class="fa fa-lock ms-2 green-theme me-1 h5 pt-2" aria-hidden="true"></i>
-						    <InputComp name="password" type="password" placeHolder="password" :function="changeValues"/>  
-                        </div>
+                            <div class="mobile-input-header">
+                                <i class="fa fa-lock ms-2 green-theme me-1 h5 pt-2" aria-hidden="true"></i>
+						        <InputComp name="password" type="password" placeHolder="password" :function="changeValues"/>  
+                            </div>
 
-                        <div class="mobile-form-button">
-                            <button @click="logar" class="button-header ms-2" id="button-login">
-                                <span class="button-text ms-1">Sig-in</span>
-						    </button>
+                            <div class="mobile-form-button">
+                                <button @click="logar" class="button-header ms-2" id="button-login">
+                                    <span class="button-text ms-1">Sig-in</span>
+						        </button>
 
-                            <router-link to="/cadastroUsuario" class="button-header ms-2 pt-1" style="padding-left: 20px; border: solid 1px;"> 
-                                Signup
-                            </router-link>
-                        </div>
-					</div>
-				</div>
-			</div>
+                                <router-link to="/cadastroUsuario" class="button-header ms-2 pt-1" style="padding-left: 20px; border: solid 1px;"> 
+                                    Signup
+                                </router-link>
+                            </div>
+					    </div>
+				    </div>
+			    </div>
+
+                <div v-else:=this.logged class="dropdown form-logged-header">
+                    <button id="button-logged" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-circle-user"></i> {{ this.user.name }} 
+                    </button>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <button class="dropdown-item" @click="openModalEditUser">Editar perfil</button>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/">Logout</a>
+                        </li>
+                    </ul>
+                    <EditUserComp v-if="showModalEdit" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
+                </div>
+            </div>	
         </header>
 
         <div v-if="this.erro" class="error-msg">
@@ -82,7 +100,7 @@
 import axios from 'axios'; 
 import InputComp from '@/components/InputComp.vue';
 import ErrorMessageModalComp from '../components/modais/ErrorMessageModalComp.vue';
-import EditUserComp from '../components/modais/EditUsuer.vue'
+import EditUserModalComp from '../components/modais/user/EditUserModalComp.vue'
 
 export default {
     name: 'HeaderComp',
@@ -135,7 +153,7 @@ export default {
                     password: this.password
                 })
 
-                const { id, token } = response.data;
+                const { token } = response.data;
 
                 if (token) {
                     this.logged = true;
@@ -147,7 +165,7 @@ export default {
                         }
                     }
 
-                    axios.get(`http://localhost:8081/api/user/${id}`, req).then(response => {
+                    axios.get(`http://localhost:8081/authenticate`, req).then(response => {
                         this.user = response.data;
                     }).catch((err) => {
                         console.log(err);
@@ -165,7 +183,7 @@ export default {
     components: {
         InputComp,
         ErrorMessageModalComp,
-        EditUserComp
+        EditUserComp: EditUserModalComp
     }
 }
 </script>
