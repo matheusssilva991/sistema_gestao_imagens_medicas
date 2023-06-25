@@ -2,7 +2,13 @@
     <div v-resize="handleResize"> 
         <header class="header" :class="{'mobile-header': isClicked}">
             <div class="navbar-header">
-                <a><img src="../assets/logo.png" alt="Logo" id="logo"></a>
+                <div v-if:=!this.logged>
+                    <a href="/"><img src="../assets/logo.png" alt="Logo" id="logo"></a>
+                </div>
+
+                <div v-else:=this.logged>
+                    <a href="/databases"><img src="../assets/logo.png" alt="Logo" id="logo"></a>
+                </div>
             </div>
 
             <div v-if:=!this.logged class="form-header">
@@ -27,7 +33,7 @@
                 <button id="button-logged" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-circle-user"></i> {{ this.user.name }} 
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-menu-end">
                     <li>
                         <button class="dropdown-item" @click="openModalEditUser">Editar perfil</button>
                     </li>
@@ -196,6 +202,16 @@ html, body {
   margin: 0;
   padding: 0;
 } 
+
+.dropdown-menu :hover{
+    background-color:#73BF8E !important;
+    color: white !important;
+}
+
+.dropdown-menu :hover :active{
+    background-color: #459c63 !important;
+    transition: 0.25s !important;
+}
 
 .header {
     /* position: fixed; */
