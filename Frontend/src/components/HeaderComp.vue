@@ -76,7 +76,7 @@
 				    </div>
 			    </div>
 
-                <div v-else:=this.logged class="dropdown form-logged-header">
+                <div v-else:=this.logged class="dropdown mobile-logged-header">
                     <button id="button-logged" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-solid fa-circle-user"></i> {{ this.user.name }} 
                     </button>
@@ -342,7 +342,7 @@ html, body {
 @media screen and (max-width: 480px){
     .navbar-header{
 		position: absolute;
-        margin-top: 15px;
+        margin-top: 5px;
 		left: 2%;
 	}
 }
@@ -366,6 +366,24 @@ html, body {
         flex-direction: column;
         align-items: center;
         margin-top: 75px;
+    }
+
+    .mobile-logged-header {
+        display: flex;
+        margin-right: 25px;
+		position: absolute;
+		top: 35px;
+		right: 10px;
+    }
+
+    .dropdown-menu :hover{
+        background-color:#73BF8E !important;
+        color: white !important;
+    }
+
+    .dropdown-menu :hover :active{
+        background-color: #459c63 !important;
+        transition: 0.25s !important;
     }
 
     .mobile-input-header {
