@@ -32,7 +32,7 @@ p {
 .text-container {
   color: #73BF8E;
   margin-top: 5% !important;
-  text-align: left;
+  text-align: justify;
 }
 
 @media screen and (max-width: 480px){
