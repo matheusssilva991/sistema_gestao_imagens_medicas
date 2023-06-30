@@ -60,5 +60,11 @@ html, body {
   justify-content: space-around;
 }
 
+@media screen and (max-width: 1920px){
+  html, body {
+    height: 100%;
+    width: 100%;
+  }
+}
 </style>
 

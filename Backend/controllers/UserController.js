@@ -2,7 +2,7 @@ const UserService = require("../services/UserService");
 const SolicitationService = require("../services/SolicitationService");
 const AuthTokenService = require("../services/AuthTokenService");
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const dotenv = require("dotenv").config();
 const jwt = require("jsonwebtoken");
