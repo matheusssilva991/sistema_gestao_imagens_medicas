@@ -5,6 +5,7 @@ import DatabaseView from '../views/DatabaseView.vue';
 import UserView from '../views/UsersView.vue';
 import SolicitationsView from '../views/SolicitationView.vue';
 import ImagesView from '../views/ImagesView.vue';
+import ImageTypesView from '../views/ImageTypesView.vue';
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/images',
     name: 'images',
     component: ImagesView
+  },
+  {
+    path: '/image-types',
+    name: 'image-types',
+    component: ImageTypesView
   }
 ]
 

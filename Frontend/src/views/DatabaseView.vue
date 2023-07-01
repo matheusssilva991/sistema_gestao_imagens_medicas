@@ -4,6 +4,7 @@
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Bancos
                     <button v-if="this.user.role" class="add-button" @click="openCreateDatabase()">+ Novo</button>
+                    <button v-else class="add-button" @click="openSolicitationDatabase()">+ Solicitar Novo</button>
                 </h2>
                 <div id="filter">
                     <div class="filter-item-container">
@@ -65,7 +66,8 @@
                 </tbody>
             </table>
         </div>
-        <CreateDatabaseVue v-if="showCreateModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
+        <CreateDatabaseModalComp v-if="showCreateDatabaseModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
+        <CreateSolicitationDatabaseComp v-if="showSolicitationDatabaseModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
         <EditDatabaseModalComp v-if="showEditModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
         <DeleteDatabaseModalComp v-if="showDeleteModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
         <ShowDatabaseModalComp v-if="showViewModal" :database="this.selectedDatabase" @close-modal="closeModal"/>
@@ -78,6 +80,7 @@ import ShowDatabaseModalComp from '@/components/modais/database/ShowDatabaseModa
 import EditDatabaseModalComp from '@/components/modais/database/EditDatabaseModalComp.vue';
 import DeleteDatabaseModalComp from '@/components/modais/database/DeleteDatabaseModalComp.vue';
 import CreateDatabaseModalComp from '../components/modais/database/CreateDatabaseModalComp.vue';
+import CreateSolicitationDatabaseComp from '../components/modais/solicitation/CreateDatabaseSolicitationModalComp.vue';
 import axios from 'axios';
 
 export default {
@@ -129,7 +132,8 @@ export default {
             showEditModal: false,
             showDeleteModal: false,
             selectedDatabase: null,
-            showCreateModal: false /* Alterar o nome depois */
+            showCreateDatabaseModal: false,
+            showSolicitationDatabaseModal: false
         };
     },
     methods: {
@@ -137,8 +141,10 @@ export default {
             this[`${prop}`] = text
         },
         openCreateDatabase(){
-            this.showCreateModal = true;
-            console.log("Entrei aqui");
+            this.showCreateDatabaseModal = true;
+        },
+        openSolicitationDatabase(){
+            this.showSolicitationDatabaseModal = true;
         },
         openViewModal(database) {
             this.selectedDatabase = database;
@@ -157,7 +163,8 @@ export default {
             this.showViewModal = false;
             this.showEditModal = false;
             this.showDeleteModal = false;
-            this.showCreateModal = false;
+            this.showCreateDatabaseModal = false;
+            this.showSolicitationDatabaseModal = false;
         },
         saveChanges() {
             const token = localStorage.getItem('token');
@@ -202,7 +209,8 @@ export default {
         ShowDatabaseModalComp,
         EditDatabaseModalComp,
         DeleteDatabaseModalComp,
-        CreateDatabaseVue: CreateDatabaseModalComp
+        CreateDatabaseModalComp,
+        CreateSolicitationDatabaseComp
 
     }, 
     watch: {

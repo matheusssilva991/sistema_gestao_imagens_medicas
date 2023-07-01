@@ -3,30 +3,35 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title">Visualizar banco de imagens</h2>
+					<h2 class="modal-title">Solicitação de usuário</h2>
 					<button type="button" class="close btn btn-white" @click="closeModal">
 						<span class="h2" aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
 					<div class="user-profile">
-						<h3 class="profile-name"><i class="fa fa-database" aria-hidden="true"></i> {{ database.name}}</h3>
+						<h3 class="profile-name"><i class="fa-regular fa-circle-user"></i> {{ solicitation.data.name }}</h3>
 					</div>
-
-					<label for="examType" class="form-label mt-3">Tipo de exame</label>
-					<input class="form-control" type="text" :value=database.examType aria-label="Disabled examType" disabled readonly>
 					
-                    <label for="imageType" class="form-label mt-3">Tipo da imagem</label>
-					<input class="form-control" type="text" :value=database.imageType aria-label="Disabled imageType" disabled readonly>
+					<label for="email" class="form-label mt-2">Email</label>
+					<input class="form-control" type="email" :value=email aria-label="Disabled email" disabled readonly>
 
-                    <label for="imageQuality" class="form-label mt-3">Qualidade das imagens (bits)</label>
-					<input class="form-control" type="text" :value=database.imageQuality aria-label="Disabled imageQuality" disabled readonly>
-
-					<label for="description" class="form-label mt-3">Descrição</label>
-					<textarea class="form-control" id="description" rows="3" disabled readonly v-model="this.description" ></textarea>
-
-					<label for="sourceLink" class="form-label mt-3">Link de origem</label>
-					<input class="form-control mb-3" type="text" :value=database.sourceLink aria-label="Disabled sourceLink" disabled readonly>
+					<label for="institution" class="form-label mt-3">Instituição</label>
+					<input class="form-control" type="text" :value=institution aria-label="Disabled institution" disabled readonly>
+				
+					<div class="location mt-3">
+						<div class="location-item">
+							<label for="country" class="form-label">País</label>
+							<input class="form-control" type="text" :value=country aria-label="Disabled country" disabled readonly>
+						</div>
+						<div class="location-item">
+							<label for="city" class="form-label">Cidade</label>
+							<input class="form-control" type="text" :value=city aria-label="Disabled city" disabled readonly>
+						</div>
+					</div>
+				
+					<label for="lattes" class="form-label mt-3">Lattes</label>
+					<input class="form-control mb-3" type="lattes" :value=lattes aria-label="Disabled lattes" disabled readonly>
 				</div>
 			</div>
 		</div>
@@ -36,18 +41,27 @@
 <script>
 	export default {
 		created() {
-            this.description = this.database.description
-        },
-        props: {
-			database: {
+			this.email = this.solicitation.data.email
+			this.institution = this.solicitation.data.institution
+			this.country = this.solicitation.data.country
+			this.city = this.solicitation.data.city
+			this.lattes = this.solicitation.data.lattes
+		},
+		props: {
+			solicitation: {
 				type: Object,
 				required: true,
 			},
 		},
 		data() {
 			return {
+				email: undefined,
+				institution: undefined,
+				country: undefined,
+				city: undefined,
+				lattes: undefined,
 				showModal: true,
-                description: ""
+				selectedProfile: undefined, // Nova propriedade para armazenar o perfil selecionado
 			};
 		},
 		methods: {
@@ -57,12 +71,11 @@
 			},
 		},
 	};
-
 </script>
   
 <style scoped>
   /* Estilos do Modal */
-
+  
 .modal {
     font-family: 'Montserrat', sans-serif;
 	margin: 0 auto;
@@ -142,4 +155,14 @@
     text-align: right;
 }
 
+.location {
+	display: flex;
+	justify-content: space-between;
+}
+
+.location-item {
+	width: 45%;
+}
+
 </style>
+  

@@ -62,9 +62,9 @@
             </table>
         </div>
 
-        <DatabaseSolicitationModal v-if="showDatabaseModal" :solicitation="selectedSolicitation"
+        <ShowDatabaseSolicitationModal v-if="showDatabaseModal" :solicitation="selectedSolicitation"
             @close-modal="closeModal" />
-        <UserSolicitationModal v-if="showUserModal" :solicitation="selectedSolicitation" @close-modal="closeModal" />
+        <ShowUserSolicitationModal v-if="showUserModal" :solicitation="selectedSolicitation" @close-modal="closeModal" />
         <AcceptSolicitationModalComp v-if="showAcceptModal" :solicitation="selectedSolicitation" @close-modal="closeModal"
             @save-changes="saveChanges" />
         <RejectSolicitationModalComp v-if="showRejectModal" :solicitation="selectedSolicitation" @close-modal="closeModal"
@@ -73,8 +73,8 @@
 </template>
   
 <script>
-import UserSolicitationModal from '../components/modais/solicitation/UserSolicitationModalComp.vue';
-import DatabaseSolicitationModal from '../components/modais/solicitation/DatabaseSolicitationModalComp.vue';
+import ShowUserSolicitationModal from '../components/modais/solicitation/ShowUserSolicitationModalComp.vue';
+import ShowDatabaseSolicitationModal from '../components/modais/solicitation/ShowDatabaseSolicitationModalComp.vue';
 import AcceptSolicitationModalComp from '../components/modais/solicitation/AcceptSolicitationModalComp.vue';
 import RejectSolicitationModalComp from '../components/modais/solicitation/RejectSolicitationModalComp.vue';
 import InputComp from '../components/InputComp.vue';
@@ -82,8 +82,8 @@ import axios from 'axios';
 
 export default {
     components: {
-        UserSolicitationModal,
-        DatabaseSolicitationModal,
+        ShowUserSolicitationModal,
+        ShowDatabaseSolicitationModal,
         AcceptSolicitationModalComp,
         RejectSolicitationModalComp,
         InputComp

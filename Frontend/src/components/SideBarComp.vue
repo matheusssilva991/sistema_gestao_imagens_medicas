@@ -29,7 +29,7 @@
                 <span class="topic-name">Usuários</span>
             </router-link>
             <router-link
-                to="/tipo-imagens"
+                to="/image-types"
                 class="list-group-item"
                 :class="{ 'active-link': selectedTopic === 'tipo-imagens' }"
                 @click="selectTopic('tipo-imagens')"

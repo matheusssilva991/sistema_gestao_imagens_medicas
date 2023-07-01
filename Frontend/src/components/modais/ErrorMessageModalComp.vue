@@ -63,6 +63,8 @@
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
     max-width: 500px;
     width: 100%;
+    height: 500px; /* Altura fixa para o conteúdo do modal */
+    overflow-y: auto; /* Habilita a barra de rolagem vertical quando necessário */
 }
   
 .modal-header {
