@@ -14,8 +14,8 @@
 				</div>
 			</div>
 			<div class="imagens mt-4">
-				<div v-for="(path, index) in imagensPagina" :key="index">
-					<img @click="openModal(path)" :src="path.url" :alt="path.alt">
+				<div v-for="(image, index) in imagensPagina" :key="index">
+					<img @click="openModal(image)" :src="image.url" :alt="image.alt">
 				</div>
 			</div>
 
@@ -30,7 +30,7 @@
                
 		</div>
 		
-            <ImageModalComp v-if="this.showModalImage" :image="selectedImage" @close-modal="closeModal" />
+        <ImageModalComp v-if="showModalImage" :image="this.selectedImage" @close-modal="closeModal" />
         
 	</div>
 </template>
@@ -93,15 +93,7 @@ export default {
 		}
 	},
 	methods: {
-		getImageInfos(alt) {
-			this.imagesInfo.filter((imageInfo) => {
-				if (alt == imageInfo['resizedImagePath'].split('/').pop().split('.')[ 0 ]) {
-					return imageInfo;
-				}
-			})
-		},
 		openModal(image) {
-			console.log("true");
 			this.showModalImage = true;
 			this.selectedImage = image;
 		},
