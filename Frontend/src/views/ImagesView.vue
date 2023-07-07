@@ -6,7 +6,7 @@
 				<div id="filter">
 					<div class="filter-item-container">
 						<i class="fa fa-filter mt-2" aria-hidden="true"></i>
-						<select name="filtro" id="" v-model="selectedDatabase">
+						<select name="filtro" id="" v-model="selectedDatabase" class="custom-select">
 							<option v-for="databaseName in databasesNames" :key="databaseName" :value="databaseName">{{
 								databaseName }}</option>
 						</select>
@@ -14,8 +14,8 @@
 				</div>
 			</div>
 			<div class="imagens mt-4">
-				<div v-for="(path, index) in filteredImages" :key="index">
-					<img :src="path.url" :alt="path.alt">
+				<div v-for="(path, index) in imagensPagina" :key="index">
+					<img @click="openModal(path)" :src="path.url" :alt="path.alt">
 				</div>
 			</div>
 
@@ -27,41 +27,22 @@
 						class="pagination-button">Próxima</button>
 				</div>
 			</div>
-			<div class="modal" v-if="selectedImage">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h2 class="modal-title">Visualização</h2>
-						<button class="modal-close" @click="closeModal">&#10006;</button>
-					</div>
-					<div class="modal-body">
-						<div class="modal-image-container">
-							<img class="mamografia.jpg" src="../assets/mamografia.jpg" alt="image.alt">
-						</div>
-						<div class="modal-info">
-							<label for="info1">ID Paciente:</label>
-							<input type="text" id="info1" :value="images[0].idPaciente" disabled>
-							<label for="info2">Orientação:</label>
-							<input type="text" id="info2" v-model="images[0].orientacao" disabled>
-							<label for="info3">Qualidade:</label>
-							<input type="text" id="info3" v-model="images[0].qualidade" disabled>
-							<label for="info4">Patologia:</label>
-							<input type="text" id="info4" v-model="images[0].patologia" disabled>
-						</div>
-					</div>
-
-				</div>
-			</div>
+               
 		</div>
+		
+            <ImageModalComp v-if="this.showModalImage" :image="selectedImage" @close-modal="closeModal" />
+        
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
+import ImageModalComp from '../components/modais/ImageModalComp.vue';
 
 export default {
 	components: {
-
-	},
+    ImageModalComp
+},
 	mounted() {
 		const imagesContext = require.context('@/assets/images', false, /\.(png|jpe?g|gif|svg)$/);
 
@@ -83,7 +64,8 @@ export default {
 			imagesInfo: [],
 			images: [],
 			imagensPorPagina: 8,
-			paginaAtual: 1
+			paginaAtual: 1,
+			showModalImage: false,
 		};
 
 	},
@@ -107,31 +89,38 @@ export default {
 		imagensPagina() {
 			const inicio = (this.paginaAtual - 1) * this.imagensPorPagina;
 			const fim = inicio + this.imagensPorPagina;
-			return this.images.slice(inicio, fim);
+			return this.filteredImages.slice(inicio, fim);
 		}
 	},
 	methods: {
 		getImageInfos(alt) {
 			this.imagesInfo.filter((imageInfo) => {
 				if (alt == imageInfo['resizedImagePath'].split('/').pop().split('.')[ 0 ]) {
-					return imageInfo
+					return imageInfo;
 				}
 			})
 		},
 		openModal(image) {
+			console.log("true");
+			this.showModalImage = true;
 			this.selectedImage = image;
 		},
 		closeModal() {
+			this.showModalImage = false;
 			this.selectedImage = null;
 		},
 		paginaAnterior() {
 			if (this.paginaAtual > 1) {
 				this.paginaAtual--;
+			}else{
+				this.paginaAtual = this.totalPaginas;
 			}
 		},
 		proximaPagina() {
 			if (this.paginaAtual < this.totalPaginas) {
 				this.paginaAtual++;
+			} else {
+				this.paginaAtual = 1;
 			}
 		}
 	},
@@ -177,7 +166,7 @@ export default {
 	margin: 0 auto;
 	/* Adicionado para centralizar horizontalmente */
 	height: 80vh;
-	width: 100%;
+	width: 80%;
 	border-radius: 25px;
 	box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
 }
@@ -212,6 +201,32 @@ export default {
 	display: flex;
 	justify-content: space-around;
 }
+.filter-item-container i {
+   margin-right: 5px;
+}
+
+
+.custom-select {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 20px;
+  padding: 5px;
+  padding-left: 20px;
+  font-size: 14px;
+  width: 100%;
+  color: #858282;
+  background-color: #F2F2F2;
+  -webkit-box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181); 
+  box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181);
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #73bf8e;
+  box-shadow: 0 0 5px rgba(115, 191, 142, 0.5);
+}
+
 
 .imagens {
 	width: 100%;
@@ -221,11 +236,14 @@ export default {
 	justify-content: space-evenly;
 	align-content: center;
 }
+.imagens div{
+	flex-basis: 23%;
+}
 
 .imagens img {
 	max-width: 100%;
 	max-height: 100%;
-	margin: 2%;
+	margin: 10px;
 }
 
 .imagens li {
@@ -237,103 +255,34 @@ export default {
 	bottom: 6px;
 	right: 10px;
 	margin-top: 12px;
-	margin-left: 80%
+	margin-left: 80%;
 }
 
 .pagination-buttons {
 	display: flex;
 	gap: 5px;
+	margin-top: 10px;
+	
 }
 
 .pagination-button {
 	padding: 5px 10px;
 	font-size: 14px;
-}
-
-.modal {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.modal-content {
-	background-color: #ffffff;
-	padding: 20px;
 	border-radius: 10px;
-	box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
-	text-align: center;
-	width: 40%;
-	max-width: 800px;
-	max-height: 90%;
+  border: none;
+  background-color: #73bf8e;
+  color: white;
+  cursor: pointer;
 }
 
-.modal-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 10px;
+.pagination-button:hover {
+  background-color: #5fa17f;
 }
 
-.modal-title {
-	font-size: 20px;
-	margin-top: 0;
-	margin-bottom: 0;
+.pagination-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
-
-.modal-body {
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-}
-
-.modal-image-container {
-	flex: 1;
-	text-align: left;
-}
-
-.modal-image {
-	max-width: 100%;
-	max-height: 400px;
-	width: auto;
-}
-
-.modal-info {
-	flex: 1;
-	margin-left: 20px;
-	text-align: left;
-
-}
-
-.modal-info label {
-	display: block;
-	margin-bottom: 5px;
-}
-
-.modal-info input {
-	width: 100%;
-	padding: 5px;
-	margin-bottom: 10px;
-	border-radius: 10px;
-	background-color: #f2f2f2;
-	border: 0.5px solid #f2f2f2;
-}
-
-.modal-close {
-	padding: 5px 10px;
-	background-color: #73bf8e;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-
 
 @media (max-width: 576px) {
 	.container {
@@ -371,54 +320,17 @@ export default {
 	}
 
 	.pagination {
-		margin: auto;
-	}
+    margin: 0 auto;
+    justify-content: center;
+  }
 
-	.modal-content {
-		width: auto;
-	}
-
-	.modal-body {
-		flex-direction: column;
-	}
-
-	.modal-image-container {
-		flex: 1;
-		text-align: center;
-	}
-
-	.modal-info {
-		margin: 10px 0;
-	}
-
-	.modal-image {
-		max-height: 200px;
-	}
+  .pagination-button {
+    padding: 3px 6px;
+    font-size: 12px;
+  }
 }
 
 @media (min-width:577px) and (max-width: 735px) {
-
-	.modal-content {
-		width: auto;
-	}
-
-	.modal-body {
-		flex-direction: column;
-	}
-
-	.modal-image-container {
-		flex: 1;
-		text-align: center;
-	}
-
-	.modal-info {
-		margin: 10px 0;
-	}
-
-	.modal-image {
-		max-height: 200px;
-	}
-
 	.sidebar-title {
 
 		margin-top: 5px;
@@ -431,8 +343,13 @@ export default {
 
 
 	.sidebar {
-		height: auto;
+		height: 170%;
 	}
+	
+	.imagens{
+		flex-wrap: wrap;
+	}
+
 
 	#filter {
 		width: 80%;
@@ -441,6 +358,7 @@ export default {
 
 	.pagination {
 		margin-left: auto;
+		justify-content: center;
 	}
 }
 
@@ -476,27 +394,7 @@ export default {
 
 	.pagination {
 		margin: auto;
-	}
-
-	.modal-content {
-		width: auto;
-	}
-
-	.modal-body {
-		flex-direction: column;
-	}
-
-	.modal-image-container {
-		flex: 1;
-		text-align: center;
-	}
-
-	.modal-info {
-		margin: 10px 0;
-	}
-
-	.modal-image {
-		max-height: 200px;
+		justify-content: center;
 	}
 
 }
@@ -509,10 +407,6 @@ export default {
 
 	.sidebar {
 		height: auto;
-	}
-
-	.modal-content {
-		width: auto;
 	}
 }
 </style>
