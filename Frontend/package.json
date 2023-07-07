@@ -25,5 +25,8 @@
     "@vue/cli-service": "~5.0.8",
     "eslint": "^8.43.0",
     "eslint-plugin-vue": "^9.15.1"
+  },
+  "overrides": {
+    "semver": "~7.5.2"
   }
 }
