@@ -53,7 +53,7 @@
         </div>
         <CreateImageTypeModalCompVue v-if="showCreateImageTypeModalCompVue" @close-modal="closeModal"/>
         <EditImageTypeModalCompVue v-if="showEditImageTypeModalCompVue" @close-modal="closeModal"/>
-        <ShowImageTypeModalCompVue v-if="showViewImageTypeModalCompVue" @close-modal="closeModal"/>
+        <ShowImageTypeModalCompVue v-if="showViewImageTypeModalCompVue" :imageType="this.selectedImageType"  @close-modal="closeModal"/>
         <DeleteImageTypeModalCompVue v-if="showDeleteImageTypeModalCompVue" @close-modal="closeModal"/>
         
     </div>
@@ -98,6 +98,7 @@ export default {
     },
     data() {
         return {
+            selectedImageType: "",
             user: {},
             imageTypes: [],
             filteredTypes: [],
@@ -112,8 +113,9 @@ export default {
         openDeleteModal(){
             this.showDeleteImageTypeModalCompVue = true;
         },
-        openViewModal(){
+        openViewModal(imageType){
             this.showViewImageTypeModalCompVue = true;
+            this.selectedImageType = imageType;
         },
         openModalCreateImageTypeModalCompVue(){
             this.showCreateImageTypeModalCompVue = true;
