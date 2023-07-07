@@ -31,7 +31,7 @@
 
             <div v-else:=this.logged class="dropdown form-logged-header">
                 <button id="button-logged" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-circle-user"></i> {{ this.user.name }} 
+                    <i class="fa-solid fa-circle-user"></i> matheus
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
@@ -43,7 +43,7 @@
             </div>
 
             <div class="mobile-header">
-                <div v-if:=!this.logged>
+                <div v-if:=this.logged>
                     <button v-if:=!this.isClicked class="mobile-header-button" @click="clicked">
 					    <i class="fa-solid fa-bars"></i>
                     </button>
@@ -75,22 +75,6 @@
 					    </div>
 				    </div>
 			    </div>
-
-                <div v-else:=this.logged class="dropdown mobile-logged-header">
-                    <button id="button-logged" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-circle-user"></i> {{ this.user.name }} 
-                    </button>
-
-                    <ul class="dropdown-menu">
-                        <li>
-                            <button class="dropdown-item" @click="openModalEditUser">Editar perfil</button>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/">Logout</a>
-                        </li>
-                    </ul>
-                    <EditUserComp v-if="showModalEdit" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
-                </div>
             </div>	
         </header>
 
@@ -351,7 +335,7 @@ html, body {
     .form-header{
         display: none;
     }
-    
+
     .mobile-header-button{
         display: flex;
         margin-right: 25px;
@@ -435,6 +419,17 @@ html, body {
 @media screen and (max-width: 1600px) {
     .navbar-header {
         width: 45%;
+    }
+
+    .form-logged-header {
+        display: flex;
+        position: absolute;
+        padding-left: 95%;
+    }
+
+    .dropdown-toggle {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
     }
 
     .form-header {
