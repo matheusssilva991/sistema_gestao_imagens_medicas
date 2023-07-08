@@ -157,8 +157,8 @@ export default {
 	padding-top: 2.5%;
 	margin: 0 auto;
 	/* Adicionado para centralizar horizontalmente */
-	height: 80vh;
-	width: 80%;
+	height: 100vh;
+	width: 100%;
 	border-radius: 25px;
 	box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
 }
@@ -213,12 +213,12 @@ export default {
   box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181);
 }
 
-.custom-select:focus {
+/*.custom-select:focus {
   outline: none;
   border-color: #73bf8e;
   box-shadow: 0 0 5px rgba(115, 191, 142, 0.5);
 }
-
+*/
 
 .imagens {
 	width: 100%;
@@ -230,12 +230,15 @@ export default {
 }
 .imagens div{
 	flex-basis: 23%;
+	margin: 2px;
 }
 
 .imagens img {
 	max-width: 100%;
 	max-height: 100%;
 	margin: 10px;
+	min-width: 80px;
+	
 }
 
 .imagens li {
@@ -303,11 +306,14 @@ export default {
 
 	.imagens {
 		justify-content: center;
-
 	}
 
+	.imagens img {
+	min-width: 80px;
+	
+}
 	.imagens li {
-		width: 90%;
+		width: 80%;
 		margin: 10px;
 	}
 
@@ -335,7 +341,7 @@ export default {
 
 
 	.sidebar {
-		height: 170%;
+		height: auto;
 	}
 	
 	.imagens{
@@ -359,6 +365,13 @@ export default {
 		background-color: #f2f2f2;
 	}
 
+	.imagens img {
+	max-width: 100%;
+	max-height: 100%;
+	margin: 10px;
+	min-width: 90px;
+	
+   }
 	.imagens li {
 		width: 40%;
 		margin: 10px;
