@@ -20,58 +20,14 @@
 					<span class="span-description">{{ caracteresDigitados }}/500 caracteres</span> <br>
 
 					<label for="requiredData" class="form-label mt-3">Dados da Imagem:</label>
-					<input disabled class="form-control" type="text" v-model="inputValue" @keyup.enter="saveValue(0)"
+					<input disabled class="form-control" type="text" v-model="this.requiredData"
 						aria-label="requiredData" placeholder="Informe os dados" />
-
-					<p v-if="requiredData.length > 0">
-						<span :style="{
-							backgroundColor:
-								index === hoveredIndex ? backColor : 'rgb(71, 71, 71)',
-						}" @mouseleave="resetHoveredIndex(index, 0)" @mouseover="setHoveredIndex(index, 0)"
-							v-for="(value, index) in requiredData" :key="index" class="span-requiredData"
-							@click="openModalData(index, 0)">
-							{{ value }} <br />
-						</span>
-					</p>
 
 					<!-- Falta o modal de confirmação -->
 					<label for="optionalData" class="form-label mt-3">Dados opcionais:</label>
-					<input disabled class="form-control" type="text" v-model="inputValueOpcional"
-						@keyup.enter="saveValue(1)" aria-label="optionalData" placeholder="Informe os dados opcionais" />
-					<p v-if="opcionalData.length > 0">
-						<span :style="{
-							backgroundColor:
-								index === hoveredIndexOpcional
-									? backColorOpcional
-									: 'rgb(71, 71, 71)',
-						}" @mouseleave="resetHoveredIndex(index, 1)" @mouseover="setHoveredIndex(index, 1)"
-							v-for="(value, index) in opcionalData" :key="index" class="span-requiredData"
-							@click="openModalData(index, 1)">
-							{{ value }} <br /></span>
-					</p>
+					<input disabled class="form-control" type="text" v-model="this.opcionalData"
+						 aria-label="optionalData" placeholder="Informe os dados opcionais" />
 
-
-					<!-- Dentro do body do modal -->
-					<div class="modal" v-if="showModal">
-						<div class="modal-content">
-							<div class="div-h2-modal">
-								<h2 class="h2-modal">Tem certeza que deseja excluir?</h2>
-							</div>
-							<span class="span-modal" v-if="modalRequest == 0">{{
-								oldValue
-							}}</span>
-							<span class="span-modal" v-else>{{ oldValueOpcional }}</span>
-
-							<div class="div-button-modal">
-								<button @click="closeModalData(0)" class="button-close-modal">
-									FECHAR
-								</button>
-								<button @click="closeModalData(1)" class="button-delete-modal">
-									EXCLUIR
-								</button>
-							</div>
-						</div>
-					</div>
 
 				</div>
 
@@ -101,24 +57,12 @@ export default {
 	},
 	data() {
 		return {
-			showModal: false,
 			name: "",
 			description: "",
-			requiredData: [],
-			opcionalData: [],
-			inputValue: "",
-			inputValueOpcional: "",
+			requiredData: "", /* Tratado como string */
+			opcionalData: "", /* Tratado como string */
 			caracteresDigitados: 0,
 			limitCaracteres: 500,
-			backColor: "",
-			backColorOpcional: "",
-			oldValue: "",
-			oldValueOpcional: "",
-			oldIndexOpcional: "",
-			oldIndex: "",
-			modalRequest: "",
-			hoveredIndex: -1,
-			hoveredIndexOpcional: -1,
 
 		};
 	},
@@ -133,63 +77,6 @@ export default {
 				this.descripttion = this.description.slice(0, this.limiteCaracteres);
 			} else {
 				this.caracteresDigitados = this.description.length;
-			}
-		},
-		saveValue(op_input) {
-			if ((this.inputValue.length > 0 && op_input == 0) || (this.inputValueOpcional.length > 0 && op_input == 1)) {
-				if (op_input == 0) {
-					this.requiredData.push(this.inputValue);
-					this.inputValue = ""; // Limpar o valor do input após salvar
-				} else {
-					this.opcionalData.push(this.inputValueOpcional);
-					this.inputValueOpcional = ""; // Limpar o valor do input após salvar
-				}
-			}
-		},
-		setHoveredIndex(index, op_input) {
-			if (op_input === 0) {
-				this.hoveredIndex = index;
-				this.oldValue = this.requiredData[ index ];
-				this.backColor = "red";
-			} else {
-				this.hoveredIndexOpcional = index;
-				this.oldValueOpcional = this.opcionalData[ index ];
-				this.backColorOpcional = "red";
-			}
-		},
-		resetHoveredIndex(index, op_input) {
-			if (op_input === 0) {
-				this.hoveredIndex = -1;
-				this.requiredData[ index ] = this.oldValue;
-				this.backColor = "rgb(71, 71, 71)";
-			} else {
-				this.hoveredIndexOpcional = -1;
-				this.opcionalData[ index ] = this.oldValueOpcional;
-				this.backColorOpcional = "rgb(71, 71, 71)";
-			}
-		},
-		openModalData(index, op_input) {
-			if (op_input === 0) {
-				this.modalRequest = 0;
-				this.oldIndex = index;
-			} else {
-				this.modalRequest = 1;
-				this.oldIndexOpcional = index;
-			}
-			this.showModal = true;
-		},
-		closeModalData(op) {
-			/* this.oldVelue = this.requiredData[index] */
-			if (op == 0) {
-				this.showModal = false;
-			} else {
-				if (this.modalRequest == 0) {
-					this.requiredData.splice(this.oldIndex, 1);
-				} else {
-					this.opcionalData.splice(this.oldIndexOpcional, 1);
-				}
-
-				this.showModal = false;
 			}
 		},
 	}
