@@ -50,13 +50,14 @@ export default {
 		}
 	},
 	created(){
-		this.name = this.imageType.name
+		/* this.name = this.imageType.name
 		this.description = this.imageType.description,
 		this.requiredData = this.imageType.requiredData.join(", ")
-		this.opcionalData = this.imageType.requiredData.join(", ")
+		this.opcionalData = this.imageType.requiredData.join(", ") */
 	},
 	data() {
 		return {
+			showModal: false,
 			name: "",
 			descripttion: "",
 			requiredData: "",

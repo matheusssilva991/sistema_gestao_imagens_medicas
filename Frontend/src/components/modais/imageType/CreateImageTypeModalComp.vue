@@ -11,21 +11,21 @@
 
 				<div class="modal-body">
 					<label for="name" class="form-label mt-3">Nome da imagem:</label>
-					<input class="form-control" type="text" v-model="this.name" aria-label="name"
+					<input class="form-control" type="text" v-model="name" aria-label="name"
 						placeholder="Informe nome da imagem" />
 
 					<label for="description" class="form-label mt-3">Descrição:</label>
-					<textarea class="form-control" v-model="this.descripttion" aria-label="description"
+					<textarea class="form-control" v-model="description" aria-label="description"
 						@input="countCaractere" cols="38" rows="3" placeholder="Descrição da imagem"></textarea>
 					<span class="span-description">{{ caracteresDigitados }}/500 caracteres</span> <br>
 
 					<label for="requiredData" class="form-label mt-3">Dados da Imagem:</label>
-					<input class="form-control" type="text" v-model="this.requiredData"
+					<input class="form-control" type="text" v-model="requiredData"
 						aria-label="requiredData" placeholder="Informe os dados" />
 
 
 					<label for="optionalData" class="form-label mt-3">Dados opcionais:</label>
-					<input class="form-control" type="text" v-model="this.opcionalData"
+					<input class="form-control" type="text" v-model="opcionalData"
 						aria-label="optionalData" placeholder="Informe os dados opcionais" />
 
 
@@ -50,15 +50,16 @@ export default {
 		}
 	},
 	created(){
-		this.name = this.imageType.name
+		/* this.name = this.imageType.name
 		this.description = this.imageType.description,
 		this.requiredData = this.imageType.requiredData.join(", ")
-		this.opcionalData = this.imageType.requiredData.join(", ")
+		this.opcionalData = this.imageType.opcionalData.join(", ") */
 	},
 	data() {
 		return {
-			name: "",
-			descripttion: "",
+			showModal: false,
+			name:"",
+			description: "",
 			requiredData: "",
 			opcionalData: "",
 			caracteresDigitados: 0,
@@ -73,9 +74,9 @@ export default {
 		},
 		countCaractere() {
 			if (this.caracteresDigitados >= this.limiteCaracteres) {
-				this.descripttion = this.descripttion.slice(0, this.limiteCaracteres);
+				this.description = this.description.slice(0, this.limiteCaracteres);
 			} else {
-				this.caracteresDigitados = this.descripttion.length;
+				this.caracteresDigitados = this.description.length;
 			}
 		},
 	}

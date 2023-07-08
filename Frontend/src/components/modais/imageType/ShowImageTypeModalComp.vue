@@ -57,6 +57,7 @@ export default {
 	},
 	data() {
 		return {
+			showModal: false,
 			name: "",
 			description: "",
 			requiredData: "", /* Tratado como string */
