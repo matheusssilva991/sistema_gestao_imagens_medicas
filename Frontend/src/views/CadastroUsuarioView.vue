@@ -38,19 +38,17 @@
                 <label for="lattes">Lattes:</label>
                 <input v-model="lattes" type="text" name="lattes" id="lattes" placeholder="Lattes">
             </div>
+            
+            <div class="container-buttons" >
+                <div>
+                 <a class="btn btn-secondary button-back" href="/">Voltar</a>
+               </div>
 
-            <div class="role flex-form-input">
-                <label for="role">Tipo usuário:</label>
-                <select name="role" id="role">
-                    <option value="researcher">Pesquisador</option>
-                    <option value="administrator">Administrador</option>
-                </select>
+                <div class="button-save button-flex">
+                    <button @click="cadastrar()" type="submit" class="button">Salvar</button>
+                </div>
             </div>
 
-            <div class="button-save button-flex">
-                <a class="btn btn-secondary button-back" href="/">Voltar</a>
-                <button @click="cadastrar()" type="submit" class="button">Salvar</button>
-            </div>
 
         </div>
 
@@ -122,17 +120,11 @@ header {
     height: 80px;
 }
 
-/*   .div-header{
-        padding: 10px;
-        text-align: center;
-        height: 20px;
-    } */
 
 .div-form {
     margin: 10px auto auto auto;
     padding: 20px;
     width: 70%;
-    /*  border: 3px solid red; */
     background: white;
     border-radius: 20px;
     box-shadow: 5px 5px 8px rgb(95, 91, 91);
@@ -174,8 +166,7 @@ form {
         "name email"
         "password institution"
         "country city"
-        "lattes role"
-        "button-save button-save"
+        "lattes container-buttons"
     ;
 }
 
@@ -205,6 +196,7 @@ form {
 
 .lattes {
     grid-area: lattes;
+    margin-bottom: 25px;
 }
 
 .role {
@@ -214,7 +206,17 @@ form {
 
 .button-save {
     grid-area: button-save;
+    margin-left: 10px;
 }
+
+.container-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    
+}
+
 
 .button-flex {
     display: flex;
@@ -279,8 +281,14 @@ input:focus {
             "city"
             "lattes"
             "role"
-            "button-save"
+            "container-buttons"
         ;
+    }
+
+    .container-buttons{
+        justify-content: center;
+        align-items: center;
+    
     }
 
     .button-flex {
