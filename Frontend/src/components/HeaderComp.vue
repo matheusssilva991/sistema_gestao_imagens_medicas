@@ -43,7 +43,7 @@
             </div>
 
             <div class="mobile-header">
-                <div v-if:=this.logged>
+                <div v-if:=!this.logged>
                     <button v-if:=!this.isClicked class="mobile-header-button" @click="clicked">
 					    <i class="fa-solid fa-bars"></i>
                     </button>
@@ -215,7 +215,7 @@ html, body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	margin-top: 20px;
+	/* margin-top: 20px; */
 }
 
 .navbar-header {
@@ -349,7 +349,7 @@ html, body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 75px;
+        margin-top: 100px;
     }
 
     .mobile-logged-header {
