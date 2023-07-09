@@ -27,11 +27,11 @@
 						class="pagination-button">Próxima</button>
 				</div>
 			</div>
-               
+
 		</div>
-		
-        <ImageModalComp v-if="showModalImage" :image="this.selectedImage" @close-modal="closeModal" />
-        
+
+		<ImageModalComp v-if="showModalImage" :image="this.selectedImage" @close-modal="closeModal" />
+
 	</div>
 </template>
 
@@ -41,8 +41,8 @@ import ImageModalComp from '../components/modais/image/ImageModalComp.vue';
 
 export default {
 	components: {
-    ImageModalComp
-},
+		ImageModalComp
+	},
 	mounted() {
 		const imagesContext = require.context('@/assets/images', false, /\.(png|jpe?g|gif|svg)$/);
 
@@ -75,10 +75,10 @@ export default {
 		},
 		filteredImages() {
 			return this.images.filter((image) => {
-				if (image.alt.includes(this.selectedDatabase)){
-					return image
+				if (image.alt.includes(this.selectedDatabase)) {
+					return image;
 				}
-			})
+			});
 		},
 		existemMaisPaginas() {
 			return this.paginaAtual < this.totalPaginas;
@@ -104,7 +104,7 @@ export default {
 		paginaAnterior() {
 			if (this.paginaAtual > 1) {
 				this.paginaAtual--;
-			}else{
+			} else {
 				this.paginaAtual = this.totalPaginas;
 			}
 		},
@@ -157,7 +157,7 @@ export default {
 	padding-top: 2.5%;
 	margin: 0 auto;
 	/* Adicionado para centralizar horizontalmente */
-	height: 100vh;
+	/* height: 100vh; */
 	width: 100%;
 	border-radius: 25px;
 	box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
@@ -193,24 +193,25 @@ export default {
 	display: flex;
 	justify-content: space-around;
 }
+
 .filter-item-container i {
-   margin-right: 5px;
+	margin-right: 5px;
 }
 
 
 .custom-select {
-  appearance: none;
-  background-color: transparent;
-  border: none;
-  border-radius: 20px;
-  padding: 5px;
-  padding-left: 20px;
-  font-size: 14px;
-  width: 100%;
-  color: #858282;
-  background-color: #F2F2F2;
-  -webkit-box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181); 
-  box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181);
+	appearance: none;
+	background-color: transparent;
+	border: none;
+	border-radius: 20px;
+	padding: 5px;
+	padding-left: 20px;
+	font-size: 14px;
+	width: 100%;
+	color: #858282;
+	background-color: #F2F2F2;
+	-webkit-box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181);
+	box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181);
 }
 
 /*.custom-select:focus {
@@ -228,7 +229,8 @@ export default {
 	justify-content: space-evenly;
 	align-content: center;
 }
-.imagens div{
+
+.imagens div {
 	flex-basis: 23%;
 	margin: 2px;
 }
@@ -238,7 +240,7 @@ export default {
 	max-height: 100%;
 	margin: 10px;
 	min-width: 80px;
-	
+
 }
 
 .imagens li {
@@ -257,26 +259,26 @@ export default {
 	display: flex;
 	gap: 5px;
 	margin-top: 10px;
-	
+
 }
 
 .pagination-button {
 	padding: 5px 10px;
 	font-size: 14px;
 	border-radius: 10px;
-  border: none;
-  background-color: #73bf8e;
-  color: white;
-  cursor: pointer;
+	border: none;
+	background-color: #73bf8e;
+	color: white;
+	cursor: pointer;
 }
 
 .pagination-button:hover {
-  background-color: #5fa17f;
+	background-color: #5fa17f;
 }
 
 .pagination-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+	background-color: #ccc;
+	cursor: not-allowed;
 }
 
 @media (max-width: 576px) {
@@ -309,23 +311,24 @@ export default {
 	}
 
 	.imagens img {
-	min-width: 80px;
-	
-}
+		min-width: 80px;
+
+	}
+
 	.imagens li {
 		width: 80%;
 		margin: 10px;
 	}
 
 	.pagination {
-    margin: 0 auto;
-    justify-content: center;
-  }
+		margin: 0 auto;
+		justify-content: center;
+	}
 
-  .pagination-button {
-    padding: 3px 6px;
-    font-size: 12px;
-  }
+	.pagination-button {
+		padding: 3px 6px;
+		font-size: 12px;
+	}
 }
 
 @media (min-width:577px) and (max-width: 735px) {
@@ -343,8 +346,8 @@ export default {
 	.sidebar {
 		height: auto;
 	}
-	
-	.imagens{
+
+	.imagens {
 		flex-wrap: wrap;
 	}
 
@@ -366,12 +369,13 @@ export default {
 	}
 
 	.imagens img {
-	max-width: 100%;
-	max-height: 100%;
-	margin: 10px;
-	min-width: 90px;
-	
-   }
+		max-width: 100%;
+		max-height: 100%;
+		margin: 10px;
+		min-width: 90px;
+
+	}
+
 	.imagens li {
 		width: 40%;
 		margin: 10px;

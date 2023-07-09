@@ -55,7 +55,7 @@ html, body {
 }
 
 #content-logged {
-  margin-top: 5%;
+  margin-top: 3%;
   display: flex;
   justify-content: space-around;
 }
