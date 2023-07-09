@@ -1,13 +1,4 @@
 <template>
-    <link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-  rel="stylesheet"
-/>
-
-<link
-  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
-  rel="stylesheet"
-/>
 
     <div class="container">
       <div class="sidebar">
@@ -303,8 +294,22 @@
     color: #73bf8e;
     font-weight: 100;
   }
-  
 
+  .pagination[data-v-77f6eb3f] {
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+    align-self: flex-end; 
+    margin-left: 55%;
+    }
+
+  .pagination .page-link[data-v-77f6eb3f] {
+  color: #FFF; /* Nova cor do texto */
+  background-color: #73bf8e;
+  margin-left: 10px;
+  padding: 10;
+  
+    }
   .container {
     display: flex;
     justify-content: center;
@@ -437,6 +442,7 @@
     flex-basis: 45%;
   }
 
+ 
   .pagination {
     margin: 10px auto;
   }
@@ -450,6 +456,11 @@
     margin-bottom: 5px;
     font-size: 12px;
   }
+
+  .btn-anterior{
+    background-color: #dd2215;
+  }
+
 }
 
 @media (max-width: 576px) {
@@ -478,18 +489,35 @@
 
   .pagination {
     margin: 10px auto;
+   
   }
 
   .pagination-buttons {
     flex-direction: column;
+
   }
 
   .pagination-button {
     width: 100%;
     margin-bottom: 5px;
     font-size: 12px;
+
   }
 }
+
+@media (min-width: 0px) and (max-width: 377px){
+    .pagination[data-v-77f6eb3f] {
+    margin-left: 10%;
+    }
+}
+
+
+@media (min-width: 378px) and (max-width: 576px){
+    .pagination[data-v-77f6eb3f] {
+    margin-left: 20%;
+    }
+}
+
 
 @media (min-width: 577px) and (max-width: 735px) {
   .sidebar {
@@ -522,6 +550,11 @@
     margin-left: auto;
     justify-content: center;
   }
+
+  
+  .pagination[data-v-77f6eb3f] {
+    margin-left: 30%;
+    }
 }
 
 @media (min-width: 736px) and (max-width: 1000px) {
@@ -541,6 +574,10 @@
   .pagination-button {
     font-size: 14px;
   }
+
+  .pagination[data-v-77f6eb3f] {
+    margin-left: 50%;
+    }
 }
 
 @media (min-width: 1001px) and (max-width: 1220px) {
@@ -551,6 +588,10 @@
   .sidebar {
     height: auto;
   }
+
+  .pagination[data-v-77f6eb3f] {
+    margin-left: 52%;
+    }
 }
 </style>
 
