@@ -364,7 +364,6 @@ export default {
   padding-top: 2.5%;
   margin: 0 auto;
   width: 100%;
-  max-width: 900px;
   border-radius: 25px;
   box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
 }

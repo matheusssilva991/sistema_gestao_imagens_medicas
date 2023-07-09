@@ -456,4 +456,13 @@ export default {
     margin-left: 52%;
   }
 }
+
+@media (min-width: 1221px) {
+  .sidebar {
+    height: auto;
+  }
+  .pagination[data-v-1bd79246] {
+    margin-left: 52%;
+  }
+}
 </style>
