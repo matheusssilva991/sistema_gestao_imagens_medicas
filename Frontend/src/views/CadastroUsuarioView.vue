@@ -1,5 +1,5 @@
 <template>
-    <div class="div-form">
+    <div class="div-form mt-4">
         <h2 class="text-form">Criar Conta</h2>
         <div class="grid-form">
             <div class="name flex-form-input">
