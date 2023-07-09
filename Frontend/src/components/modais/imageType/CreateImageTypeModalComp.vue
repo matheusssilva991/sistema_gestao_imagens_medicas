@@ -15,19 +15,18 @@
 						placeholder="Informe nome da imagem" />
 
 					<label for="description" class="form-label mt-3">Descrição:</label>
-					<textarea class="form-control" v-model="description" aria-label="description"
-						@input="countCaractere" cols="38" rows="3" placeholder="Descrição da imagem"></textarea>
+					<textarea class="form-control" v-model="description" aria-label="description" @input="countCaractere"
+						cols="38" rows="3" placeholder="Descrição da imagem"></textarea>
 					<span class="span-description">{{ caracteresDigitados }}/500 caracteres</span> <br>
 
 					<label for="requiredData" class="form-label mt-3">Dados da Imagem:</label>
-					<input class="form-control" type="text" v-model="requiredData"
-						aria-label="requiredData" placeholder="Informe os dados" />
+					<input class="form-control" type="text" v-model="requiredData" aria-label="requiredData"
+						placeholder="Informe os dados" />
 
 
 					<label for="optionalData" class="form-label mt-3">Dados opcionais:</label>
-					<input class="form-control" type="text" v-model="opcionalData"
-						aria-label="optionalData" placeholder="Informe os dados opcionais" />
-
+					<input class="form-control" type="text" v-model="optionalData" aria-label="optionalData"
+						placeholder="Informe os dados opcionais" />
 
 				</div>
 
@@ -37,10 +36,16 @@
 
 			</div>
 		</div>
+
+		<div v-if="this.showErroModal" class="error-msg">
+			<ErrorMessageModalComp :message=this.erro @close-modal="closeErroModal()" />
+		</div>
 	</div>
 </template>
 
 <script>
+import ErrorMessageModalComp from '../ErrorMessageModalComp.vue';
+import axios from 'axios';
 
 export default {
 	props: {
@@ -49,21 +54,19 @@ export default {
 			required: true,
 		}
 	},
-	created(){
-		/* this.name = this.imageType.name
-		this.description = this.imageType.description,
-		this.requiredData = this.imageType.requiredData.join(", ")
-		this.opcionalData = this.imageType.opcionalData.join(", ") */
+	components: {
+		ErrorMessageModalComp
 	},
 	data() {
 		return {
 			showModal: false,
-			name:"",
+			name: "",
 			description: "",
 			requiredData: "",
-			opcionalData: "",
+			optionalData: "",
 			caracteresDigitados: 0,
 			limitCaracteres: 500,
+			showErroModal: false,
 		};
 	},
 
@@ -72,6 +75,9 @@ export default {
 			this.showModal = false;
 			this.$emit('close-modal');
 		},
+		closeErroModal() {
+			this.showErroModal = false;
+		},
 		countCaractere() {
 			if (this.caracteresDigitados >= this.limiteCaracteres) {
 				this.description = this.description.slice(0, this.limiteCaracteres);
@@ -79,6 +85,32 @@ export default {
 				this.caracteresDigitados = this.description.length;
 			}
 		},
+		saveChanges() {
+			const newImageType = {
+				name: this.name,
+				description: this.description,
+				requiredData: this.requiredData.split(",").map(data => data.trim()),
+				optionalData: this.optionalData.split(",").map(data => data.trim()),
+			};
+
+			const token = localStorage.getItem('token');
+
+			if (token != undefined) {
+				const req = {
+					headers: {
+						Authorization: "Bearer " + token
+					}
+				};
+				axios.post(`http://localhost:8081/api/image-type`, newImageType, req)
+					.then(response => {
+						console.log(response.data);
+						this.$emit('save-changes');
+					}).catch(err => {
+						this.erro = err.response.data?.err;
+						this.showErroModal = true;
+					});
+			}
+		}
 	}
 };
 </script>

@@ -4,7 +4,8 @@
             <div class="sidebar-header">
                 <h2 class="sidebar-title">
                     Tipos de imagem
-                    <button v-if="user.role" class="add-button" @click="openModalCreateImageTypeModalCompVue()">
+                    <button v-if="user.role" class="add-button" @click="openModalCreateImageType()"
+                        @save-changes="saveChanges()">
                         + Novo
                     </button>
                 </h2>
@@ -74,20 +75,23 @@
             </nav>
         </div>
 
-        <CreateImageTypeModalCompVue v-if="showCreateImageTypeModalCompVue" @close-modal="closeModal" />
-        <EditImageTypeModalCompVue v-if="showEditImageTypeModalCompVue" @close-modal="closeModal" />
-        <ShowImageTypeModalCompVue v-if="showViewImageTypeModalCompVue" :imageType="selectedImageType"
+        <CreateImageTypeModalCompVue v-if="showCreateImageTypeModalComp" @close-modal="closeModal" 
+            @save-changes="saveChanges()"/>
+        <EditImageTypeModalComp v-if="showEditImageTypeModalComp" :imageType="selectedImageType" 
+            @close-modal="closeModal" @save-changes="saveChanges()"/>
+        <ShowImageTypeModalComp v-if="showViewImageTypeModalComp" :imageType="selectedImageType"
             @close-modal="closeModal" />
-        <DeleteImageTypeModalCompVue v-if="showDeleteImageTypeModalCompVue" @close-modal="closeModal" />
+        <DeleteImageTypeModalComp v-if="showDeleteImageTypeModalComp" :imageType="selectedImageType"
+            @close-modal="closeModal" @save-changes="saveChanges()"/>
     </div>
 </template>
   
 <script>
 import InputComp from "../components/InputComp.vue";
-import CreateImageTypeModalCompVue from "../components/modais/imageType/CreateImageTypeModalComp.vue";
-import EditImageTypeModalCompVue from "../components/modais/imageType/EditImageTypeModalComp.vue";
-import ShowImageTypeModalCompVue from "../components/modais/imageType/ShowImageTypeModalComp.vue";
-import DeleteImageTypeModalCompVue from "../components/modais/imageType/DeleteImageTypeModalComp.vue";
+import CreateImageTypeModalComp from "../components/modais/imageType/CreateImageTypeModalComp.vue";
+import EditImageTypeModalComp from "../components/modais/imageType/EditImageTypeModalComp.vue";
+import ShowImageTypeModalComp from "../components/modais/imageType/ShowImageTypeModalComp.vue";
+import DeleteImageTypeModalComp from "../components/modais/imageType/DeleteImageTypeModalComp.vue";
 import axios from "axios";
 
 export default {
@@ -127,10 +131,10 @@ export default {
             imageTypes: [],
             filteredTypes: [],
             pesquisa: "",
-            showCreateImageTypeModalCompVue: false,
-            showEditImageTypeModalCompVue: false,
-            showViewImageTypeModalCompVue: false,
-            showDeleteImageTypeModalCompVue: false,
+            showCreateImageTypeModalComp: false,
+            showEditImageTypeModalComp: false,
+            showViewImageTypeModalComp: false,
+            showDeleteImageTypeModalComp: false,
             paginaAtual: 1,
             itensPorPagina: 4,
         };
@@ -146,25 +150,47 @@ export default {
         },
     },
     methods: {
-        openDeleteModal() {
-            this.showDeleteImageTypeModalCompVue = true;
+        saveChanges() {
+            const token = localStorage.getItem("token");
+
+            if (token != undefined) {
+                const req = {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                };
+
+                axios
+                    .get("http://localhost:8081/api/images-types", req)
+                    .then((response) => {
+                        this.imageTypes = response.data;
+                        this.filteredTypes = this.imageTypes;
+                    });
+            }
+            this.showCreateImageTypeModalComp = false;
+            this.showEditImageTypeModalComp = false;
+            this.showDeleteImageTypeModalComp = false;
         },
-        openViewModal(imageType) {
-            this.showViewImageTypeModalCompVue = true;
+        openDeleteModal(imageType) {
+            this.showDeleteImageTypeModalComp = true;
             this.selectedImageType = imageType;
         },
-        openModalCreateImageTypeModalCompVue() {
-            this.showCreateImageTypeModalCompVue = true;
+        openViewModal(imageType) {
+            this.showViewImageTypeModalComp = true;
+            this.selectedImageType = imageType;
         },
-        openEditModal() {
-            /* this.name = imageType.name; */
-            this.showEditImageTypeModalCompVue = true;
+        openModalCreateImageType() {
+            this.showCreateImageTypeModalComp = true;
+        },
+        openEditModal(imageType) {
+            this.selectedImageType = imageType;
+            this.showEditImageTypeModalComp = true;
         },
         closeModal() {
-            this.showCreateImageTypeModalCompVue = false;
-            this.showEditImageTypeModalCompVue = false;
-            this.showViewImageTypeModalCompVue = false;
-            this.showDeleteImageTypeModalCompVue = false;
+            this.showCreateImageTypeModalComp = false;
+            this.showEditImageTypeModalComp = false;
+            this.showViewImageTypeModalComp = false;
+            this.showDeleteImageTypeModalComp = false;
         },
         changeValues(prop, text) {
             this[ `${prop}` ] = text;
@@ -195,10 +221,10 @@ export default {
     },
     components: {
         InputComp,
-        CreateImageTypeModalCompVue,
-        EditImageTypeModalCompVue,
-        ShowImageTypeModalCompVue,
-        DeleteImageTypeModalCompVue,
+        CreateImageTypeModalCompVue: CreateImageTypeModalComp,
+        EditImageTypeModalComp,
+        ShowImageTypeModalComp,
+        DeleteImageTypeModalComp,
     },
 };
 </script>
@@ -213,7 +239,6 @@ export default {
     padding: 0;
     margin: 5px;
 }
-
 .pagination .page-link[data-v-1bd79246] {
     padding: 5px 10px;
     font-size: 14px;
@@ -438,4 +463,15 @@ export default {
         margin-left: 52%;
     }
 }
+
+tbody td button {
+    padding: 0px;
+    margin-left: 10px;
+    border: none;
+}
+
+tbody td button:hover {
+    border: none;
+}
+
 </style>

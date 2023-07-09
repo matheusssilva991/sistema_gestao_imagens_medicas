@@ -418,4 +418,15 @@ export default {
 		height: auto;
 	}
 }
+
+tbody td button {
+    padding: 0px;
+    margin-left: 10px;
+    border: none;
+}
+
+tbody td button:hover {
+    border: none;
+}
+
 </style>

@@ -242,6 +242,7 @@ export default {
                         this.user = response.data;
                     }).catch((err) => {
                         console.log(err);
+                        this.$router.push({ name: 'home' });
                     });
 
                     this.$emit('isLogged', true);

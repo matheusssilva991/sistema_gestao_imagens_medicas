@@ -303,17 +303,20 @@ export default {
     cursor: not-allowed;
 }
 
+.filter-item-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.filter-item {
+    width: 90%;
+    margin-bottom: 10px;
+}
+
 .container {
     display: flex;
     justify-content: center;
-    align-items: center;
-}
-
-.filter-item-container {
-    margin-bottom: 10px;
-    display: flex;
-    padding: 7;
-    justify-content: space-evenly;
     align-items: center;
 }
 
@@ -323,7 +326,7 @@ export default {
     padding: 5%;
     padding-top: 2.5%;
     margin: 0 auto;
-    width: 100%;
+    width: 97.5%;
     border-radius: 25px;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
 }
@@ -416,7 +419,7 @@ export default {
 
     .sidebar-title {
         text-align: center;
-        font-size: 20px;
+        font-size: 18px;
     }
 
     #filter {
@@ -448,45 +451,6 @@ export default {
 
     .btn-anterior {
         background-color: #dd2215;
-    }
-}
-
-@media (max-width: 576px) {
-    .sidebar {
-        height: auto;
-        width: 100%;
-    }
-
-    .sidebar-title {
-        text-align: center;
-        font-size: 18px;
-    }
-
-    #filter {
-        width: 80%;
-        margin: 10px auto;
-    }
-
-    .imagens {
-        justify-content: center;
-    }
-
-    .imagens div {
-        flex-basis: 45%;
-    }
-
-    .pagination {
-        margin: 10px auto;
-    }
-
-    .pagination-buttons {
-        flex-direction: column;
-    }
-
-    .pagination-button {
-        width: 100%;
-        margin-bottom: 5px;
-        font-size: 12px;
     }
 }
 
@@ -575,4 +539,15 @@ export default {
         margin-left: 52%;
     }
 }
+
+tbody td button {
+    padding: 0px;
+    margin-left: 10px;
+    border: none;
+}
+
+tbody td button:hover {
+    border: none;
+}
+
 </style>

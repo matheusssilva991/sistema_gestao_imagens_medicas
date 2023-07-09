@@ -9,27 +9,27 @@
                 <div id="filter">
                     <div class="filter-item-container">
                         <i class="fa fa-search mt-2" aria-hidden="true"></i>
-                        <InputComp class="filter-item" name="pesquisa" type="pesquisar"
-                        placeHolder="Pesquisar banco" :function="changeValues"></InputComp>
+                        <InputComp class="filter-item" name="pesquisa" type="pesquisar" placeHolder="Pesquisar banco"
+                            :function="changeValues"></InputComp>
                     </div>
                     <div class="filter-item-container">
                         <i class="fa fa-filter mt-2" aria-hidden="true"></i>
-                        <InputComp class="filter-item" name="filtro" type="filtro"
-                        placeHolder="Filtrar por tipo de exame" :function="changeValues"></InputComp>
+                        <InputComp class="filter-item" name="filtro" type="filtro" placeHolder="Filtrar por tipo de exame"
+                            :function="changeValues"></InputComp>
                     </div>
                 </div>
             </div>
-            
+
             <table class="table table-hover mt-4">
                 <thead>
                     <tr>
-                        <th scope="col">                
+                        <th scope="col">
                             <span class="table-header">Nome do Banco</span>
                         </th>
-                        <th scope="col"> 
+                        <th scope="col">
                             <span class="table-header">Tipo de exame</span>
                         </th>
-                        <th scope="col"> 
+                        <th scope="col">
                             <span class="table-header">Quantidade de Imagens</span>
                         </th>
                         <th scope="col">
@@ -61,21 +61,25 @@
                             <button v-if="this.user.role" @click="openDeleteModal(database)" class="btn">
                                 <i class="fa fa-trash table-item"></i>
                             </button>
-                        </td>  
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <CreateDatabaseModalComp v-if="showCreateDatabaseModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
-        <CreateSolicitationDatabaseComp v-if="showSolicitationDatabaseModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
-        <EditDatabaseModalComp v-if="showEditModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
-        <DeleteDatabaseModalComp v-if="showDeleteModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
-        <ShowDatabaseModalComp v-if="showViewModal" :database="this.selectedDatabase" @close-modal="closeModal"/>
+        <CreateDatabaseModalComp v-if="showCreateDatabaseModal" :database="this.selectedDatabase" @close-modal="closeModal"
+            @save-changes="saveChanges" />
+        <CreateSolicitationDatabaseComp v-if="showSolicitationDatabaseModal" :database="this.selectedDatabase"
+            @close-modal="closeModal" @save-changes="saveChanges" />
+        <EditDatabaseModalComp v-if="showEditModal" :database="this.selectedDatabase" @close-modal="closeModal"
+            @save-changes="saveChanges" />
+        <DeleteDatabaseModalComp v-if="showDeleteModal" :database="this.selectedDatabase" @close-modal="closeModal"
+            @save-changes="saveChanges" />
+        <ShowDatabaseModalComp v-if="showViewModal" :database="this.selectedDatabase" @close-modal="closeModal" />
     </div>
 </template>
   
 <script>
-import InputComp from '../components/InputComp.vue'
+import InputComp from '../components/InputComp.vue';
 import ShowDatabaseModalComp from '@/components/modais/database/ShowDatabaseModalComp.vue';
 import EditDatabaseModalComp from '@/components/modais/database/EditDatabaseModalComp.vue';
 import DeleteDatabaseModalComp from '@/components/modais/database/DeleteDatabaseModalComp.vue';
@@ -87,22 +91,23 @@ export default {
     created() {
         const token = localStorage.getItem('token');
 
-        if (token != undefined){
+        if (token != undefined) {
             const req = {
                 headers: {
                     Authorization: "Bearer " + token
                 }
-            }
+            };
 
             axios.get(`http://localhost:8081/authenticate`, req).then(response => {
-                    this.user = response.data;
-                    if (this.user['role'] == 0)
-                        this.user['role'] = false
-                    else 
-                    this.user['role'] = true
-                    
-                }).catch((err) => {
-                    console.log(err);
+                this.user = response.data;
+                if (this.user[ 'role' ] == 0)
+                    this.user[ 'role' ] = false;
+                else
+                    this.user[ 'role' ] = true;
+
+            }).catch((err) => {
+                console.log(err);
+                this.$router.push({ name: 'home' });
             });
 
             axios.get('http://localhost:8081/api/databases', req).then(response => {
@@ -110,16 +115,16 @@ export default {
 
                 if (this.databases.length > 0) {
                     this.databases = this.databases.map((database) => {
-                        database.imageQuality = database.imageQuality.join(", ")
-                        database.imageCount = database.images.length
-                        return database
+                        database.imageQuality = database.imageQuality.join(", ");
+                        database.imageCount = database.images.length;
+                        return database;
                     });
                 }
 
                 this.filteredDatabases = this.databases;
             });
         }
-  
+
     },
     data() {
         return {
@@ -138,12 +143,12 @@ export default {
     },
     methods: {
         changeValues(prop, text) {
-            this[`${prop}`] = text
+            this[ `${prop}` ] = text;
         },
-        openCreateDatabase(){
+        openCreateDatabase() {
             this.showCreateDatabaseModal = true;
         },
-        openSolicitationDatabase(){
+        openSolicitationDatabase() {
             this.showSolicitationDatabaseModal = true;
         },
         openViewModal(database) {
@@ -169,35 +174,35 @@ export default {
         saveChanges() {
             const token = localStorage.getItem('token');
 
-            if (token != undefined){
+            if (token != undefined) {
                 const req = {
                     headers: {
                         Authorization: "Bearer " + token
                     }
-                }
+                };
 
                 axios.get('http://localhost:8081/api/databases', req).then(response => {
                     this.databases = response.data;
 
                     if (this.databases.length > 0) {
                         this.databases = this.databases.map((database) => {
-                            database.imageQuality = database.imageQuality.join(", ")
-                            database.imageCount = database.images.length
-                            return database
+                            database.imageQuality = database.imageQuality.join(", ");
+                            database.imageCount = database.images.length;
+                            return database;
                         });
                     }
 
                     this.filteredDatabases = this.databases;
                 });
             }
-            
+
             this.databases = this.databases.map((database) => {
                 if (typeof database.imageQuality == 'object') {
-                    database.imageQuality = database.imageQuality.join(", ")
+                    database.imageQuality = database.imageQuality.join(", ");
                 }
 
-                database.imageCount = database.images.length
-                return database
+                database.imageCount = database.images.length;
+                return database;
             });
 
             this.closeModal();
@@ -212,40 +217,40 @@ export default {
         CreateDatabaseModalComp,
         CreateSolicitationDatabaseComp
 
-    }, 
+    },
     watch: {
         filtro: function (value) {
             value = value.toLowerCase();
 
-            if (value == "" || value == " "){
+            if (value == "" || value == " ") {
                 this.filteredDatabases = this.databases;
             } else {
                 this.filteredDatabases = this.databases.filter(item => {
-                    return item.examType.toLowerCase().includes(value)
-                })
+                    return item.examType.toLowerCase().includes(value);
+                });
             }
 
-            if (this.pesquisa != "" && this.pesquisa != " "){
+            if (this.pesquisa != "" && this.pesquisa != " ") {
                 this.filteredDatabases = this.filteredDatabases.filter(item => {
-                    return item.name.toLowerCase().includes(this.pesquisa.toLowerCase())
-                })
+                    return item.name.toLowerCase().includes(this.pesquisa.toLowerCase());
+                });
             }
         },
         pesquisa: function (value) {
             value = value.toLowerCase();
 
-            if (value == "" || value == " "){
+            if (value == "" || value == " ") {
                 this.filteredDatabases = this.databases;
             } else {
                 this.filteredDatabases = this.databases.filter(item => {
-                    return item.name.toLowerCase().includes(value)
-                })
+                    return item.name.toLowerCase().includes(value);
+                });
             }
 
-            if (this.filtro != "" && this.filtro != " "){
+            if (this.filtro != "" && this.filtro != " ") {
                 this.filteredDatabases = this.filteredDatabases.filter(item => {
-                    return item.examType.toLowerCase().includes(this.filtro.toLowerCase())
-                })
+                    return item.examType.toLowerCase().includes(this.filtro.toLowerCase());
+                });
             }
         }
     }
@@ -253,17 +258,18 @@ export default {
 </script>
   
 <style scoped>
-
 * {
     color: #73bf8e;
     font-weight: 100;
 }
+
 .sidebar {
     font-family: 'Montserrat', sans-serif;
     background-color: #ffffff;
     padding: 5%;
     padding-top: 2.5%;
-    margin: 0 auto; /* Adicionado para centralizar horizontalmente */
+    margin: 0 auto;
+    /* Adicionado para centralizar horizontalmente */
     height: 70vh;
     width: 100%;
     border-radius: 25px;
@@ -285,7 +291,7 @@ export default {
     width: 70%;
 }
 
-.table-header{
+.table-header {
     font-weight: bold;
     font-size: 18px;
 }
@@ -309,14 +315,15 @@ export default {
     margin-bottom: 10px;
 }
 
-.filter-item-container{
+.filter-item-container {
     width: 100%;
     display: flex;
     justify-content: space-around;
 }
 
 .add-button {
-    background-color: #73bf8e;;
+    background-color: #73bf8e;
+    ;
     color: #ffffff;
     border: none;
     padding: 0.5% 1%;
@@ -329,7 +336,7 @@ export default {
 .add-button:hover {
     background-color: #459c63;
     border: none;
-} 
+}
 
 tbody td button {
     padding: 0px;
@@ -340,5 +347,4 @@ tbody td button {
 tbody td button:hover {
     border: none;
 }
-  
 </style>
