@@ -3,7 +3,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Tipos de imagem
-                    <button v-if="this.user.role" class="add-button" @click="openCreateDatabase()">+ Novo</button>
+                    <button v-if="this.user.role" class="add-button" @click="openModalCreateImageTypeModalCompVue()">+ Novo</button>
                 </h2>
                 <div id="filter">
                     <div class="filter-item-container">
@@ -51,11 +51,20 @@
                 </tbody>
             </table>
         </div>
+        <CreateImageTypeModalCompVue v-if="showCreateImageTypeModalCompVue" @close-modal="closeModal"/>
+        <EditImageTypeModalCompVue v-if="showEditImageTypeModalCompVue" @close-modal="closeModal"/>
+        <ShowImageTypeModalCompVue v-if="showViewImageTypeModalCompVue" :imageType="this.selectedImageType"  @close-modal="closeModal"/>
+        <DeleteImageTypeModalCompVue v-if="showDeleteImageTypeModalCompVue" @close-modal="closeModal"/>
+        
     </div>
 </template>
   
 <script>
 import InputComp from '../components/InputComp.vue'
+import CreateImageTypeModalCompVue from '../components/modais/imageType/CreateImageTypeModalComp.vue'
+import EditImageTypeModalCompVue from '../components/modais/imageType/EditImageTypeModalComp.vue'
+import ShowImageTypeModalCompVue from '../components/modais/imageType/ShowImageTypeModalComp.vue'
+import DeleteImageTypeModalCompVue from '../components/modais/imageType/DeleteImageTypeModalComp.vue'
 import axios from 'axios';
 
 export default {
@@ -89,13 +98,38 @@ export default {
     },
     data() {
         return {
+            selectedImageType: "",
             user: {},
             imageTypes: [],
             filteredTypes: [],
             pesquisa: "",
+            showCreateImageTypeModalCompVue:false,
+            showEditImageTypeModalCompVue: false,
+            showViewImageTypeModalCompVue: false,
+            showDeleteImageTypeModalCompVue: false,
         };
     },
     methods: {
+        openDeleteModal(){
+            this.showDeleteImageTypeModalCompVue = true;
+        },
+        openViewModal(imageType){
+            this.showViewImageTypeModalCompVue = true;
+            this.selectedImageType = imageType;
+        },
+        openModalCreateImageTypeModalCompVue(){
+            this.showCreateImageTypeModalCompVue = true;
+        },
+        openEditModal(){
+         /*    this.name = imageType.name; */
+            this.showEditImageTypeModalCompVue = true;
+        },
+        closeModal(){
+            this.showCreateImageTypeModalCompVue = false;
+            this.showEditImageTypeModalCompVue = false;
+            this.showViewImageTypeModalCompVue = false
+            this.showDeleteImageTypeModalCompVue = false;
+        },
         changeValues(prop, text) {
             this[`${prop}`] = text
         },
@@ -121,6 +155,10 @@ export default {
     },
     components: {
         InputComp,
+        CreateImageTypeModalCompVue,
+        EditImageTypeModalCompVue,
+        ShowImageTypeModalCompVue,
+        DeleteImageTypeModalCompVue,
 
     }, 
     watch: {

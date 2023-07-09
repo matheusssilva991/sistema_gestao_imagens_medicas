@@ -1580,18 +1580,18 @@
                         "type": "string"
                     },
                     "requiredData": {
-                        "type": "object"
+                        "type": "array"
                     },
                     "optionalData": {
-                        "type": "object"
+                        "type": "array"
                     }
                 },
                 "example": {
                     "_id": "0fe551515184182023",
                     "name": "DICOM",
                     "description": "Padrão DICOM",
-                    "requiredDAta": {},
-                    "optionalData":{}
+                    "requiredDAta": [],
+                    "optionalData":[]
                 }
             },
             "ImageTypePostPut": {
@@ -1604,17 +1604,17 @@
                         "type": "string"
                     },
                     "requiredData": {
-                        "type": "object"
+                        "type": "array"
                     },
                     "optionalData": {
-                        "type": "object"
+                        "type": "array"
                     }
                 },
                 "example": {
                     "name": "DICOM",
                     "description": "Padrão DICOM",
-                    "requiredDAta": {},
-                    "optionalData":{}
+                    "requiredDAta": [],
+                    "optionalData":[]
                 }
             },
             "ArrayImagesTypes": {
@@ -1631,18 +1631,18 @@
                             "type": "string"
                         },
                         "requiredData": {
-                            "type": "object"
+                            "type": "array"
                         },
                         "optionalData": {
-                            "type": "object"
+                            "type": "array"
                         }
                     },
                     "example": {
                         "_id": "0fe551515184182023",
                         "name": "DICOM",
                         "description": "Padrão DICOM",
-                        "requiredDAta": {},
-                        "optionalData":{}
+                        "requiredDAta": [],
+                        "optionalData":[]
                     }
                 }
             }

@@ -10,11 +10,11 @@ const imageTypeSchema = new mongoose.Schema({
         required: true
     },
     requiredData: {
-        type: Object,
+        type: Array,
         required: true
     },
     optionalData: {
-        type: Object,
+        type: Array,
         required: false
     }
 });
