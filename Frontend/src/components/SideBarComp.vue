@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar">
+    <div class="sidebar me-3 ms-3">
         <div class="list-group">
             <router-link to="/databases" class="list-group-item" :class="{ 'active-link': selectedTopic === 'informacoes' }"
                 @click="selectTopic('informacoes')">
@@ -119,4 +119,33 @@ header {
     margin-left: 5px;
     font-weight: 700;
 }
+
+
+@media screen and (max-width: 736px) {
+	.list-group-item {
+        list-style-type: none;
+        padding: 4px;
+        margin-bottom: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        font-weight: bold;
+        transition: background-color 0.9s ease;
+        color: #73bf8e;
+        flex-direction: column;
+    }
+
+    .list-group {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sidebar{
+        width: fit-content;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+}
+
 </style>
