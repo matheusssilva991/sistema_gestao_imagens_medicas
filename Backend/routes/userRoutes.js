@@ -9,7 +9,7 @@ const CheckFields = require("../middlewares/CheckFields");
 router.get('/api/users', Auth.adminAuth, UserController.getUsers);
 router.get('/api/user/:id', Auth.loginAuth, UserController.getUser);
 router.post('/api/user', Auth.adminAuth, UserController.newUser);
-router.put('/api/user/:id', Auth.adminAuth, CheckFields.checkUserFields, UserController.updateUser);
+router.put('/api/user/:id', Auth.loginAuth, CheckFields.checkUserFields, UserController.updateUser);
 router.delete('/api/user/:id', Auth.adminAuth, UserController.deleteUser);
 router.put('/api/user/:id/permissao', Auth.adminAuth, UserController.updateRole); */
 

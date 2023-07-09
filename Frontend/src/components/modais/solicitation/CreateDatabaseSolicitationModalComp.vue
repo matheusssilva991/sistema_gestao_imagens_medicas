@@ -29,9 +29,9 @@
 			</div>
 		</div>
 
-		<div v-if="this.erro" class="error-msg">
-            <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
-        </div>
+		<div v-if="this.showErroModal" class="error-msg">
+			<ErrorMessageModalComp :message=this.erro @close-modal="closeErroModal()" />
+		</div>
 	</div>
 </template>
   
@@ -49,7 +49,8 @@ import ErrorMessageModalComp from '@/components/modais/ErrorMessageModalComp.vue
 				description: undefined,
 				sourceLink: undefined,
 				showModal: true,
-				erro: undefined
+				erro: undefined,
+				showErroModal: false,
 			};
 		},
 		methods: {
@@ -75,12 +76,16 @@ import ErrorMessageModalComp from '@/components/modais/ErrorMessageModalComp.vue
                                        .replace("name", "nome")
 									   .replace("sourceLink", "link de origem");
                     this.erro = msgError;
+					this.showErroModal = true;
                 }
 
 			},
 			closeModal() {
 				this.showModal = false;
 				this.$emit('close-modal');
+			},
+			closeErroModal() {
+				this.showErroModal = false;
 			},
 		},
         components: {

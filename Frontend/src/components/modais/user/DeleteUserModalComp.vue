@@ -21,11 +21,16 @@
 				</div>
 			</div>
 		</div>
+
+		<div v-if="this.showErroModal" class="error-msg">
+			<ErrorMessageModalComp :message=this.erro @close-modal="closeErroModal()" />
+		</div>
 	</div>
 </template>
   
 <script>
 import axios from 'axios';
+import ErrorMessageModalComp from '../ErrorMessageModalComp.vue';
 
 export default {
 	props: {
@@ -36,12 +41,19 @@ export default {
 	},
 	data() {
 		return {
+			showErroModal: false,
 		};
+	},
+	components: {
+		ErrorMessageModalComp
 	},
 	methods: {
 		closeModal() {
 			this.showModal = false;
 			this.$emit('close-modal');
+		},
+		closeErroModal() {
+			this.showErroModal = false;
 		},
 		DeleteUser() {
 			const token = localStorage.getItem('token');
@@ -58,6 +70,7 @@ export default {
 						this.$emit('save-changes');
 					}).catch(err => {
 						this.erro = err.response.data?.err;
+						this.showErroModal = true;
 					});
 			}
 		}
@@ -88,8 +101,10 @@ export default {
 	box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
 	max-width: 500px;
 	width: 100%;
-	height: 500px; /* Altura fixa para o conteúdo do modal */
-    overflow-y: auto; /* Habilita a barra de rolagem vertical quando necessário */
+	height: 500px;
+	/* Altura fixa para o conteúdo do modal */
+	overflow-y: auto;
+	/* Habilita a barra de rolagem vertical quando necessário */
 }
 
 .modal-header {

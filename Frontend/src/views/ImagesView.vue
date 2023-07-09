@@ -37,7 +37,7 @@
 
 <script>
 import axios from 'axios';
-import ImageModalComp from '../components/modais/ImageModalComp.vue';
+import ImageModalComp from '../components/modais/image/ImageModalComp.vue';
 
 export default {
 	components: {

@@ -14,15 +14,15 @@
 
 					<label for="examType" class="form-label mt-3">Tipo de exame</label>
 					<input class="form-control" type="text" v-model="this.examType" aria-label="examType">
-					
-                    <label for="imageType" class="form-label mt-3">Tipo da imagem</label>
+
+					<label for="imageType" class="form-label mt-3">Tipo da imagem</label>
 					<input class="form-control" type="text" v-model="this.imageType" aria-label="imageType">
 
-                    <label for="imageQuality" class="form-label mt-3">Qualidade das imagens (bits)</label>
+					<label for="imageQuality" class="form-label mt-3">Qualidade das imagens (bits)</label>
 					<input class="form-control" type="text" v-model="this.imageQuality" aria-label="imageQuality">
 
 					<label for="description" class="form-label mt-3">Descrição</label>
-					<textarea class="form-control" id="description" rows="3" v-model="this.description" ></textarea>
+					<textarea class="form-control" id="description" rows="3" v-model="this.description"></textarea>
 
 					<label for="sourceLink" class="form-label mt-3">Link de origem</label>
 					<input class="form-control mb-3" type="text" v-model="this.sourceLink" aria-label="sourceLink">
@@ -33,169 +33,175 @@
 			</div>
 		</div>
 
-		<div v-if="this.erro" class="error-msg">
-            <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
-        </div>
+		<div v-if="this.showErroModal" class="error-msg">
+			<ErrorMessageModalComp :message=this.erro @close-modal="closeErroModal()" />
+		</div>
 	</div>
 </template>
   
 <script>
-import axios from 'axios'
+import axios from 'axios';
 import ErrorMessageModalComp from '../ErrorMessageModalComp.vue';
 
-	export default {
-		components: {
-			ErrorMessageModalComp
+export default {
+	components: {
+		ErrorMessageModalComp
+	},
+	created() {
+		this.description = this.database.description;
+		this.imageQuality = this.database.imageQuality;
+		this.examType = this.database.examType;
+		this.sourceLink = this.database.sourceLink;
+		this.imageType = this.database.imageType;
+		this.name = this.database.name;
+		this.id = this.database._id;
+		this.images = this.database.images;
+	},
+	props: {
+		database: {
+			type: Object,
+			required: true,
 		},
-		created() {
-            this.description = this.database.description;
-			this.imageQuality = this.database.imageQuality;
-			this.examType = this.database.examType;
-			this.sourceLink = this.database.sourceLink;
-			this.imageType = this.database.imageType;
-			this.name = this.database.name;
-			this.id = this.database._id;
-			this.images = this.database.images;
-        },
-        props: {
-			database: {
-				type: Object,
-				required: true,
-			},
+	},
+	data() {
+		return {
+			showModal: true,
+			description: "",
+			imageQuality: "",
+			examType: "",
+			sourceLink: "",
+			imageType: "",
+			name: "",
+			id: "teste",
+			erro: false,
+			showErroModal: false,
+		};
+	},
+	methods: {
+		closeModal() {
+			this.showModal = false;
+			this.$emit('close-modal');
 		},
-		data() {
-			return {
-				showModal: true,
-                description: "",
-				imageQuality: "",
-				examType: "",
-				sourceLink: "",
-				imageType: "",
-				name: "",
-				id: "teste",
-				erro: false,
+		closeErroModal() {
+			this.showErroModal = false;
+		},
+		saveChanges() {
+			let tmpImageQuality = this.imageQuality.split(",");
+
+			const newDatabase = {
+				name: this.name,
+				examType: this.examType,
+				imageType: this.imageType,
+				imageQuality: tmpImageQuality,
+				description: this.description,
+				sourceLink: this.sourceLink,
+				images: this.images
 			};
-		},
-		methods: {
-			closeModal() {
-				this.showModal = false;
-				this.$emit('close-modal');
-			},
-			saveChanges() {
-				let tmpImageQuality = this.imageQuality.split(",")
 
-				const newDatabase = { 
-					name: this.name,
-					examType: this.examType,
-					imageType: this.imageType,
-					imageQuality: tmpImageQuality,
-					description: this.description,
-					sourceLink: this.sourceLink,
-					images: this.images
-				}
+			const token = localStorage.getItem('token');
 
-				const token = localStorage.getItem('token');
-
-                if (token != undefined){
-                    const req = {
-                        headers: {
-                            Authorization: "Bearer " + token
-                        }
-                    }
-                    axios.put(`http://localhost:8081/api/database/${this.id}`, newDatabase, req)
+			if (token != undefined) {
+				const req = {
+					headers: {
+						Authorization: "Bearer " + token
+					}
+				};
+				axios.put(`http://localhost:8081/api/database/${this.id}`, newDatabase, req)
 					.then(response => {
 						console.log(response.data);
 						this.$emit('save-changes');
 					}).catch(err => {
 						this.erro = err.response.data?.err;
-					}) 
-                }
+						this.showErroModal = true;
+					});
 			}
-		},
-	};
+		}
+	},
+};
 
 </script>
   
 <style scoped>
-  /* Estilos do Modal */
+/* Estilos do Modal */
 
 .modal {
-    font-family: 'Montserrat', sans-serif;
+	font-family: 'Montserrat', sans-serif;
 	margin: 0 auto;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-  
-.modal-content {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
-    width: 100%;
-    height: 500px; /* Altura fixa para o conteúdo do modal */
-    overflow-y: auto; /* Habilita a barra de rolagem vertical quando necessário */
-}
-  
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-  
-.modal-title {
-    margin-top: 0;
-    margin-bottom: 3%;
-    font-size: 25px;
-    text-align: left;
-    font-weight: bold;
-    width: 70%;
-}
-  
-.modal-body {
-    padding-top: 20px;
-}
-  
-.user-profile {
-    margin-bottom: 20px;
-}
-  
-.profile-name {
-    color: #44bba4;
-}
-  
-.profile-function {
-    margin-bottom: 0;
-}
-  
-.select-profile-title {
-    margin-top: 0;
-    font-size: 18px;
-	font-weight: bold;
-}
-  
-.profile-options {
-    margin-top: 10px;
-}
-  
-.profile-option {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-  
-.profile-option input {
-    margin-right: 5px;
-}
-  
-.modal-footer {
-    margin-top: 20px;
-    text-align: right;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
 }
 
+.modal-content {
+	background-color: #ffffff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
+	max-width: 500px;
+	width: 100%;
+	height: 500px;
+	/* Altura fixa para o conteúdo do modal */
+	overflow-y: auto;
+	/* Habilita a barra de rolagem vertical quando necessário */
+}
+
+.modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.modal-title {
+	margin-top: 0;
+	margin-bottom: 3%;
+	font-size: 25px;
+	text-align: left;
+	font-weight: bold;
+	width: 70%;
+}
+
+.modal-body {
+	padding-top: 20px;
+}
+
+.user-profile {
+	margin-bottom: 20px;
+}
+
+.profile-name {
+	color: #44bba4;
+}
+
+.profile-function {
+	margin-bottom: 0;
+}
+
+.select-profile-title {
+	margin-top: 0;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.profile-options {
+	margin-top: 10px;
+}
+
+.profile-option {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.profile-option input {
+	margin-right: 5px;
+}
+
+.modal-footer {
+	margin-top: 20px;
+	text-align: right;
+}
 </style>

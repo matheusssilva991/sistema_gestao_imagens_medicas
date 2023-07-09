@@ -35,9 +35,9 @@
 			</div>
 		</div>
 
-		<div v-if="this.erro" class="error-msg">
-            <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
-        </div>
+		<div v-if="this.showErroModal" class="error-msg">
+			<ErrorMessageModalComp :message=this.erro @close-modal="closeErroModal()" />
+		</div>
 	</div>
 </template>
   
@@ -62,7 +62,8 @@ export default {
 		return {
 			showModal: true,
 			selectedProfile: undefined, // Nova propriedade para armazenar o perfil selecionado
-			erro: false
+			erro: false,
+			showErroModal: false,
 		};
 	},
 	methods: {
@@ -89,6 +90,7 @@ export default {
 						this.$emit('save-changes');
 					}).catch(err => {
 						this.erro = err.response.data?.err;
+						this.showErroModal = true;
 					}) 
                 }
 		},

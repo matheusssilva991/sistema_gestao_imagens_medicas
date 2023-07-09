@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HeaderComp @logged="isLogged()"></HeaderComp>
+    <HeaderComp @isLogged="isLogged"></HeaderComp>
     <div id="content-logged" v-if:= logged>
       <SideBarComp></SideBarComp>
       <router-view/>
@@ -28,8 +28,8 @@
       }
     },
     methods: {
-      isLogged(){
-        this.logged=true;
+      isLogged(logged){
+        this.logged=logged;
       }
     }
   }

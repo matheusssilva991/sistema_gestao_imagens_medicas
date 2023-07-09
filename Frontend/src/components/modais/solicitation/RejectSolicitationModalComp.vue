@@ -22,8 +22,8 @@
 			</div>
 		</div>
 
-		<div v-if="this.erro" class="error-msg">
-			<ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
+		<div v-if="this.showErroModal" class="error-msg">
+			<ErrorMessageModalComp :message=this.erro @close-modal="closeErroModal()" />
 		</div>
 	</div>
 </template>
@@ -44,12 +44,16 @@ export default {
 	},
 	data() {
 		return {
+			showErroModal: false,
 		};
 	},
 	methods: {
 		closeModal() {
 			this.showModal = false;
 			this.$emit('close-modal');
+		},
+		closeErroModal() {
+			this.showErroModal = false;
 		},
 		rejectSolicitation() {
 			const token = localStorage.getItem('token');
@@ -67,6 +71,7 @@ export default {
 					console.log(response.data);
 					this.$emit('save-changes');
 				}).catch(err => {
+					this.showErroModal = true;
 					this.erro = err.response.data?.err;
 				}) 
 			}
