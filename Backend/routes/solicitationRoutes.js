@@ -14,7 +14,7 @@ router.delete('/api/solicitation/:id', Auth.adminAuth, SolicitationController.de
 
 router.get('/api/solicitations', SolicitationController.getSolicitations);
 router.get('/api/solicitation/:id', SolicitationController.getSolicitation);
-router.post('/api/solicitation', Auth.authDbSolicitation, CheckFields.checkSolicitationFields, SolicitationController.newSolicitation);
+router.post('/api/solicitation', CheckFields.checkSolicitationFields, SolicitationController.newSolicitation);
 router.put('/api/solicitation/:id', SolicitationController.updateSolicitation);
 router.delete('/api/solicitation/:id', SolicitationController.deleteSolicitation);
 

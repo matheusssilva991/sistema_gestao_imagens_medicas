@@ -1,146 +1,51 @@
 <template>
-  <div>
-    <transition-group name="fade" tag="div">
-      <div v-for="i in [currentIndex]" :key="i">
-        <div class="overlay"></div>
-        <img :src="currentImg" />
-        <div class="slide-text">
-          <h1>Med Storage</h1>
-          <p>
-            O Med Storage é o seu destino confiável para acessar uma ampla gama
-            de imagens médicas. Nossa plataforma intuitiva permite que
-            profissionais da saúde, pesquisadores e estudantes encontrem
-            facilmente radiografias, tomografias, ressonâncias magnéticas e
-            muito mais. Nossa coleção em constante expansão oferece imagens de
-            alta qualidade e precisão, garantindo que você encontre exatamente o
-            que procura. Com o Med Storage, você terá acesso rápido e seguro a
-            um banco de dados de imagens médicas essenciais. Aprimore seus
-            estudos, pesquise casos clínicos e aprofunde seu conhecimento com
-            facilidade. Junte-se a nós no Med Storage e descubra um mundo de
-            imagens médicas ao seu alcance.
-          </p>
-        </div>
+  <div class="home-page container text-center">
+    <div class="row align-items-center">
+      <div class="text-container col-md-6">
+        <h1>Med Storage</h1>
+        <p>Explore a vasta coleção de imagens médicas especializadas e obtenha acesso a informações essenciais sobre diversos tipos de exames. No Med Storage, nossa missão é fornecer a você um recurso confiável e abrangente para suas necessidades de imagens médicas.</p>
+
+        <p>Sabemos o quanto a precisão e a clareza são importantes ao lidar com informações médicas, e é por isso que nossa plataforma foi desenvolvida com os mais altos padrões de qualidade. Cada imagem em nosso banco de dados é selecionada criteriosamente e é acompanhada de detalhes relevantes, fornecendo uma experiência enriquecedora para profissionais da área da saúde, pesquisadores e estudantes.</p>
       </div>
-    </transition-group>
-    <a class="prev" @click="prev" href="#">&#10094; Previous</a>
-    <a class="next" @click="next" href="#">&#10095; Next</a>
+      <div class="image-container col-md-6">
+        <img src="../assets/medico.png" alt="Ilustração" class="img-fluid">
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
-import image1 from "@/assets/image1.jpg";
-import image2 from "@/assets/image2.jpg";
-import image3 from "@/assets/image3.jpg";
-
-// @ is an alias to /src
-export default {
-  name: "HomeView",
-  data() {
-    return {
-      images: [image1, image2, image3],
-      timer: null,
-      currentIndex: 0,
-    };
-  },
-  mounted: function () {
-    this.startSlide();
-  },
-  methods: {
-    startSlide: function () {
-      this.timer = setInterval(this.next, 4000);
-    },
-    next: function () {
-      this.currentIndex += 1;
-    },
-    prev: function () {
-      this.currentIndex -= 1;
-    },
-  },
-  computed: {
-    currentImg: function () {
-      return this.images[Math.abs(this.currentIndex) % this.images.length];
-    },
-  },
-};
-</script>
-
-<style scoped>
-
-h1{
+<style>
+h1 {
   font-family: Montserrat extrabold;
 }
-.slide-text {
-  position: fixed;
-  top: 50%;
-  left: 40%;
-  transform: translate(-50%, -50%);
-  max-width: 80%;
-  color: white;
+
+p {
+  font-family: Montserrat light;
+}
+
+.image-container img {
+  height: 500px;
+  margin-top: 10%;
+  margin-left: 1rem;
+}
+
+.text-container {
+  color: #73BF8E;
+  margin-top: 5% !important;
   text-align: justify;
-  z-index: 1;
-}
-.overlay {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Define a cor do overlay e a opacidade */
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.9s ease;
-  overflow: hidden;
-  visibility: visible;
-  position: absolute;
-  width: 100%;
-  opacity: 1;
-}
+@media screen and (max-width: 480px){
+  .text-container{
+    align-content: center;
+  }
 
-.fade-enter,
-.fade-leave-to {
-  visibility: hidden;
-  width: 100%;
-  opacity: 0;
-}
+  .image-container {
+    text-align: center;
+  }
 
-img {
-  height: 645px;
-  width: 100%;
-}
-
-.prev,
-.next {
-  cursor: pointer;
-  position: absolute;
-  top: 40%;
-  width: auto;
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  transition: 0.7s ease;
-  border-radius: 0 4px 4px 0;
-  text-decoration: none;
-  user-select: none;
-}
-
-.next {
-  right: 0;
-}
-
-.prev {
-  left: 0;
-}
-
-.prev:hover,
-.next:hover {
-  background-color: rgba(0, 0, 0, 0.9);
+  .image-container img {
+    margin: 0 auto;
+  }
 }
 </style>

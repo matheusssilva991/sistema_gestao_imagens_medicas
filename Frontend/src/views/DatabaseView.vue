@@ -3,16 +3,19 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Bancos
-                    <button class="add-button" @click="openCreateDatabase()">+ Novo</button>
+                    <button v-if="this.user.role" class="add-button" @click="openCreateDatabase()">+ Novo</button>
+                    <button v-else class="add-button" @click="openSolicitationDatabase()">+ Solicitar Novo</button>
                 </h2>
                 <div id="filter">
                     <div class="filter-item-container">
                         <i class="fa fa-search mt-2" aria-hidden="true"></i>
-                        <InputComp class="filter-item" name="pesquisar" type="pesquisar" placeHolder="Pesquisar"></InputComp>
+                        <InputComp class="filter-item" name="pesquisa" type="pesquisar"
+                        placeHolder="Pesquisar banco" :function="changeValues"></InputComp>
                     </div>
                     <div class="filter-item-container">
                         <i class="fa fa-filter mt-2" aria-hidden="true"></i>
-                        <InputComp class="filter-item" name="filtro" type="filtro" placeHolder="Filtro" :function="changeValues"></InputComp>
+                        <InputComp class="filter-item" name="filtro" type="filtro"
+                        placeHolder="Filtrar por tipo de exame" :function="changeValues"></InputComp>
                     </div>
                 </div>
             </div>
@@ -35,9 +38,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="database in databases" :key="database.id">
+                    <tr v-for="database in filteredDatabases" :key="database.id">
                         <td scope="row">
-                            <span class="table-item">{{ database.name }}</span>
+                            <span class="table-item">{{ database.name.toUpperCase() }}</span>
                         </td>
                         <td>
                             <span class="table-item">{{ database.examType }}</span>
@@ -49,13 +52,13 @@
                             <button @click="openEditModal(database)" class="btn">
                                 <i class="fa fa-download table-item"></i>
                             </button>
-                            <button @click="openEditModal(database)" class="btn">
+                            <button v-if="this.user.role" @click="openEditModal(database)" class="btn">
                                 <i class="fa fa-edit table-item"></i>
                             </button>
                             <button @click="openViewModal(database)" class="btn">
                                 <i class="fa fa-eye table-item"></i>
                             </button>
-                            <button @click="openDeleteModal(database)" class="btn">
+                            <button v-if="this.user.role" @click="openDeleteModal(database)" class="btn">
                                 <i class="fa fa-trash table-item"></i>
                             </button>
                         </td>  
@@ -63,77 +66,85 @@
                 </tbody>
             </table>
         </div>
-        <CreateDatabaseVue v-if="showCreateModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
+        <CreateDatabaseModalComp v-if="showCreateDatabaseModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
+        <CreateSolicitationDatabaseComp v-if="showSolicitationDatabaseModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
         <EditDatabaseModalComp v-if="showEditModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
-        <DeleteDatabaseModalComp v-if="showDeleteModal" :database="this.selectedDatabase" @close-modal="closeModal" @delete-database="deleteDatabase" />
+        <DeleteDatabaseModalComp v-if="showDeleteModal" :database="this.selectedDatabase" @close-modal="closeModal" @save-changes="saveChanges" />
         <ShowDatabaseModalComp v-if="showViewModal" :database="this.selectedDatabase" @close-modal="closeModal"/>
     </div>
 </template>
   
 <script>
 import InputComp from '../components/InputComp.vue'
-import ShowDatabaseModalComp from '@/components/modais/ShowDatabaseModalComp.vue';
-import EditDatabaseModalComp from '@/components/modais/EditDatabaseModalComp.vue';
-import DeleteDatabaseModalComp from '@/components/modais/DeleteDatabaseModalComp.vue';
-import CreateDatabaseVue from '../components/modais/CreateDatabase.vue';
+import ShowDatabaseModalComp from '@/components/modais/database/ShowDatabaseModalComp.vue';
+import EditDatabaseModalComp from '@/components/modais/database/EditDatabaseModalComp.vue';
+import DeleteDatabaseModalComp from '@/components/modais/database/DeleteDatabaseModalComp.vue';
+import CreateDatabaseModalComp from '../components/modais/database/CreateDatabaseModalComp.vue';
+import CreateSolicitationDatabaseComp from '../components/modais/solicitation/CreateDatabaseSolicitationModalComp.vue';
+import axios from 'axios';
 
 export default {
     created() {
-        this.databases = this.databases.map((database) => {
-            database.imageQuality = database.imageQuality.join(", ")
-            database.imageCount = database.images.length
-            return database
-        });
+        const token = localStorage.getItem('token');
+
+        if (token != undefined){
+            const req = {
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            }
+
+            axios.get(`http://localhost:8081/authenticate`, req).then(response => {
+                    this.user = response.data;
+                    if (this.user['role'] == 0)
+                        this.user['role'] = false
+                    else 
+                    this.user['role'] = true
+                    
+                }).catch((err) => {
+                    console.log(err);
+            });
+
+            axios.get('http://localhost:8081/api/databases', req).then(response => {
+                this.databases = response.data;
+
+                if (this.databases.length > 0) {
+                    this.databases = this.databases.map((database) => {
+                        database.imageQuality = database.imageQuality.join(", ")
+                        database.imageCount = database.images.length
+                        return database
+                    });
+                }
+
+                this.filteredDatabases = this.databases;
+            });
+        }
+  
     },
     data() {
         return {
-            databases: [
-                { id: 1,
-                    name: 'Banco 1',
-                    images: [1, 2, 3, 4], 
-                    examType:'Mamografia',
-                    imageQuality: [8, 12, 16],
-                    imageType: 'DICOM',
-                    description: 'Banco de imagens médica',
-                    sourceLink: 'Link de origem'    
-                },
-                { id: 2,
-                    name: 'Banco 2',
-                    images: [1, 2, 3, 4, 5, 6, 7, 8], 
-                    examType:'Mamografia',
-                    imageQuality: [16],
-                    imageType: 'DICOM',
-                    description: 'Banco de imagens médica',
-                    sourceLink: 'Link de origem'        
-                },
-                { id: 3,
-                    name: 'Banco 3',
-                    images: [1, 2], 
-                    examType:'Mamografia',
-                    imageQuality: [8, 12],
-                    imageType: 'DICOM',
-                    description: 'Banco de imagens médica',
-                    sourceLink: 'Link de origem'        
-                }
-            ],
+            user: {},
+            databases: [],
+            filteredDatabases: [],
+            filtro: "",
+            pesquisa: "",
             showViewModal: false,
             showEditModal: false,
             showDeleteModal: false,
             selectedDatabase: null,
-            showCreateModal: false /* Alterar o nome depois */
+            showCreateDatabaseModal: false,
+            showSolicitationDatabaseModal: false
         };
     },
     methods: {
-        addBank() {
-            /* const newBankId = this.databases.length + 1;
-            const newBank = { id: newBankId, name: `Banco ${newBankId}`, imageCount: 0, examType:'Mamografia' };
-            this.databases.push(newBank); */
-            
-            this.showModal = true;
+        changeValues(prop, text) {
+            this[`${prop}`] = text
         },
         openCreateDatabase(){
-            this.showCreateModal = true;
-            console.log("Entrei aqui");
+            this.showCreateDatabaseModal = true;
+        },
+        openSolicitationDatabase(){
+            this.showSolicitationDatabaseModal = true;
         },
         openViewModal(database) {
             this.selectedDatabase = database;
@@ -152,20 +163,34 @@ export default {
             this.showViewModal = false;
             this.showEditModal = false;
             this.showDeleteModal = false;
-            this.showCreateModal = false;
+            this.showCreateDatabaseModal = false;
+            this.showSolicitationDatabaseModal = false;
         },
-        deleteDatabase(database) {
-            // Lógica para excluir usuário
-            console.log('Excluir banco:', database);
-        },
-        saveChanges(newDatabase) {
-            this.databases = this.databases.map((database) => {
-                if (database.id == newDatabase.id)
-                    return newDatabase;
-                else
-                    return database
-            })
+        saveChanges() {
+            const token = localStorage.getItem('token');
 
+            if (token != undefined){
+                const req = {
+                    headers: {
+                        Authorization: "Bearer " + token
+                    }
+                }
+
+                axios.get('http://localhost:8081/api/databases', req).then(response => {
+                    this.databases = response.data;
+
+                    if (this.databases.length > 0) {
+                        this.databases = this.databases.map((database) => {
+                            database.imageQuality = database.imageQuality.join(", ")
+                            database.imageCount = database.images.length
+                            return database
+                        });
+                    }
+
+                    this.filteredDatabases = this.databases;
+                });
+            }
+            
             this.databases = this.databases.map((database) => {
                 if (typeof database.imageQuality == 'object') {
                     database.imageQuality = database.imageQuality.join(", ")
@@ -184,8 +209,45 @@ export default {
         ShowDatabaseModalComp,
         EditDatabaseModalComp,
         DeleteDatabaseModalComp,
-        CreateDatabaseVue
+        CreateDatabaseModalComp,
+        CreateSolicitationDatabaseComp
 
+    }, 
+    watch: {
+        filtro: function (value) {
+            value = value.toLowerCase();
+
+            if (value == "" || value == " "){
+                this.filteredDatabases = this.databases;
+            } else {
+                this.filteredDatabases = this.databases.filter(item => {
+                    return item.examType.toLowerCase().includes(value)
+                })
+            }
+
+            if (this.pesquisa != "" && this.pesquisa != " "){
+                this.filteredDatabases = this.filteredDatabases.filter(item => {
+                    return item.name.toLowerCase().includes(this.pesquisa.toLowerCase())
+                })
+            }
+        },
+        pesquisa: function (value) {
+            value = value.toLowerCase();
+
+            if (value == "" || value == " "){
+                this.filteredDatabases = this.databases;
+            } else {
+                this.filteredDatabases = this.databases.filter(item => {
+                    return item.name.toLowerCase().includes(value)
+                })
+            }
+
+            if (this.filtro != "" && this.filtro != " "){
+                this.filteredDatabases = this.filteredDatabases.filter(item => {
+                    return item.examType.toLowerCase().includes(this.filtro.toLowerCase())
+                })
+            }
+        }
     }
 };
 </script>

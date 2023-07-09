@@ -80,7 +80,7 @@ module.exports =  {
                 return;
             }
 
-            if (await DatabaseService.DatabaseExists(name)) {
+            if (await DatabaseService.databaseExists(name)) {
                 res.status(403).json({ err: "Já existe um banco de dados cadastrado com esse nome!" });
                 return;
             }

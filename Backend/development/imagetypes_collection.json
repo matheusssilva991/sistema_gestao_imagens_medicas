@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "64611f2e2ddd7a521eb9893f"
+  },
+  "name": "DICOM",
+  "description": "padrão DICOM",
+  "requiredData": {
+    "atribA": "pskakp",
+    "atribB": "asofjao"
+  },
+  "optionalData": {
+    "atribA": "asojoa",
+    "atribB": "zaef"
+  },
+  "__v": 0
+}]

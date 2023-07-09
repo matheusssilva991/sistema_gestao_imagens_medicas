@@ -36,6 +36,11 @@
 </script>
 
 <style>
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
 #app {
   font-family: 'Montserrat';
   font-weight: bold;
@@ -55,5 +60,12 @@
   justify-content: space-around;
 }
 
+@media screen and (max-width: 1920px){
+  html, body {
+    height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+  }
+}
 </style>
 
