@@ -45,6 +45,7 @@ export default {
 	data() {
 		return {
 			showErroModal: false,
+			showModal: true
 		};
 	},
 	methods: {
@@ -65,13 +66,13 @@ export default {
 					}
 				};
 
-				if (this.solicitation.type == "newUser") {
+				if (this.solicitation.type == "Novo Usuário") {
 					axios.post(`http://localhost:8081/api/user`, { "idSolicitation": this.solicitation._id }, req)
 						.then(() => {
 
 							axios.put(`http://localhost:8081/api/solicitation/${this.solicitation._id}`,
 								{ 'status': 'accepted' }, req)
-								.then(()=> {
+								.then(() => {
 									this.$emit('save-changes');
 								}).catch(err => {
 									this.showErroModal = true;
@@ -89,7 +90,7 @@ export default {
 
 							axios.put(`http://localhost:8081/api/solicitation/${this.solicitation._id}`,
 								{ 'status': 'accepted' }, req)
-								.then(()=> {
+								.then(() => {
 									this.$emit('save-changes');
 								}).catch(err => {
 									this.showErroModal = true;

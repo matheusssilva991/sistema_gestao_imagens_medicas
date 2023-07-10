@@ -352,6 +352,7 @@ body {
     padding-right: 2%;
     font-size: 20px;
     font-weight: bold;
+    width: fit-content;
 }
 
 #button-logged:hover {
@@ -361,7 +362,8 @@ body {
 
 .button-header {
     height: 35px;
-    width: 150px;
+   /*  width: 150px; */
+    width: fit-content;
     border-radius: 20px;
     padding-left: 3%;
     padding-right: 3%;

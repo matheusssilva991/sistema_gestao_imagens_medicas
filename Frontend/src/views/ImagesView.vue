@@ -6,9 +6,10 @@
 				<div id="filter">
 					<div class="filter-item-container">
 						<i class="fa fa-filter mt-2" aria-hidden="true"></i>
-						<select name="filtro" id="" v-model="selectedDatabase" class="custom-select">
+						<select name="filtro" id="" v-model="selectedDatabase"
+							class="form-select form-select-lg mb-3 custom-select">
 							<option v-for="databaseName in databasesNames" :key="databaseName" :value="databaseName">{{
-								databaseName }}</option>
+								databaseName }} </option>
 						</select>
 					</div>
 				</div>
@@ -23,9 +24,10 @@
 				<div class="pagination-buttons">
 					<button @click="paginaAnterior" :disabled="paginaAtual === 1"
 						class="pagination-button">Anterior</button>
-						<button @click="proximaPagina" :disabled="!existemMaisPaginas || imagensPagina.length === 0" class="pagination-button">
-                         Próxima
-                        </button>
+					<button @click="proximaPagina" :disabled="!existemMaisPaginas || imagensPagina.length === 0"
+						class="pagination-button">
+						Próxima
+					</button>
 
 				</div>
 			</div>
@@ -150,7 +152,7 @@ export default {
 
 .container {
 	background-color: #f2f2f2;
-	
+
 }
 
 .sidebar {
@@ -217,12 +219,11 @@ export default {
 	box-shadow: 0.5px 0.75px 1.5px 1px rgb(189, 181, 181);
 }
 
-/*.custom-select:focus {
-  outline: none;
-  border-color: #73bf8e;
-  box-shadow: 0 0 5px rgba(115, 191, 142, 0.5);
+.custom-select:focus {
+	outline: none;
+	border-color: #73bf8e;
+	box-shadow: 0 0 5px rgba(10, 59, 27, 0.5);
 }
-*/
 
 .imagens {
 	width: 100%;
@@ -423,13 +424,12 @@ export default {
 }
 
 tbody td button {
-    padding: 0px;
-    margin-left: 10px;
-    border: none;
+	padding: 0px;
+	margin-left: 10px;
+	border: none;
 }
 
 tbody td button:hover {
-    border: none;
+	border: none;
 }
-
 </style>
