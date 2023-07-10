@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar me-3 ms-3">
+    <div class="container sidebar me-3 ms-3">
         <div class="list-group">
             <router-link to="/databases" class="list-group-item" :class="{ 'active-link': selectedTopic === 'informacoes' }"
                 @click="selectTopic('informacoes')">
@@ -11,8 +11,8 @@
                 <i class="fas fa-images"></i>
                 <span class="topic-name">Imagens</span>
             </router-link>
-            <router-link v-if="this.user.role" to="/users" class="list-group-item" :class="{ 'active-link': selectedTopic === 'usuarios' }"
-                @click="selectTopic('usuarios')">
+            <router-link v-if="this.user.role" to="/users" class="list-group-item"
+                :class="{ 'active-link': selectedTopic === 'usuarios' }" @click="selectTopic('usuarios')">
                 <i class="fas fa-users"></i>
                 <span class="topic-name">Usuários</span>
             </router-link>
@@ -39,23 +39,23 @@ export default {
     created() {
         const token = localStorage.getItem('token');
 
-		if (token != undefined) {
-			const req = {
-				headers: {
-					Authorization: "Bearer " + token
-				}
-			};
+        if (token != undefined) {
+            const req = {
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            };
 
-			axios.get('http://localhost:8081/authenticate', req).then(response => {
+            axios.get('http://localhost:8081/authenticate', req).then(response => {
                 this.user = response.data;
                 if (this.user['role'] == 0)
                     this.user['role'] = false
-                else 
+                else
                     this.user['role'] = true
             }).catch((err) => {
                 console.log(err);
-			});
-		}
+            });
+        }
     },
     data() {
         return {
@@ -122,7 +122,7 @@ header {
 
 
 @media screen and (max-width: 736px) {
-	.list-group-item {
+    .list-group-item {
         list-style-type: none;
         padding: 4px;
         margin-bottom: 13px;
@@ -139,13 +139,43 @@ header {
     .list-group {
         display: flex;
         flex-direction: row;
+        flex-wrap: nowrap;
+
     }
 
-    .sidebar{
+    .sidebar {
         width: fit-content;
         margin: 0 auto;
         margin-bottom: 20px;
     }
 }
 
+@media screen and (max-width: 577px) {
+    .list-group-item {
+        list-style-type: none;
+        padding: 4px;
+        margin-bottom: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        font-weight: bold;
+        transition: background-color 0.9s ease;
+        color: #73bf8e;
+        flex-direction: column;
+    }
+
+    .list-group {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+    }
+
+    .sidebar {
+        width: 100%;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+}
 </style>

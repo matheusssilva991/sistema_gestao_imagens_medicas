@@ -59,6 +59,7 @@ body {
 	margin-top: 3%;
 	display: flex;
 	justify-content: space-around;
+
 }
 
 @media screen and (max-width: 736px) {
@@ -67,6 +68,8 @@ body {
 		margin-top: 3%;
 		display: flex;
 		justify-content: space-around;
+		width: 100%;
+		align-items: center;
 	}
 }
 

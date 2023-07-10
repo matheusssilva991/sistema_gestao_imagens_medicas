@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="user in filteredUsers" :key="user._id">
+                    <tr v-for="user in paginatedUsers" :key="user._id">
                         <td scope="row">
                             <span class="table-item">{{ user.name }}</span>
                         </td>
@@ -56,8 +56,19 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="pagination">
+                <ul class="pagination-buttons">
+                    <li class="page-item">
+                        <button @click="paginaAnterior" :disabled="paginaAtual === 1" class="pagination-button"> Anterior
+                        </button>
+                    </li>
+                    <li class="page-item">
+                        <button @click="proximaPagina" :disabled="!existemMaisPaginas" class="pagination-button"> Próxima
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <!-- UserModal component -->
         <PermissionUserModalComp v-if="showModal" :user="selectedUser" @save-changes="saveChanges"
             @close-modal="closeModal" />
         <DeleteUserModalComp v-if="showDeleteModal" :user="this.selectedUser" @close-modal="closeModal"
@@ -66,28 +77,28 @@
 </template>
   
 <script>
-import PermissionUserModalComp from '../components/modais/user/PermissionUserModalComp.vue';
-import InputComp from '../components/InputComp.vue';
-import DeleteUserModalComp from '../components/modais/user/DeleteUserModalComp.vue';
-import axios from 'axios';
+import PermissionUserModalComp from "../components/modais/user/PermissionUserModalComp.vue";
+import InputComp from "../components/InputComp.vue";
+import DeleteUserModalComp from "../components/modais/user/DeleteUserModalComp.vue";
+import axios from "axios";
 
 export default {
     components: {
         PermissionUserModalComp,
         InputComp,
-        DeleteUserModalComp
+        DeleteUserModalComp,
     },
     created() {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
 
         if (token != undefined) {
             const req = {
                 headers: {
-                    Authorization: "Bearer " + token
-                }
+                    Authorization: "Bearer " + token,
+                },
             };
 
-            axios.get('http://localhost:8081/api/users', req).then(response => {
+            axios.get("http://localhost:8081/api/users", req).then((response) => {
                 this.users = response.data;
 
                 this.users = this.users.map((user) => {
@@ -103,7 +114,6 @@ export default {
                 this.filteredUsers = this.users;
             });
         }
-
     },
     data() {
         return {
@@ -114,11 +124,35 @@ export default {
             showModal: false,
             showDeleteModal: false,
             selectedUser: null,
+            paginaAtual: 1,
+            itensPorPagina: 4,
         };
+    },
+    computed: {
+        paginatedUsers() {
+            const startIndex = (this.paginaAtual - 1) * this.itensPorPagina;
+            const endIndex = this.paginaAtual * this.itensPorPagina;
+            return this.filteredUsers.slice(startIndex, endIndex);
+        },
+        existemMaisPaginas() {
+            return (
+                this.paginaAtual * this.itensPorPagina < this.filteredUsers.length
+            );
+        },
     },
     methods: {
         changeValues(prop, text) {
-            this[ `${prop}` ] = text;
+            this[prop] = text;
+        },
+        proximaPagina() {
+            if (this.paginaAtual * this.itensPorPagina < this.filteredUsers.length) {
+                this.paginaAtual++;
+            }
+        },
+        paginaAnterior() {
+            if (this.paginaAtual > 1) {
+                this.paginaAtual--;
+            }
         },
         openModal(user) {
             this.selectedUser = user;
@@ -215,7 +249,7 @@ export default {
     padding-top: 2.5%;
     margin: 0 auto;
     /* Adicionado para centralizar horizontalmente */
-    height: 70vh;
+    height: 73vh;
     width: 100%;
     border-radius: 25px;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
@@ -270,5 +304,150 @@ export default {
     border: none;
     cursor: pointer;
     padding: 0;
+}
+
+.pagination {
+    position: center;
+    bottom: 6px;
+    right: 10px;
+    margin-top: 12px;
+    margin-left: 80%;
+}
+
+.pagination-buttons {
+
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+
+}
+
+.pagination-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    background-color: #73bf8e;
+    color: white;
+    cursor: pointer;
+}
+
+.pagination-button:hover {
+    background-color: #5fa17f;
+}
+
+.pagination-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+    .container {
+        background-color: #f2f2f2;
+    }
+
+    .sidebar {
+        height: auto;
+        overflow-x: auto;
+    }
+
+    .sidebar-title {
+        font-size: 20px;
+        margin-top: 5px;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .sidebar-header {
+        flex-direction: column;
+    }
+
+    #filter {
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    .pagination {
+        margin: 0 auto;
+        justify-content: center;
+    }
+
+    .pagination-button {
+        padding: 3px 6px;
+        font-size: 12px;
+    }
+
+}
+
+@media (min-width:577px) and (max-width: 735px) {
+
+    .sidebar-title {
+
+        margin-top: 5px;
+        justify-content: center;
+    }
+
+    .sidebar-header {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        height: auto;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    #filter {
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    .pagination {
+        margin-left: auto;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 736px) and (max-width: 1000px) {
+    .container {
+        background-color: #f2f2f2;
+    }
+
+    .sidebar-title {
+        margin-top: 5px;
+        justify-content: center;
+    }
+
+    .sidebar-header {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        height: auto;
+    }
+
+    #filter {
+        width: 65%;
+        margin-top: 10px;
+    }
+
+    .pagination {
+        margin: auto;
+        justify-content: center;
+    }
+
+}
+
+@media (min-width: 1001px) and (max-width: 1220px) {
+
+    .sidebar {
+        height: auto;
+    }
+    .pagination {
+        margin: auto;
+        justify-content: right;
+    }
 }
 </style>

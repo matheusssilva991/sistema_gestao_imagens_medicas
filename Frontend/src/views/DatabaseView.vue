@@ -1,9 +1,9 @@
 <template>
-    <div class="container ms-3 me-3">
+    <div class="container w-100 ms-3 me-3">
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Bancos
-                    <button v-if="this.user.role" class="add-button" @click="openCreateDatabase()">+ Novo</button>
+                    <button v-if="user.role" class="add-button" @click="openCreateDatabase()">+ Novo</button>
                     <button v-else class="add-button" @click="openSolicitationDatabase()">+ Solicitar Novo</button>
                 </h2>
                 <div id="filter">
@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="database in filteredDatabases" :key="database.id">
+                    <tr v-for="database in paginatedDatabases" :key="database.id">
                         <td scope="row">
                             <span class="table-item">{{ database.name.toUpperCase() }}</span>
                         </td>
@@ -52,34 +52,42 @@
                             <button @click="openEditModal(database)" class="btn">
                                 <i class="fa fa-download table-item"></i>
                             </button>
-                            <button v-if="this.user.role" @click="openEditModal(database)" class="btn">
+                            <button v-if="user.role" @click="openEditModal(database)" class="btn">
                                 <i class="fa fa-edit table-item"></i>
                             </button>
                             <button @click="openViewModal(database)" class="btn">
                                 <i class="fa fa-eye table-item"></i>
                             </button>
-                            <button v-if="this.user.role" @click="openDeleteModal(database)" class="btn">
+                            <button v-if="user.role" @click="openDeleteModal(database)" class="btn">
                                 <i class="fa fa-trash table-item"></i>
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <div class="pagination">
+                <div class="pagination-buttons">
+                    <button @click="paginaAnterior" :disabled="paginaAtual === 1"
+                        class="pagination-button">Anterior</button>
+                    <button @click="proximaPagina" :disabled="!existemMaisPaginas"
+                        class="pagination-button">Próxima</button>
+                </div>
+            </div>
         </div>
-        <CreateDatabaseModalComp v-if="showCreateDatabaseModal" :database="this.selectedDatabase" @close-modal="closeModal"
+        <CreateDatabaseModalComp v-if="showCreateDatabaseModal" :database="selectedDatabase" @close-modal="closeModal"
             @save-changes="saveChanges" />
-        <CreateSolicitationDatabaseComp v-if="showSolicitationDatabaseModal" :database="this.selectedDatabase"
+        <CreateSolicitationDatabaseComp v-if="showSolicitationDatabaseModal" :database="selectedDatabase"
             @close-modal="closeModal" @save-changes="saveChanges" />
-        <EditDatabaseModalComp v-if="showEditModal" :database="this.selectedDatabase" @close-modal="closeModal"
+        <EditDatabaseModalComp v-if="showEditModal" :database="selectedDatabase" @close-modal="closeModal"
             @save-changes="saveChanges" />
-        <DeleteDatabaseModalComp v-if="showDeleteModal" :database="this.selectedDatabase" @close-modal="closeModal"
+        <DeleteDatabaseModalComp v-if="showDeleteModal" :database="selectedDatabase" @close-modal="closeModal"
             @save-changes="saveChanges" />
-        <ShowDatabaseModalComp v-if="showViewModal" :database="this.selectedDatabase" @close-modal="closeModal" />
+        <ShowDatabaseModalComp v-if="showViewModal" :database="selectedDatabase" @close-modal="closeModal" />
     </div>
 </template>
   
 <script>
-import InputComp from '../components/InputComp.vue';
+import InputComp from '../components/InputComp.vue'
 import ShowDatabaseModalComp from '@/components/modais/database/ShowDatabaseModalComp.vue';
 import EditDatabaseModalComp from '@/components/modais/database/EditDatabaseModalComp.vue';
 import DeleteDatabaseModalComp from '@/components/modais/database/DeleteDatabaseModalComp.vue';
@@ -96,18 +104,17 @@ export default {
                 headers: {
                     Authorization: "Bearer " + token
                 }
-            };
+            }
 
             axios.get(`http://localhost:8081/authenticate`, req).then(response => {
                 this.user = response.data;
-                if (this.user[ 'role' ] == 0)
-                    this.user[ 'role' ] = false;
+                if (this.user['role'] == 0)
+                    this.user['role'] = false
                 else
-                    this.user[ 'role' ] = true;
+                    this.user['role'] = true
 
             }).catch((err) => {
                 console.log(err);
-                this.$router.push({ name: 'home' });
             });
 
             axios.get('http://localhost:8081/api/databases', req).then(response => {
@@ -115,9 +122,9 @@ export default {
 
                 if (this.databases.length > 0) {
                     this.databases = this.databases.map((database) => {
-                        database.imageQuality = database.imageQuality.join(", ");
-                        database.imageCount = database.images.length;
-                        return database;
+                        database.imageQuality = database.imageQuality.join(", ")
+                        database.imageCount = database.images.length
+                        return database
                     });
                 }
 
@@ -138,18 +145,34 @@ export default {
             showDeleteModal: false,
             selectedDatabase: null,
             showCreateDatabaseModal: false,
-            showSolicitationDatabaseModal: false
+            showSolicitationDatabaseModal: false,
+            paginaAtual: 1,
+            itensPorPagina: 4,
         };
+    },
+    computed: {
+        paginatedDatabases() {
+            const startIndex = (this.paginaAtual - 1) * this.itensPorPagina;
+            const endIndex = this.paginaAtual * this.itensPorPagina;
+            return this.filteredDatabases.slice(startIndex, endIndex);
+        },
+        existemMaisPaginas() {
+            return this.paginaAtual * this.itensPorPagina < this.filteredDatabases.length;
+        }
     },
     methods: {
         changeValues(prop, text) {
-            this[ `${prop}` ] = text;
+            this[prop] = text;
         },
-        openCreateDatabase() {
-            this.showCreateDatabaseModal = true;
+        proximaPagina() {
+            if (this.paginaAtual * this.itensPorPagina < this.filteredDatabases.length) {
+                this.paginaAtual++;
+            }
         },
-        openSolicitationDatabase() {
-            this.showSolicitationDatabaseModal = true;
+        paginaAnterior() {
+            if (this.paginaAtual > 1) {
+                this.paginaAtual--;
+            }
         },
         openViewModal(database) {
             this.selectedDatabase = database;
@@ -163,8 +186,15 @@ export default {
             this.selectedDatabase = database;
             this.showDeleteModal = true;
         },
-        closeModal() {
+        openCreateDatabase() {
             this.selectedDatabase = null;
+            this.showCreateDatabaseModal = true;
+        },
+        openSolicitationDatabase() {
+            this.selectedDatabase = null;
+            this.showSolicitationDatabaseModal = true;
+        },
+        closeModal() {
             this.showViewModal = false;
             this.showEditModal = false;
             this.showDeleteModal = false;
@@ -179,16 +209,16 @@ export default {
                     headers: {
                         Authorization: "Bearer " + token
                     }
-                };
+                }
 
                 axios.get('http://localhost:8081/api/databases', req).then(response => {
                     this.databases = response.data;
 
                     if (this.databases.length > 0) {
                         this.databases = this.databases.map((database) => {
-                            database.imageQuality = database.imageQuality.join(", ");
-                            database.imageCount = database.images.length;
-                            return database;
+                            database.imageQuality = database.imageQuality.join(", ")
+                            database.imageCount = database.images.length
+                            return database
                         });
                     }
 
@@ -198,11 +228,11 @@ export default {
 
             this.databases = this.databases.map((database) => {
                 if (typeof database.imageQuality == 'object') {
-                    database.imageQuality = database.imageQuality.join(", ");
+                    database.imageQuality = database.imageQuality.join(", ")
                 }
 
-                database.imageCount = database.images.length;
-                return database;
+                database.imageCount = database.images.length
+                return database
             });
 
             this.closeModal();
@@ -226,14 +256,14 @@ export default {
                 this.filteredDatabases = this.databases;
             } else {
                 this.filteredDatabases = this.databases.filter(item => {
-                    return item.examType.toLowerCase().includes(value);
-                });
+                    return item.examType.toLowerCase().includes(value)
+                })
             }
 
             if (this.pesquisa != "" && this.pesquisa != " ") {
                 this.filteredDatabases = this.filteredDatabases.filter(item => {
-                    return item.name.toLowerCase().includes(this.pesquisa.toLowerCase());
-                });
+                    return item.name.toLowerCase().includes(this.pesquisa.toLowerCase())
+                })
             }
         },
         pesquisa: function (value) {
@@ -243,14 +273,14 @@ export default {
                 this.filteredDatabases = this.databases;
             } else {
                 this.filteredDatabases = this.databases.filter(item => {
-                    return item.name.toLowerCase().includes(value);
-                });
+                    return item.name.toLowerCase().includes(value)
+                })
             }
 
             if (this.filtro != "" && this.filtro != " ") {
                 this.filteredDatabases = this.filteredDatabases.filter(item => {
-                    return item.examType.toLowerCase().includes(this.filtro.toLowerCase());
-                });
+                    return item.examType.toLowerCase().includes(this.filtro.toLowerCase())
+                })
             }
         }
     }
@@ -270,7 +300,7 @@ export default {
     padding-top: 2.5%;
     margin: 0 auto;
     /* Adicionado para centralizar horizontalmente */
-    height: 70vh;
+    height: 75vh;
     width: 100%;
     border-radius: 25px;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
@@ -347,4 +377,152 @@ tbody td button {
 tbody td button:hover {
     border: none;
 }
-</style>
+
+.pagination {
+    position: center;
+    bottom: 6px;
+    right: 10px;
+    margin-top: 12px;
+    margin-left: 80%;
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+
+}
+
+.pagination-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    background-color: #73bf8e;
+    color: white;
+    cursor: pointer;
+}
+
+.pagination-button:hover {
+    background-color: #5fa17f;
+}
+
+.pagination-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+    .container {
+        background-color: #f2f2f2;
+    }
+
+    .sidebar {
+        height: auto;
+        overflow-x: auto;
+    }
+
+    .sidebar-title {
+        font-size: 20px;
+        margin-top: 5px;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .sidebar-header {
+        flex-direction: column;
+    }
+
+    #filter {
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    .pagination {
+        margin: auto;
+    }
+
+    .pagination {
+        margin: 0 auto;
+        justify-content: center;
+    }
+
+    .pagination-button {
+        padding: 3px 6px;
+        font-size: 12px;
+    }
+
+}
+
+@media (min-width:577px) and (max-width: 1000px) {
+
+    .sidebar-title {
+        margin-top: 5px;
+        justify-content: center;
+    }
+
+    .sidebar-header {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        height: auto;
+        width: 100%;
+        margin: 0 auto;
+
+    }
+
+    #filter {
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    .pagination {
+        margin-left: auto;
+        justify-content: center;
+    }
+
+}
+
+@media (min-width: 1000px) and (max-width: 1000px) {
+    .container {
+        background-color: #f2f2f2;
+    }
+
+    .sidebar-title {
+
+        margin-top: 5px;
+        justify-content: center;
+    }
+
+    .sidebar-header {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        height: auto;
+    }
+
+    #filter {
+        width: 65%;
+        margin-top: 10px;
+    }
+
+    .pagination {
+        margin-left: auto;
+        justify-content: center;
+    }
+
+}
+
+@media (min-width: 1001px) and (max-width: 1220px) {
+
+    .sidebar {
+        height: auto;
+    }
+
+    .pagination {
+        margin: auto;
+        justify-content: right;
+    }
+}</style>
