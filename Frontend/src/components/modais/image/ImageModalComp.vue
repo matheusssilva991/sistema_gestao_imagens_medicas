@@ -94,7 +94,7 @@ export default {
 
 <style scoped>
 .modal {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat medium', sans-serif;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);

@@ -261,7 +261,7 @@ td button {
 }
 
 .sidebar {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat medium', sans-serif;
     background-color: #ffffff;
     padding: 5%;
     padding-top: 2.5%;

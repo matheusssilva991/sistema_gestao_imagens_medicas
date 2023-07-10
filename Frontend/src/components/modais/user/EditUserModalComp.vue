@@ -148,7 +148,7 @@ export default {
 
 
 .modal {
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Montserrat medium', sans-serif;
 	margin: 0 auto;
 	width: 100%;
 	height: 100%;
