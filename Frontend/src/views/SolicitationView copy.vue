@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-100 ms-3 me-3">
+    <div class="container">
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2 class="sidebar-title">Gerenciar Solicitações</h2>
@@ -17,57 +17,67 @@
                 </div>
             </div>
 
-            <table class="table table-hover mt-4">
-                <thead>
-                    <tr>
-                        <th scope="col">
-                            <span class="table-header">Nome</span>
-                        </th>
-                        <th scope="col">
-                            <span class="table-header">Status</span>
-                        </th>
-                        <th scope="col">
-                            <span class="table-header">Tipo de solicitação</span>
-                        </th>
-                        <th scope="col">
-                            <span class="table-header">Ações</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="solicitation in paginatedSolicitations" :key="solicitation.id">
-                        <td scope="row">
-                            <span class="table-item">{{ solicitation.data.name }}</span>
-                        </td>
-                        <td scope="row">
-                            <span class="table-item">{{ solicitation.status }}</span>
-                        </td>
-                        <td scope="row">
-                            <span class="table-item">{{ solicitation.type }}</span>
-                        </td>
-                        <td scope="row" class="actions">
-                            <button @click="openModal(solicitation)" class="btn">
-                                <i class="fas fa-eye table-item"></i>
-                            </button>
-                            <button v-if="solicitation.status == 'Pendente'" @click="openAcceptModal(solicitation)" class="btn">
-                                <i class="fa fa-check table-item" aria-hidden="true"></i>
-                            </button>
-                            <button v-if="solicitation.status == 'Pendente'" @click="openRejectModal(solicitation)" class="btn">
-                                <i class="fa fa-times table-item-red"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="pagination">
-                <div class="pagination-buttons">
-                    <button @click="paginaAnterior" :disabled="paginaAtual === 1"
-                        class="pagination-button">Anterior</button>
-                    <button @click="proximaPagina" :disabled="!existemMaisPaginas"
-                        class="pagination-button">Próxima</button>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-hover mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <span class="table-header">Nome</span>
+                            </th>
+                            <th scope="col">
+                                <span class="table-header">Status</span>
+                            </th>
+                            <th scope="col">
+                                <span class="table-header">Tipo de solicitação</span>
+                            </th>
+                            <th scope="col">
+                                <span class="table-header">Ações</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="solicitation in paginatedSolicitations" :key="solicitation.id">
+                            <td scope="row">
+                                <span class="table-item">{{ solicitation.data.name }}</span>
+                            </td>
+                            <td scope="row">
+                                <span class="table-item">{{ solicitation.status }}</span>
+                            </td>
+                            <td scope="row">
+                                <span class="table-item">{{ solicitation.type }}</span>
+                            </td>
+                            <td scope="row" class="actions">
+                                <button @click="openModal(solicitation)">
+                                    <i class="fas fa-eye table-item"></i>
+                                </button>
+                                <button v-if="solicitation.status == 'Pendente'" @click="openAcceptModal(solicitation)">
+                                    <i class="fa fa-check table-item" aria-hidden="true"></i>
+                                </button>
+                                <button v-if="solicitation.status == 'Pendente'" @click="openRejectModal(solicitation)">
+                                    <i class="fa fa-times table-item-red"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+
+            <nav class="pagination justify-content-center">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button @click="paginaAnterior" :disabled="paginaAtual === 1" class="page-link btn-anterior">
+                            Anterior
+                        </button>
+                    </li>
+                    <li class="page-item">
+                        <button @click="proximaPagina" :disabled="!existemMaisPaginas" class="page-link btn-proximo">
+                            Próxima
+                        </button>
+                    </li>
+                </ul>
+            </nav>
         </div>
+
         <ShowDatabaseSolicitationModal v-if="showDatabaseModal" :solicitation="selectedSolicitation"
             @close-modal="closeModal" />
         <ShowUserSolicitationModal v-if="showUserModal" :solicitation="selectedSolicitation" @close-modal="closeModal" />
@@ -85,7 +95,6 @@ import AcceptSolicitationModalComp from "../components/modais/solicitation/Accep
 import RejectSolicitationModalComp from "../components/modais/solicitation/RejectSolicitationModalComp.vue";
 import InputComp from "../components/InputComp.vue";
 import axios from "axios";
-
 
 export default {
     components: {
@@ -160,15 +169,44 @@ export default {
             return this.filteredSolicitations.slice(startIndex, endIndex);
         },
         existemMaisPaginas() {
-            return this.paginaAtual * this.itensPorPagina < this.filteredSolicitations.length;
-        }
+            return (
+                this.paginaAtual * this.itensPorPagina <
+                this.filteredSolicitations.length
+            );
+        },
     },
+
     methods: {
-        changeValues(prop, text) {
-            this[ prop ] = text;
+        changeValues(name, value) {
+            if (name === "pesquisa") {
+                this.pesquisa = value;
+            } else if (name === "filtro") {
+                this.filtro = value;
+            }
+            this.filtrarSolicitacoes();
+        },
+        filtrarSolicitacoes() {
+            let filtradas = this.solicitations;
+            if (this.pesquisa !== "") {
+                filtradas = filtradas.filter((solicitation) =>
+                    solicitation.data.name
+                        .toLowerCase()
+                        .includes(this.pesquisa.toLowerCase())
+                );
+            }
+            if (this.filtro !== "") {
+                filtradas = filtradas.filter((solicitation) =>
+                    solicitation.type.toLowerCase().includes(this.filtro.toLowerCase())
+                );
+            }
+            this.filteredSolicitations = filtradas;
+            this.paginaAtual = 1;
         },
         proximaPagina() {
-            if (this.paginaAtual * this.itensPorPagina < this.filteredSolicitations.length) {
+            if (
+                this.paginaAtual * this.itensPorPagina <
+                this.filteredSolicitations.length
+            ) {
                 this.paginaAtual++;
             }
         },
@@ -227,44 +265,7 @@ export default {
             }
             this.closeModal();
         },
-
     },
-    watch: {
-        filtro: function (value) {
-            value = value.toLowerCase();
-
-            if (value == "" || value == " ") {
-                this.filteredSolicitations = this.solicitations;
-            } else {
-                this.filteredSolicitations = this.solicitations.filter(item => {
-                    return item.type.toLowerCase().includes(value);
-                });
-            }
-
-            if (this.pesquisa != "" && this.pesquisa != " ") {
-                this.filteredSolicitations = this.filteredSolicitations.filter(item => {
-                    return item.data.name.toLowerCase().includes(this.pesquisa.toLowerCase());
-                });
-            }
-        },
-        pesquisa: function (value) {
-            value = value.toLowerCase();
-
-            if (value == "" || value == " ") {
-                this.filteredSolicitations = this.solicitations;
-            } else {
-                this.filteredSolicitations = this.solicitations.filter(item => {
-                    return item.data.name.toLowerCase().includes(value);
-                });
-            }
-
-            if (this.filtro != "" && this.filtro != " ") {
-                this.filteredSolicitations = this.filteredSolicitations.filter(item => {
-                    return item.type.toLowerCase().includes(this.filtro.toLowerCase());
-                });
-            }
-        }
-    }
 };
 </script>
   
@@ -274,19 +275,58 @@ export default {
     font-weight: 100;
 }
 
-td button{
-    border: 2px solid black;
+.pagination[data-v-77f6eb3f] {
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+    align-self: flex-end;
+    margin-left: 55%;
+}
+
+.pagination .page-link[data-v-77f6eb3f] {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    background-color: #73bf8e;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.pagination .page-link[data-v-77f6eb3f]:hover {
+    background-color: #5fa17f;
+}
+
+.pagination .page-link[data-v-77f6eb3f]:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.filter-item-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.filter-item {
+    width: 90%;
+    margin-bottom: 10px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .sidebar {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     background-color: #ffffff;
     padding: 5%;
     padding-top: 2.5%;
     margin: 0 auto;
-    /* Adicionado para centralizar horizontalmente */
-    height: 75vh;
-    width: 100%;
+    width: 97.5%;
     border-radius: 25px;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
 }
@@ -303,20 +343,6 @@ td button{
     font-size: 25px;
     text-align: left;
     font-weight: bold;
-    width: 70%;
-}
-
-.table-header {
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.table-item {
-    color: #80BFAD;
-}
-
-.table-item:hover {
-    color: #459c63;
 }
 
 #filter {
@@ -325,32 +351,193 @@ td button{
     flex-direction: column;
 }
 
-.filter-item {
-    width: 90%;
-    margin-bottom: 10px;
+.table-responsive {
+    overflow-x: auto;
 }
 
-.filter-item-container {
+.table {
     width: 100%;
-    display: flex;
-    justify-content: space-around;
+    border-collapse: collapse;
 }
 
-.add-button {
-    background-color: #73bf8e;
-    ;
-    color: #ffffff;
-    border: none;
-    padding: 0.5% 1%;
-    border-radius: 10px;
-    font-size: 15px;
-    cursor: pointer;
+.table-header {
     font-weight: bold;
+    font-size: 18px;
 }
 
-.add-button:hover {
-    background-color: #459c63;
+.table-item {
+    color: #80bfad;
+}
+
+.table-item:hover {
+    color: #459c63;
+}
+
+.table-item-red {
+    color: #dd2215;
+}
+
+.table-item-red:hover {
+    color: #81150e;
+}
+
+.actions button {
+    background: none;
     border: none;
+    cursor: pointer;
+    padding: 10;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+}
+
+.pagination .page-item {
+    display: flex;
+    align-items: center;
+}
+
+.pagination .page-link {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #73bf8e;
+}
+
+.pagination .page-link:focus,
+.pagination .page-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        height: auto;
+        width: 100%;
+    }
+
+    .sidebar-title {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    #filter {
+        width: 80%;
+        margin: 10px auto;
+    }
+
+    .imagens {
+        justify-content: center;
+    }
+
+    .imagens div {
+        flex-basis: 45%;
+    }
+
+    .pagination {
+        margin: 10px auto;
+    }
+
+    .pagination-buttons {
+        flex-direction: column;
+    }
+
+    .pagination-button {
+        width: 100%;
+        margin-bottom: 5px;
+        font-size: 12px;
+    }
+
+    .btn-anterior {
+        background-color: #dd2215;
+    }
+}
+
+@media (min-width: 0px) and (max-width: 377px) {
+    .pagination[data-v-77f6eb3f] {
+        margin-left: 10%;
+    }
+}
+
+@media (min-width: 378px) and (max-width: 576px) {
+    .pagination[data-v-77f6eb3f] {
+        margin-left: 20%;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 735px) {
+    .sidebar {
+        height: auto;
+    }
+
+    .sidebar-title {
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .sidebar-header {
+        flex-direction: column;
+    }
+
+    #filter {
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    .imagens {
+        flex-wrap: wrap;
+    }
+
+    .imagens div {
+        flex-basis: 45%;
+    }
+
+    .pagination {
+        margin-left: auto;
+        justify-content: center;
+    }
+
+    .pagination[data-v-77f6eb3f] {
+        margin-left: 30%;
+    }
+}
+
+@media (min-width: 736px) and (max-width: 1000px) {
+    .imagens div {
+        flex-basis: 30%;
+    }
+
+    .sidebar {
+        height: auto;
+    }
+
+    #filter {
+        width: 60%;
+        margin-top: 10px;
+    }
+
+    .pagination-button {
+        font-size: 14px;
+    }
+
+    .pagination[data-v-77f6eb3f] {
+        margin-left: 50%;
+    }
+}
+
+@media (min-width: 1001px) and (max-width: 1220px) {
+    .imagens div {
+        flex-basis: 23%;
+    }
+
+    .sidebar {
+        height: auto;
+    }
+
+    .pagination[data-v-77f6eb3f] {
+        margin-left: 52%;
+    }
 }
 
 tbody td button {
@@ -363,152 +550,4 @@ tbody td button:hover {
     border: none;
 }
 
-.pagination {
-    position: center;
-    bottom: 6px;
-    right: 10px;
-    margin-top: 12px;
-    margin-left: 80%;
-}
-
-.pagination-buttons {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-
-}
-
-.pagination-button {
-    padding: 5px 10px;
-    font-size: 14px;
-    border-radius: 10px;
-    border: none;
-    background-color: #73bf8e;
-    color: white;
-    cursor: pointer;
-}
-
-.pagination-button:hover {
-    background-color: #5fa17f;
-}
-
-.pagination-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-@media (max-width: 576px) {
-     .container {
-        background-color: #f2f2f2;
-    }
-
-    .sidebar {
-        height: auto;
-        overflow-x: auto;
-    }
-
-    .sidebar-title {
-        font-size: 20px;
-        margin-top: 5px;
-        justify-content: center;
-        text-align: center;
-    }
-
-    .sidebar-header {
-        flex-direction: column;
-    }
-
-    #filter {
-        width: 80%;
-        margin-top: 10px;
-    }
-
-    .pagination {
-        margin: auto;
-    }
-
-    .pagination {
-        margin: 0 auto;
-        justify-content: center;
-    }
-
-    .pagination-button {
-        padding: 3px 6px;
-        font-size: 12px;
-    }
-
-}
-
-@media (min-width:577px) and (max-width: 1000px) {
-
-    .sidebar-title {
-        margin-top: 5px;
-        justify-content: center;
-    }
-
-    .sidebar-header {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        height: auto;
-        width: 100%;
-        margin: 0 auto;
-
-    }
-
-    #filter {
-        width: 80%;
-        margin-top: 10px;
-    }
-
-    .pagination {
-        margin-left: auto;
-        justify-content: center;
-    }
-
-}
-
-@media (min-width: 1000px) and (max-width: 1000px) {
-    .container {
-        background-color: #f2f2f2;
-    }
-
-    .sidebar-title {
-
-        margin-top: 5px;
-        justify-content: center;
-    }
-
-    .sidebar-header {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        height: auto;
-    }
-
-    #filter {
-        width: 65%;
-        margin-top: 10px;
-    }
-
-    .pagination {
-        margin-left: auto;
-        justify-content: center;
-    }
-
-}
-
-@media (min-width: 1001px) and (max-width: 1220px) {
-
-    .sidebar {
-        height: auto;
-    }
-
-    .pagination {
-        margin: auto;
-        justify-content: right;
-    }
-}
 </style>
