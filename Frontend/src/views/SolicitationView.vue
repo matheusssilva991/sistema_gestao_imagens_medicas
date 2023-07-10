@@ -49,10 +49,12 @@
                             <button @click="openModal(solicitation)" class="btn">
                                 <i class="fas fa-eye table-item"></i>
                             </button>
-                            <button v-if="solicitation.status == 'Pendente'" @click="openAcceptModal(solicitation)" class="btn">
+                            <button v-if="solicitation.status == 'Pendente'" @click="openAcceptModal(solicitation)"
+                                class="btn">
                                 <i class="fa fa-check table-item" aria-hidden="true"></i>
                             </button>
-                            <button v-if="solicitation.status == 'Pendente'" @click="openRejectModal(solicitation)" class="btn">
+                            <button v-if="solicitation.status == 'Pendente'" @click="openRejectModal(solicitation)"
+                                class="btn">
                                 <i class="fa fa-times table-item-red"></i>
                             </button>
                         </td>
@@ -96,47 +98,7 @@ export default {
         InputComp,
     },
     created() {
-        const token = localStorage.getItem("token");
-
-        if (token != undefined) {
-            const req = {
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-            };
-
-            axios
-                .get("http://localhost:8081/api/solicitations", req)
-                .then((response) => {
-                    this.solicitations = response.data.map((solicitation) => {
-                        if (solicitation.status == "pending") {
-                            solicitation.status = "Pendente";
-                        } else if (solicitation.status == "accepted")
-                            solicitation.status = "Aceita";
-                        else solicitation.status = "Rejeitada";
-
-                        if (solicitation.type == "newUser") {
-                            solicitation.type = "Novo Usuário";
-                        } else {
-                            solicitation.type = "Novo Banco de imagens";
-                        }
-
-                        return solicitation;
-                    });
-
-                    this.solicitations = this.solicitations.sort((a, b) => {
-                        if (a.status === "Pendente" && b.status !== "Pendente") {
-                            return -1; // Solicitação pendente vem antes
-                        } else if (a.status !== "Pendente" && b.status === "Pendente") {
-                            return 1; // Solicitação pendente vem depois
-                        } else {
-                            return 0; // Mantém a ordem atual
-                        }
-                    });
-
-                    this.filteredSolicitations = this.solicitations;
-                });
-        }
+        this.updateSolicitations();
     },
     data() {
         return {
@@ -150,7 +112,7 @@ export default {
             showAcceptModal: false,
             selectedSolicitation: null,
             paginaAtual: 1,
-            itensPorPagina: 4,
+            itensPorPagina: 7,
         };
     },
     computed: {
@@ -200,31 +162,51 @@ export default {
             this.showRejectModal = false;
             this.selectedSolicitation = null;
         },
-        saveChanges() {
-            // Lógica para salvar as alterações
+        updateSolicitations(){
             const token = localStorage.getItem("token");
-            if (token != undefined) {
+
+        if (token != undefined) {
                 const req = {
                     headers: {
                         Authorization: "Bearer " + token,
                     },
                 };
-                // Faça a chamada HTTP para salvar as alterações
+
                 axios
-                    .put(
-                        "http://localhost:8081/api/solicitations",
-                        this.selectedSolicitation,
-                        req
-                    )
+                    .get("http://localhost:8081/api/solicitations", req)
                     .then((response) => {
-                        // Sucesso na alteração
-                        console.log(response.data);
-                    })
-                    .catch((error) => {
-                        // Erro na alteração
-                        console.log(error);
+                        this.solicitations = response.data.map((solicitation) => {
+                            if (solicitation.status == "pending") {
+                                solicitation.status = "Pendente";
+                            } else if (solicitation.status == "accepted")
+                                solicitation.status = "Aceita";
+                            else solicitation.status = "Rejeitada";
+
+                            if (solicitation.type == "newUser") {
+                                solicitation.type = "Novo Usuário";
+                            } else {
+                                solicitation.type = "Novo Banco de imagens";
+                            }
+
+                            return solicitation;
+                        });
+
+                        this.solicitations = this.solicitations.sort((a, b) => {
+                            if (a.status === "Pendente" && b.status !== "Pendente") {
+                                return -1; // Solicitação pendente vem antes
+                            } else if (a.status !== "Pendente" && b.status === "Pendente") {
+                                return 1; // Solicitação pendente vem depois
+                            } else {
+                                return 0; // Mantém a ordem atual
+                            }
+                        });
+
+                        this.filteredSolicitations = this.solicitations;
                     });
             }
+        },
+        saveChanges() {
+            this.updateSolicitations();
             this.closeModal();
         },
 
@@ -274,7 +256,7 @@ export default {
     font-weight: 100;
 }
 
-td button{
+td button {
     border: 2px solid black;
 }
 
@@ -285,7 +267,7 @@ td button{
     padding-top: 2.5%;
     margin: 0 auto;
     /* Adicionado para centralizar horizontalmente */
-    height: 75vh;
+    height: fit-content;
     width: 100%;
     border-radius: 25px;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
@@ -319,6 +301,14 @@ td button{
     color: #459c63;
 }
 
+.table-item-red {
+  color: #dd2215;
+}
+
+.table-item-red:hover {
+  color: #81150e;
+}
+
 #filter {
     width: 30%;
     display: flex;
@@ -338,7 +328,6 @@ td button{
 
 .add-button {
     background-color: #73bf8e;
-    ;
     color: #ffffff;
     border: none;
     padding: 0.5% 1%;
@@ -398,7 +387,7 @@ tbody td button:hover {
 }
 
 @media (max-width: 576px) {
-     .container {
+    .container {
         background-color: #f2f2f2;
     }
 

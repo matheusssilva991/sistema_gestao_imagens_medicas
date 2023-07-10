@@ -15,11 +15,11 @@
 					<label for="examType" class="form-label mt-3">Tipo de exame</label>
 					<input class="form-control" type="text" v-model="this.examType" aria-label="examType">
 
-					<label for="imageType" class="form-label mt-3">Tipo da imagem</label>
-					<input class="form-control" type="text" v-model="this.imageType" aria-label="imageType">
+					<label for="imageType" class="form-label mt-3">Tipo das imagens</label>
+					<input class="form-control" type="text" v-model="this.imageType" aria-label="imageType" placeholder="Dicom">
 
-					<label for="imageQuality" class="form-label mt-3">Qualidade das imagens (bits)</label>
-					<input class="form-control" type="text" v-model="this.imageQuality" aria-label="imageQuality">
+					<label for="imageQuality" class="form-label mt-3">Qualidade das imagens (Bits)</label>
+					<input class="form-control" type="text" v-model="this.imageQuality" aria-label="imageQuality" placeholder="8, 12, ...">
 
 					<label for="description" class="form-label mt-3">Descrição</label>
 					<textarea class="form-control" id="description" rows="3" v-model="this.description"></textarea>
@@ -66,7 +66,7 @@ export default {
 			this.showErroModal = false;
 		},
 		saveChanges() {
-			let tmpImageQuality = this.imageQuality.split(",");
+			let tmpImageQuality = this.imageQuality.split(",").map(data => data.trim());
 
 			const newDatabase = {
 				name: this.name,

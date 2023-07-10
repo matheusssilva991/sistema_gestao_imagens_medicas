@@ -147,7 +147,7 @@ export default {
             showCreateDatabaseModal: false,
             showSolicitationDatabaseModal: false,
             paginaAtual: 1,
-            itensPorPagina: 4,
+            itensPorPagina: 7,
         };
     },
     computed: {
@@ -223,6 +223,8 @@ export default {
                     }
 
                     this.filteredDatabases = this.databases;
+                }).catch(err => {
+                    console.log(err)
                 });
             }
 
@@ -300,7 +302,7 @@ export default {
     padding-top: 2.5%;
     margin: 0 auto;
     /* Adicionado para centralizar horizontalmente */
-    height: 75vh;
+    height: fit-content;
     width: 100%;
     border-radius: 25px;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);

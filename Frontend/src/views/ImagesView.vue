@@ -23,8 +23,10 @@
 				<div class="pagination-buttons">
 					<button @click="paginaAnterior" :disabled="paginaAtual === 1"
 						class="pagination-button">Anterior</button>
-					<button @click="proximaPagina" :disabled="!existemMaisPaginas"
-						class="pagination-button">Próxima</button>
+						<button @click="proximaPagina" :disabled="!existemMaisPaginas || imagensPagina.length === 0" class="pagination-button">
+                         Próxima
+                        </button>
+
 				</div>
 			</div>
 
@@ -84,7 +86,7 @@ export default {
 			return this.paginaAtual < this.totalPaginas;
 		},
 		totalPaginas() {
-			return Math.ceil(this.images.length / this.imagensPorPagina);
+			return Math.ceil(this.filteredImages.length / this.imagensPorPagina);
 		},
 		imagensPagina() {
 			const inicio = (this.paginaAtual - 1) * this.imagensPorPagina;
@@ -148,6 +150,7 @@ export default {
 
 .container {
 	background-color: #f2f2f2;
+	
 }
 
 .sidebar {

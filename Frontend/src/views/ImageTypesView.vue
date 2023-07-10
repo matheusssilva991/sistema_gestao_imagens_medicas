@@ -75,14 +75,14 @@
             </nav>
         </div>
 
-        <CreateImageTypeModalCompVue v-if="showCreateImageTypeModalComp" @close-modal="closeModal" 
-            @save-changes="saveChanges()"/>
-        <EditImageTypeModalComp v-if="showEditImageTypeModalComp" :imageType="selectedImageType" 
-            @close-modal="closeModal" @save-changes="saveChanges()"/>
+        <CreateImageTypeModalCompVue v-if="showCreateImageTypeModalComp" @close-modal="closeModal"
+            @save-changes="saveChanges()" />
+        <EditImageTypeModalComp v-if="showEditImageTypeModalComp" :imageType="selectedImageType" @close-modal="closeModal"
+            @save-changes="saveChanges()" />
         <ShowImageTypeModalComp v-if="showViewImageTypeModalComp" :imageType="selectedImageType"
             @close-modal="closeModal" />
         <DeleteImageTypeModalComp v-if="showDeleteImageTypeModalComp" :imageType="selectedImageType"
-            @close-modal="closeModal" @save-changes="saveChanges()"/>
+            @close-modal="closeModal" @save-changes="saveChanges()" />
     </div>
 </template>
   
@@ -136,7 +136,7 @@ export default {
             showViewImageTypeModalComp: false,
             showDeleteImageTypeModalComp: false,
             paginaAtual: 1,
-            itensPorPagina: 4,
+            itensPorPagina: 7,
         };
     },
     computed: {
@@ -239,6 +239,7 @@ export default {
     padding: 0;
     margin: 5px;
 }
+
 .pagination .page-link[data-v-1bd79246] {
     padding: 5px 10px;
     font-size: 14px;
@@ -265,7 +266,7 @@ export default {
     padding: 5%;
     padding-top: 2.5%;
     margin: 0 auto;
-    height: 70vh;
+    height: fit-content;
     width: 100%;
     border-radius: 25px;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.613);
@@ -390,13 +391,15 @@ export default {
 
 @media (min-width: 0px) and (max-width: 377px) {
     .pagination[data-v-1bd79246] {
-        margin-left: 10%;
+        margin-left: 0 auto;
+        justify-content: center;
     }
 }
 
 @media (min-width: 378px) and (max-width: 576px) {
     .pagination[data-v-1bd79246] {
-        margin-left: 20%;
+        margin-left: 0 auto;
+        justify-content: center;
     }
 }
 
@@ -419,13 +422,9 @@ export default {
         margin-top: 10px;
     }
 
-    .pagination {
-        margin-left: auto;
-        justify-content: center;
-    }
-
     .pagination[data-v-1bd79246] {
-        margin-left: 30%;
+        margin-left: 0 auto;
+        justify-content: center;
     }
 }
 
@@ -440,7 +439,8 @@ export default {
     }
 
     .pagination[data-v-1bd79246] {
-        margin-left: 45%;
+        margin-left: 0 auto;
+        justify-content: center;
     }
 }
 
@@ -473,5 +473,4 @@ tbody td button {
 tbody td button:hover {
     border: none;
 }
-
 </style>
