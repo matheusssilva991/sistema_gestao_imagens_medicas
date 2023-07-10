@@ -61,9 +61,9 @@ Antes de começar, verifique se você possui as seguintes ferramentas instaladas
 
 - [Matheus Santos Silva](https://github.com/matheusssilva991) - Desenvolvedor Front-end/Backend
 - [Vinícius Nunes de Carvalho](https://github.com/vinincarvalho) - Desenvolvedor Front-end/Designer
-- [Cleber Santos Pinto Junior](https://github.com/VictorSilvaJS) - Desenvolvedor Front-end
+- [Cleber Santos Pinto Junior](https://github.com/cleberspjr) - Desenvolvedor Front-end
 - [Victor Silva de Jesus](https://github.com/VictorSilvaJS) - Desenvolvedor Front-end
-- [Alessandro](https://github.com/VictorSilvaJS) - Desenvolvedor Front-end
+- [Alessandro Conceição Santos](https://github.com/AlessanBass) - Desenvolvedor Front-end
 - [Tauan Neres Silva](https://github.com/Tauan-dev) - Desenvolvedor Front-end
 
 ## Contato
