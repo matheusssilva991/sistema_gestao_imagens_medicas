@@ -22,9 +22,9 @@
 			</div>
 		</div>
 
-		<div v-if="this.erro" class="error-msg">
-            <ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
-        </div>
+		<div v-if="this.showErroModal" class="error-msg">
+			<ErrorMessageModalComp :message=this.erro @close-modal="closeErroModal()" />
+		</div>
 	</div>
 </template>
   
@@ -44,13 +44,17 @@ export default {
 	},
 	data() {
 		return {
-			erro: false
+			erro: false,
+			showErroModal: false,
 		};
 	},
 	methods: {
 		closeModal() {
 			this.showModal = false;
 			this.$emit('close-modal');
+		},
+		closeErroModal() {
+			this.showErroModal = false;
 		},
 		deleteDatabase() {
 			const token = localStorage.getItem('token');
@@ -66,6 +70,7 @@ export default {
 						console.log(response.data);
 						this.$emit('save-changes');
 					}).catch(err => {
+						this.showErroModal = true;
 						this.erro = err.response.data?.err;
 					});
 			}
@@ -97,8 +102,10 @@ export default {
 	box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
 	max-width: 500px;
 	width: 100%;
-	height: 500px; /* Altura fixa para o conteúdo do modal */
-    overflow-y: auto; /* Habilita a barra de rolagem vertical quando necessário */
+	height: 500px;
+	/* Altura fixa para o conteúdo do modal */
+	overflow-y: auto;
+	/* Habilita a barra de rolagem vertical quando necessário */
 }
 
 .modal-header {

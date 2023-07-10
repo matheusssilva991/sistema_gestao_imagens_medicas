@@ -205,13 +205,16 @@ class UserController {
             res.status(404).json({ err: "Token não encontrado!" });
             return;
         }
+        try {
+            let decoded = jwt.verify(token, secret);
+            delete decoded['iat'];
+            delete decoded['exp'];
 
-        let decoded = jwt.verify(token, secret);
-        delete decoded['iat'];
-        delete decoded['exp'];
-
-        res.status(200).json(decoded);
-
+            res.status(200).json(decoded);
+        } catch(err) {
+            res.status(404).json({ err: "Token expirado!." });
+            return;
+        }
     }
 }
 

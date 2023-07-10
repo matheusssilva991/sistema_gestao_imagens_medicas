@@ -22,8 +22,8 @@
 			</div>
 		</div>
 
-		<div v-if="this.erro" class="error-msg">
-			<ErrorMessageModalComp :message=this.erro @close-modal="closeModal()" />
+		<div v-if="this.showErroModal" class="error-msg">
+			<ErrorMessageModalComp :message=this.erro @close-modal="closeErroModal()" />
 		</div>
 	</div>
 </template>
@@ -44,12 +44,16 @@ export default {
 	},
 	data() {
 		return {
+			showErroModal: false,
 		};
 	},
 	methods: {
 		closeModal() {
 			this.showModal = false;
 			this.$emit('close-modal');
+		},
+		closeErroModal() {
+			this.showErroModal = false;
 		},
 		acceptSolicitation() {
 			const token = localStorage.getItem('token');
@@ -63,21 +67,39 @@ export default {
 
 				if (this.solicitation.type == "newUser") {
 					axios.post(`http://localhost:8081/api/user`, { "idSolicitation": this.solicitation._id }, req)
-						.then(response => {
-							console.log(response.data);
-							this.$emit('save-changes');
+						.then(() => {
+
+							axios.put(`http://localhost:8081/api/solicitation/${this.solicitation._id}`,
+								{ 'status': 'accepted' }, req)
+								.then(()=> {
+									this.$emit('save-changes');
+								}).catch(err => {
+									this.showErroModal = true;
+									this.erro = err.response.data?.err;
+								});
 						}).catch(err => {
+							this.showErroModal = true;
 							this.erro = err.response.data?.err;
 						});
 				} else {
-					axios.put(`http://localhost:8081/api/solicitation/${this.solicitation._id}`,
-						{ 'status': 'accepted' }, req)
-					.then(response => {
-						console.log(response.data);
-						this.$emit('save-changes');
-					}).catch(err => {
-						this.erro = err.response.data?.err;
-					}) 
+					let newDatabase = this.solicitation.data;
+
+					axios.post(`http://localhost:8081/api/database`, newDatabase, req)
+						.then(() => {
+
+							axios.put(`http://localhost:8081/api/solicitation/${this.solicitation._id}`,
+								{ 'status': 'accepted' }, req)
+								.then(()=> {
+									this.$emit('save-changes');
+								}).catch(err => {
+									this.showErroModal = true;
+									this.erro = err.response.data?.err;
+								});
+						}).catch(err => {
+							this.showErroModal = true;
+							this.erro = err.response.data?.err;
+						});
+
 				}
 			}
 		}
@@ -108,8 +130,10 @@ export default {
 	box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
 	max-width: 500px;
 	width: 100%;
-	height: 500px; /* Altura fixa para o conteúdo do modal */
-    overflow-y: auto; /* Habilita a barra de rolagem vertical quando necessário */
+	height: 500px;
+	/* Altura fixa para o conteúdo do modal */
+	overflow-y: auto;
+	/* Habilita a barra de rolagem vertical quando necessário */
 }
 
 .modal-header {

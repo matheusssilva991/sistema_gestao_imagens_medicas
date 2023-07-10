@@ -64,9 +64,9 @@ class DatabaseController {
         }
 
         const databaseExists = await DatabaseService.databaseExists(name);
-        const namesEquals = name.toLowerCase() === database[0].name;
+        const namesEquals = name.toLowerCase() === database[0].name.toLowerCase();
 
-        if (!databaseExists || databaseExists && namesEquals){
+        if (!databaseExists || (databaseExists && namesEquals)){
             await DatabaseService.update(id, name, examType, description, imageQuality, imageType, sourceLink);
 
             res.status(200).json({ msg: "Banco de dados atualizado com sucesso" });

@@ -49,7 +49,7 @@ class Database {
     }
 
     async databaseExists(name) {
-        const database = await this.find({ "name": name.toLowerCase() });
+        const database = await this.find({ "name": { $regex: new RegExp('^' + name + '$', 'i') } });
 
         if (database.length === 0)
             return false;

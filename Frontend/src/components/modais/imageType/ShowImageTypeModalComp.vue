@@ -15,18 +15,18 @@
 						placeholder="Informe nome da imagem" />
 
 					<label for="description" class="form-label mt-3">Descrição:</label>
-					<textarea disabled class="form-control" v-model="this.descripttion" aria-label="description"
-						@input="countCaractere" cols="38" rows="3" placeholder="Descrição da imagem"></textarea>
-					<span class="span-description">{{ caracteresDigitados }}/500 caracteres</span> <br>
+					<textarea disabled class="form-control" v-model="this.description" aria-label="description" cols="38"
+						rows="3" placeholder="Descrição da imagem">
+					</textarea>
 
-					<label for="requiredData" class="form-label mt-3">Dados da Imagem:</label>
-					<input disabled class="form-control" type="text" v-model="this.requiredData"
-						aria-label="requiredData" placeholder="Informe os dados" />
+					<label for="requiredData" class="form-label mt-3">Dados requeridos da imagem:</label>
+					<input disabled class="form-control" type="text" v-model="this.requiredData" aria-label="requiredData"
+						placeholder="Informe os dados" />
 
 					<!-- Falta o modal de confirmação -->
-					<label for="optionalData" class="form-label mt-3">Dados opcionais:</label>
-					<input disabled class="form-control" type="text" v-model="this.opcionalData"
-						 aria-label="optionalData" placeholder="Informe os dados opcionais" />
+					<label for="optionalData" class="form-label mt-3">Dados opcionais da imagem:</label>
+					<input disabled class="form-control" type="text" v-model="this.optionalData" aria-label="optionalData"
+						placeholder="Informe os dados opcionais" />
 
 
 				</div>
@@ -49,21 +49,19 @@ export default {
 			required: true,
 		}
 	},
-	created(){
-		this.name = this.imageType.name
-		this.description = this.imageType.description,
-		this.requiredData = this.imageType.requiredData.join(", ")
-		this.opcionalData = this.imageType.requiredData.join(", ")
+	created() {
+		this.name = this.imageType.name;
+		this.description = this.imageType.description;
+		this.requiredData = this.imageType.requiredData.join(", ");
+		this.optionalData = this.imageType.requiredData.join(", ");
 	},
 	data() {
 		return {
-			showModal: false,
+			showModal: true,
 			name: "",
 			description: "",
 			requiredData: "", /* Tratado como string */
-			opcionalData: "", /* Tratado como string */
-			caracteresDigitados: 0,
-			limitCaracteres: 500,
+			optionalData: "", /* Tratado como string */
 
 		};
 	},
@@ -72,13 +70,6 @@ export default {
 		closeModal() {
 			this.showModal = false;
 			this.$emit('close-modal');
-		},
-		countCaractere() {
-			if (this.caracteresDigitados >= this.limiteCaracteres) {
-				this.descripttion = this.description.slice(0, this.limiteCaracteres);
-			} else {
-				this.caracteresDigitados = this.description.length;
-			}
 		},
 	}
 };

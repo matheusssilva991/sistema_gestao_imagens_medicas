@@ -5,19 +5,12 @@ const UserController = require("../controllers/UserController");
 
 const Auth = require("../middlewares/Auth");
 const CheckFields = require("../middlewares/CheckFields");
-/* 
-router.get('/api/users', Auth.adminAuth, UserController.getUsers);
-router.get('/api/user/:id', Auth.loginAuth, UserController.getUser);
-router.post('/api/user', Auth.adminAuth, UserController.newUser);
-router.put('/api/user/:id', Auth.adminAuth, CheckFields.checkUserFields, UserController.updateUser);
-router.delete('/api/user/:id', Auth.adminAuth, UserController.deleteUser);
-router.put('/api/user/:id/permissao', Auth.adminAuth, UserController.updateRole); */
 
 router.get('/api/users', UserController.getUsers);
 router.get('/api/user/:id', UserController.getUser);
-router.post('/api/user', UserController.newUser);
-router.put('/api/user/:id', CheckFields.checkUserFields, UserController.updateUser);
-router.delete('/api/user/:id', UserController.deleteUser);
-router.put('/api/user/:id/permissao', UserController.updateRole);
+router.post('/api/user', Auth.adminAuth, UserController.newUser);
+router.put('/api/user/:id', Auth.loginAuth, CheckFields.checkUserFields, UserController.updateUser);
+router.delete('/api/user/:id', Auth.adminAuth, UserController.deleteUser);
+router.put('/api/user/:id/permissao', Auth.adminAuth, UserController.updateRole);
 
 module.exports = router;
